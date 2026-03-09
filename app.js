@@ -1,7 +1,6 @@
-// TELEGRAM WEBAPP
+// TELEGRAM
 
 const tg = window.Telegram.WebApp
-
 tg.expand()
 
 // USER DATA
@@ -10,17 +9,26 @@ const user = tg.initDataUnsafe?.user
 
 if(user){
 
-document.getElementById("username").innerText =
-user.first_name || "Player"
+const username = document.getElementById("username")
+const avatar = document.getElementById("avatar")
 
-if(user.photo_url){
-document.getElementById("avatar").src = user.photo_url
+if(username){
+username.innerText = user.first_name || "Player"
+}
+
+if(avatar && user.photo_url){
+avatar.src = user.photo_url
 }
 
 }
 
 
-// ПЕРЕХОД НА ЭКРАН КЕЙСОВ
+
+// ----------------------
+// НАВИГАЦИЯ
+// ----------------------
+
+// открыть экран кейсов
 
 function openCases(){
 
@@ -28,8 +36,7 @@ window.location.href = "cases.html"
 
 }
 
-
-// ПЕРЕХОД НА ЭКРАН ОТКРЫТИЯ КЕЙСА
+// открыть кейс
 
 function openCase(){
 
@@ -37,33 +44,41 @@ window.location.href = "case.html"
 
 }
 
+// кнопка назад
+
+function goBack(){
+
+window.history.back()
+
+}
+
 
 
 // ----------------------
-// РУЛЕТКА
+// РУЛЕТКА (3 экран)
 // ----------------------
 
 const track = document.getElementById("rouletteTrack")
 const prizeList = document.getElementById("prizeList")
 
 
-// ПРЕДМЕТЫ КЕЙСА
+// предметы кейса
 
 let items = [
 
-{icon:"🍭", name:"Candy"},
-{icon:"🍬", name:"Sweet"},
-{icon:"🍰", name:"Cake"},
-{icon:"🍩", name:"Donut"},
-{icon:"🍫", name:"Chocolate"},
-{icon:"🍪", name:"Cookie"}
+{icon:"🍭",name:"Candy"},
+{icon:"🍬",name:"Sweet"},
+{icon:"🍰",name:"Cake"},
+{icon:"🍩",name:"Donut"},
+{icon:"🍫",name:"Chocolate"},
+{icon:"🍪",name:"Cookie"}
 
 ]
 
-let chances = []
+let chances=[]
 
 
-// ГЕНЕРАЦИЯ СЛУЧАЙНЫХ ШАНСОВ
+// генерация случайных шансов
 
 function generateChances(){
 
@@ -92,7 +107,7 @@ renderPrizeList()
 }
 
 
-// ОТОБРАЖЕНИЕ ТАБЛИЦЫ ШАНСОВ
+// вывод таблицы призов
 
 function renderPrizeList(){
 
@@ -107,15 +122,8 @@ let row=document.createElement("div")
 row.className="prize-row"
 
 row.innerHTML=`
-
-<div class="prize-name">
-${item.icon} ${item.name}
-</div>
-
-<div class="prize-chance">
-${chances[i]}%
-</div>
-
+<div class="prize-name">${item.icon} ${item.name}</div>
+<div class="prize-chance">${chances[i]}%</div>
 `
 
 prizeList.appendChild(row)
@@ -125,8 +133,7 @@ prizeList.appendChild(row)
 }
 
 
-
-// СОЗДАНИЕ ЛЕНТЫ РУЛЕТКИ
+// создание рулетки
 
 function buildRoulette(){
 
@@ -137,7 +144,7 @@ track.innerHTML=""
 let pool=[]
 
 
-// СОЗДАЕМ ПУЛ ПРЕДМЕТОВ ПО ВЕРОЯТНОСТИ
+// формируем пул по шансам
 
 items.forEach((item,i)=>{
 
@@ -152,7 +159,7 @@ pool.push(item)
 })
 
 
-// ЗАПОЛНЯЕМ ЛЕНТУ
+// создаем ленту
 
 for(let i=0;i<80;i++){
 
@@ -171,13 +178,11 @@ track.appendChild(div)
 }
 
 
-
-// ВЫБОР ПОБЕДИТЕЛЯ
+// выбор победителя
 
 function pickWinner(){
 
 let rand=Math.random()*100
-
 let sum=0
 
 for(let i=0;i<chances.length;i++){
@@ -185,9 +190,7 @@ for(let i=0;i<chances.length;i++){
 sum+=parseFloat(chances[i])
 
 if(rand<=sum){
-
 return i
-
 }
 
 }
@@ -197,41 +200,34 @@ return 0
 }
 
 
-
-// ЗАПУСК РУЛЕТКИ
+// запуск рулетки
 
 function spinCase(){
 
 generateChances()
-
 buildRoulette()
 
-let winnerIndex = pickWinner()
+let winnerIndex=pickWinner()
+
+let stopPosition=(winnerIndex*100)+2500
+
+track.style.transition="transform 5s cubic-bezier(.1,.7,.1,1)"
+
+track.style.transform=`translateX(-${stopPosition}px)`
 
 
-let stopPosition = (winnerIndex * 100) + 2500
-
-
-track.style.transition =
-"transform 5s cubic-bezier(.1,.7,.1,1)"
-
-track.style.transform =
-`translateX(-${stopPosition}px)`
-
-
-// ПОСЛЕ 5 СЕКУНД
+// результат через 5 секунд
 
 setTimeout(()=>{
 
-alert("Вы выиграли: " + items[winnerIndex].name)
+alert("Вы выиграли: "+items[winnerIndex].name)
 
 },5000)
 
 }
 
 
-
-// ПЕРВИЧНАЯ ГЕНЕРАЦИЯ
+// первичная генерация
 
 generateChances()
 buildRoulette()
