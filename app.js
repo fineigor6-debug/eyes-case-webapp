@@ -28,41 +28,65 @@ avatar.src = user.photo_url
 // НАВИГАЦИЯ
 // ----------------------
 
-// открыть экран кейсов
-
 function openCases(){
-
 window.location.href = "cases.html"
-
 }
-
-// открыть кейс
 
 function openCase(){
-
 window.location.href = "case.html"
+}
+
+function goBack(){
+window.history.back()
+}
+
+
+
+// ----------------------
+// ТИП КЕЙСА
+// ----------------------
+
+function openDailyCase(){
+
+localStorage.setItem("caseType","daily")
+window.location.href="case.html"
 
 }
 
-// кнопка назад
+function openTestCase(){
 
-function goBack(){
-
-window.history.back()
+localStorage.setItem("caseType","test")
+window.location.href="case.html"
 
 }
 
 
 
 // ----------------------
-// РУЛЕТКА (3 экран)
+// ЗАГОЛОВОК 3 ЭКРАНА
+// ----------------------
+
+const title = document.getElementById("caseTitle")
+const caseType = localStorage.getItem("caseType")
+
+if(title){
+
+if(caseType === "test"){
+title.innerText="Тестовый кейс"
+}else{
+title.innerText="Ежедневный кейс"
+}
+
+}
+
+
+
+// ----------------------
+// РУЛЕТКА
 // ----------------------
 
 const track = document.getElementById("rouletteTrack")
 const prizeList = document.getElementById("prizeList")
-
-
-// предметы кейса
 
 let items = [
 
@@ -83,7 +107,6 @@ let chances=[]
 function generateChances(){
 
 chances=[]
-
 let total=0
 
 for(let i=0;i<items.length;i++){
@@ -91,7 +114,6 @@ for(let i=0;i<items.length;i++){
 let value=Math.random()
 
 chances.push(value)
-
 total+=value
 
 }
@@ -107,7 +129,8 @@ renderPrizeList()
 }
 
 
-// вывод таблицы призов
+
+// список призов
 
 function renderPrizeList(){
 
@@ -133,7 +156,8 @@ prizeList.appendChild(row)
 }
 
 
-// создание рулетки
+
+// построение рулетки
 
 function buildRoulette(){
 
@@ -143,23 +167,15 @@ track.innerHTML=""
 
 let pool=[]
 
-
-// формируем пул по шансам
-
 items.forEach((item,i)=>{
 
 let count=Math.round(chances[i])
 
 for(let j=0;j<count;j++){
-
 pool.push(item)
-
 }
 
 })
-
-
-// создаем ленту
 
 for(let i=0;i<80;i++){
 
@@ -176,6 +192,7 @@ track.appendChild(div)
 }
 
 }
+
 
 
 // выбор победителя
@@ -200,7 +217,8 @@ return 0
 }
 
 
-// запуск рулетки
+
+// запуск кейса
 
 function spinCase(){
 
@@ -212,11 +230,10 @@ let winnerIndex=pickWinner()
 let stopPosition=(winnerIndex*100)+2500
 
 track.style.transition="transform 5s cubic-bezier(.1,.7,.1,1)"
-
 track.style.transform=`translateX(-${stopPosition}px)`
 
 
-// результат через 5 секунд
+// результат
 
 setTimeout(()=>{
 
@@ -224,17 +241,24 @@ alert("Вы выиграли: "+items[winnerIndex].name)
 
 },5000)
 
+
+// КД только для Daily
+
+const caseType = localStorage.getItem("caseType")
+
+if(caseType === "daily"){
+
+localStorage.setItem("dailyCaseTime", Date.now())
+
+}
+
 }
 
 
-// первичная генерация
 
-generateChances()
-buildRoulette()
-
-// ----------------
+// ----------------------
 // DAILY CASE TIMER
-// ----------------
+// ----------------------
 
 const openBtn = document.getElementById("openCaseBtn")
 const timer = document.getElementById("cooldownTimer")
@@ -242,6 +266,12 @@ const timer = document.getElementById("cooldownTimer")
 const cooldown = 24 * 60 * 60 * 1000
 
 function checkCooldown(){
+
+if(!openBtn) return
+
+const caseType = localStorage.getItem("caseType")
+
+if(caseType !== "daily") return
 
 const lastOpen = localStorage.getItem("dailyCaseTime")
 
@@ -261,6 +291,8 @@ updateTimer(cooldown - diff)
 
 }
 
+
+
 function updateTimer(time){
 
 setInterval(()=>{
@@ -271,7 +303,9 @@ if(time <= 0){
 
 openBtn.disabled = false
 
+if(timer){
 timer.innerText="Кейс снова доступен!"
+}
 
 return
 
@@ -281,67 +315,24 @@ let hours = Math.floor(time / 3600000)
 let minutes = Math.floor((time % 3600000) / 60000)
 let seconds = Math.floor((time % 60000) / 1000)
 
+if(timer){
+
 timer.innerText =
 `Следующий кейс через ${hours}ч ${minutes}м ${seconds}с`
+
+}
 
 },1000)
 
 }
 
 
-// ОБНОВЛЯЕМ spinCase
 
-const oldSpin = spinCase
+// ----------------------
+// ПЕРВИЧНАЯ ГЕНЕРАЦИЯ
+// ----------------------
 
-spinCase = function(){
-
-localStorage.setItem("dailyCaseTime", Date.now())
-
-oldSpin()
+generateChances()
+buildRoulette()
 
 checkCooldown()
-
-}
-
-
-// ПРИ ЗАГРУЗКЕ
-
-checkCooldown()
-
-// функции для тест кейса
-
-function openDailyCase(){
-
-localStorage.setItem("caseType","daily")
-
-window.location.href="case.html"
-
-}
-
-function openTestCase(){
-
-localStorage.setItem("caseType","test")
-
-window.location.href="case.html"
-
-}
-
-// определение кейса
-
-const title = document.getElementById("caseTitle")
-
-const caseType = localStorage.getItem("caseType")
-
-if(title){
-
-if(caseType === "test"){
-
-title.innerText="Тестовый кейс"
-
-}else{
-
-title.innerText="Ежедневный кейс"
-
-}
-
-}
