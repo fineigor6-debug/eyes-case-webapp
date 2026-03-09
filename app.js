@@ -70,7 +70,7 @@ const caseType = localStorage.getItem("caseType")
 if(title){
 
 if(caseType === "test"){
-title.innerText="Тестовый кейс"
+title.innerText="Тестовый кейс (10⭐)"
 }else{
 title.innerText="Ежедневный кейс"
 }
@@ -86,13 +86,14 @@ const prizeList = document.getElementById("prizeList")
 
 let items = [
 
-{icon:"⭐",name:"1 ⭐"},
 {icon:"⭐",name:"2 ⭐"},
-{icon:"⭐",name:"3 ⭐"},
 {icon:"⭐",name:"5 ⭐"},
+{icon:"⭐",name:"8 ⭐"},
 {icon:"⭐",name:"10 ⭐"},
+{icon:"⭐",name:"15 ⭐"},
 {icon:"⭐",name:"25 ⭐"},
-{icon:"⭐",name:"50 ⭐"}
+{icon:"⭐",name:"50 ⭐"},
+{icon:"⭐",name:"100 ⭐"}
 
 ]
 
@@ -100,18 +101,21 @@ let chances=[]
 let spinning=false
 
 // ----------------------
-// ЭКОНОМИКА ТЕСТ КЕЙСА (RTP ~82%)
+// ЭКОНОМИКА ТЕСТ КЕЙСА
+// цена кейса = 10⭐
+// RTP ≈ 84%
 // ----------------------
 
 const testCaseChances = [
 
-45,   // 1 ⭐
-25,   // 2 ⭐
-15,   // 3 ⭐
-10,   // 5 ⭐
-4,    // 10 ⭐
-0.9,  // 25 ⭐
-0.1   // 50 ⭐
+25,   // 2⭐
+25,   // 5⭐
+20,   // 8⭐
+15,   // 10⭐
+8,    // 15⭐
+5,    // 25⭐
+1.8,  // 50⭐
+0.2   // 100⭐
 
 ]
 
@@ -305,13 +309,11 @@ const lastOpen = localStorage.getItem("dailyCaseTime")
 if(!lastOpen) return
 
 const now = Date.now()
-
 const diff = now - lastOpen
 
 if(diff < cooldown){
 
 openBtn.disabled = true
-
 updateTimer(cooldown - diff)
 
 }
