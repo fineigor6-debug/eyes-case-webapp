@@ -1,9 +1,13 @@
+// ----------------------
 // TELEGRAM
+// ----------------------
 
 const tg = window.Telegram.WebApp
 tg.expand()
 
+// ----------------------
 // USER DATA
+// ----------------------
 
 const user = tg.initDataUnsafe?.user
 
@@ -22,8 +26,6 @@ avatar.src = user.photo_url
 
 }
 
-
-
 // ----------------------
 // НАВИГАЦИЯ
 // ----------------------
@@ -39,8 +41,6 @@ window.location.href = "case.html"
 function goBack(){
 window.history.back()
 }
-
-
 
 // ----------------------
 // ТИП КЕЙСА
@@ -60,8 +60,6 @@ window.location.href="case.html"
 
 }
 
-
-
 // ----------------------
 // ЗАГОЛОВОК 3 ЭКРАНА
 // ----------------------
@@ -78,8 +76,6 @@ title.innerText="Ежедневный кейс"
 }
 
 }
-
-
 
 // ----------------------
 // РУЛЕТКА
@@ -100,9 +96,11 @@ let items = [
 ]
 
 let chances=[]
+let spinning = false
 
-
+// ----------------------
 // генерация случайных шансов
+// ----------------------
 
 function generateChances(){
 
@@ -128,9 +126,9 @@ renderPrizeList()
 
 }
 
-
-
+// ----------------------
 // список призов
+// ----------------------
 
 function renderPrizeList(){
 
@@ -155,9 +153,9 @@ prizeList.appendChild(row)
 
 }
 
-
-
+// ----------------------
 // построение рулетки
+// ----------------------
 
 function buildRoulette(){
 
@@ -193,9 +191,9 @@ track.appendChild(div)
 
 }
 
-
-
+// ----------------------
 // выбор победителя
+// ----------------------
 
 function pickWinner(){
 
@@ -216,11 +214,18 @@ return 0
 
 }
 
-
-
+// ----------------------
 // запуск кейса
+// ----------------------
 
 function spinCase(){
+
+if(spinning) return
+
+spinning = true
+
+const openBtn = document.getElementById("openCaseBtn")
+if(openBtn) openBtn.disabled = true
 
 generateChances()
 buildRoulette()
@@ -232,19 +237,19 @@ let stopPosition=(winnerIndex*100)+2500
 track.style.transition="transform 5s cubic-bezier(.1,.7,.1,1)"
 track.style.transform=`translateX(-${stopPosition}px)`
 
-
 // результат
 
 setTimeout(()=>{
 
 alert("Вы выиграли: "+items[winnerIndex].name)
 
+spinning = false
+
+if(openBtn) openBtn.disabled = false
+
 },5000)
 
-
 // КД только для Daily
-
-const caseType = localStorage.getItem("caseType")
 
 if(caseType === "daily"){
 
@@ -253,8 +258,6 @@ localStorage.setItem("dailyCaseTime", Date.now())
 }
 
 }
-
-
 
 // ----------------------
 // DAILY CASE TIMER
@@ -268,8 +271,6 @@ const cooldown = 24 * 60 * 60 * 1000
 function checkCooldown(){
 
 if(!openBtn) return
-
-const caseType = localStorage.getItem("caseType")
 
 if(caseType !== "daily") return
 
@@ -290,8 +291,6 @@ updateTimer(cooldown - diff)
 }
 
 }
-
-
 
 function updateTimer(time){
 
@@ -325,8 +324,6 @@ timer.innerText =
 },1000)
 
 }
-
-
 
 // ----------------------
 // ПЕРВИЧНАЯ ГЕНЕРАЦИЯ
