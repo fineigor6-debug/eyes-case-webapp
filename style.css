@@ -16,20 +16,18 @@ overflow-x:hidden;
 
 body{
 margin:0;
-height:100%;
+min-height:100vh;
 overflow-x:hidden;
-touch-action:pan-y;
 
 font-family:'Inter', sans-serif;
 font-weight:600;
 color:white;
 
-/* ФОН */
-
 background-image:url("CC63F4C5-493A-48B4-AB60-390857E41A58.png");
 background-size:cover;
 background-position:center;
 background-repeat:no-repeat;
+background-attachment:fixed;
 }
 
 /* затемнение */
@@ -280,38 +278,38 @@ margin-top:3px;
 opacity:1;
 }
 
-/* ---------------- */
-/* ЭКРАН КЕЙСОВ */
-/* ---------------- */
-
-.cases-screen{
-max-width:420px;
-width:100%;
-margin:auto;
-padding:16px;
-}
+/* HEADER ЭКРАНА КЕЙСОВ */
 
 .cases-header{
+position:relative;
 display:flex;
 align-items:center;
-gap:14px;
+justify-content:center;
 margin-bottom:20px;
 }
 
 .cases-title{
 font-size:22px;
 font-weight:800;
+text-align:center;
 }
 
 /* кнопка назад */
 
 .back-btn{
-background:none;
-border:none;
-color:white;
-font-size:22px;
-cursor:pointer;
-padding:6px;
+position:absolute;
+left:0;
+top:50%;
+transform:translateY(-50%);
+background:rgba(0,0,0,0.45);
+backdrop-filter:blur(10px);
+border:1px solid rgba(255,255,255,0.15);
+width:40px;
+height:40px;
+border-radius:12px;
+display:flex;
+align-items:center;
+justify-content:center;
 }
 
 /* сетка кейсов */
