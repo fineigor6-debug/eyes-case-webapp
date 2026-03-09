@@ -43,7 +43,7 @@ window.history.back()
 }
 
 // ----------------------
-// ТИП КЕЙСА
+// CASE TYPE
 // ----------------------
 
 function openDailyCase(){
@@ -59,7 +59,7 @@ window.location.href="case.html"
 const caseType = localStorage.getItem("caseType")
 
 // ----------------------
-// ЭЛЕМЕНТЫ
+// ELEMENTS
 // ----------------------
 
 const track = document.getElementById("rouletteTrack")
@@ -70,7 +70,7 @@ let spinning=false
 let syncInterval=null
 
 // ----------------------
-// ПРЕДМЕТЫ
+// ITEMS
 // ----------------------
 
 let items=[
@@ -88,7 +88,7 @@ let items=[
 let chances=[]
 
 // ----------------------
-// ЭКОНОМИКА
+// ECONOMY
 // ----------------------
 
 const testCaseChances=[
@@ -104,7 +104,7 @@ const testCaseChances=[
 ]
 
 // ----------------------
-// генерация шансов
+// GENERATE CHANCES
 // ----------------------
 
 function generateChances(){
@@ -137,7 +137,7 @@ renderPrizeList()
 }
 
 // ----------------------
-// список призов
+// PRIZE LIST
 // ----------------------
 
 function renderPrizeList(){
@@ -163,7 +163,7 @@ prizeList.appendChild(row)
 }
 
 // ----------------------
-// выбор победителя
+// PICK WINNER
 // ----------------------
 
 function pickWinner(){
@@ -186,88 +186,45 @@ return 0
 }
 
 // ----------------------
-// WEIGHTED VISUAL STRIP
-// ----------------------
-
-function generateWeightedPool(){
-
-let pool=[]
-
-items.forEach((item,i)=>{
-
-let count=Math.round(chances[i]*2)
-
-for(let j=0;j<count;j++){
-pool.push(i)
-}
-
-})
-
-return pool
-
-}
-
-// ----------------------
-// BUILD PROFESSIONAL ROULETTE
+// BUILD ROULETTE
 // ----------------------
 
 function buildRoulette(winnerIndex){
 
 track.innerHTML=""
 
-let pool=generateWeightedPool()
-
-// основная лента
 let strip=[]
 
-for(let i=0;i<70;i++){
-strip.push(pool[Math.floor(Math.random()*pool.length)])
+for(let i=0;i<60;i++){
+
+strip.push(
+Math.floor(Math.random()*items.length)
+)
+
 }
 
-// ----------------------
-// NEAR MISS ENGINE
-// ----------------------
-
+// near miss
 if(Math.random()<0.35){
 
-let rareIndex=items.length-1
-let pos=strip.length-3
-
-strip[pos]=rareIndex
+strip[57]=items.length-1
 
 }
 
-// вставляем победителя
+// позиция победителя
+let winPosition=strip.length
+
 strip.push(winnerIndex)
 
-// ----------------------
-// создаем элементы
-// ----------------------
-
-let winElement=null
-
-strip.forEach((index,i)=>{
+strip.forEach(index=>{
 
 let div=document.createElement("div")
-
 div.className="item"
-
-if(index>=5){
-div.classList.add("rare")
-}
-
 div.innerText=items[index].name
-
-if(i===strip.length-1){
-div.classList.add("win")
-winElement=div
-}
-
 track.appendChild(div)
 
 })
 
-return winElement
+return winPosition
 
 }
 
@@ -328,7 +285,7 @@ generateChances()
 
 let winnerIndex=pickWinner()
 
-let winElement=buildRoulette(winnerIndex)
+let winPosition=buildRoulette(winnerIndex)
 
 syncRollingDrop()
 
@@ -337,13 +294,13 @@ track.style.transform="translateX(0px)"
 
 setTimeout(()=>{
 
-const rect=winElement.getBoundingClientRect()
-const trackRect=track.getBoundingClientRect()
+const itemWidth=100
 
-const distance=rect.left-trackRect.left-(window.innerWidth/2)+(rect.width/2)
+const centerOffset=(window.innerWidth/2)-(itemWidth/2)
 
-// variable spin time
-let spinTime=4500+Math.random()*2000
+const distance=(winPosition*itemWidth)-centerOffset
+
+let spinTime=5000+Math.random()*1500
 
 track.style.transition=`transform ${spinTime}ms cubic-bezier(.05,.9,.15,1)`
 track.style.transform=`translateX(-${distance}px)`
