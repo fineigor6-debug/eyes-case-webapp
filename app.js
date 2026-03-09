@@ -27,44 +27,63 @@ avatar.src = user.photo_url
 }
 
 // ----------------------
-// LIVE DROPS
+// LIVE DROPS ROULETTE
 // ----------------------
 
 const dropsTrack = document.getElementById("dropsTrack")
 
 if(dropsTrack){
 
-const users = [
-"Alex","Ivan","Max","Leo","Nick","Artem","Den"
-]
-
 const dropItems = [
-"🧸","🍫","💎","🍩","🎁","🍬","🍰"
+"🧸","🍫","💎","🍩","🎁","🍬","🍰","🍪","🍭"
 ]
 
+// создаем предмет
 function createDrop(){
 
-const user = users[Math.floor(Math.random()*users.length)]
 const item = dropItems[Math.floor(Math.random()*dropItems.length)]
 
-const card = document.createElement("div")
+const div = document.createElement("div")
 
-card.className="drop-card"
+div.className = "drop-item"
+div.innerHTML = item
 
-card.innerHTML=`
-<div>${item}</div>
-<div class="drop-user">${user}</div>
-`
+dropsTrack.appendChild(div)
 
-dropsTrack.appendChild(card)
+}
 
-if(dropsTrack.children.length > 15){
-dropsTrack.removeChild(dropsTrack.firstChild)
+// генерация новых предметов
+setInterval(createDrop,1500)
+
+// движение рулетки
+let position = 0
+
+function animateDrops(){
+
+position += 0.5
+
+dropsTrack.style.transform = `translateX(${position}px)`
+
+// удаляем старые элементы
+const first = dropsTrack.firstElementChild
+
+if(first){
+
+const rect = first.getBoundingClientRect()
+
+if(rect.left > window.innerWidth){
+
+first.remove()
+
 }
 
 }
 
-setInterval(createDrop,2000)
+requestAnimationFrame(animateDrops)
+
+}
+
+animateDrops()
 
 }
 
