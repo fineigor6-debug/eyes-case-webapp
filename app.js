@@ -47,23 +47,19 @@ window.history.back()
 // ----------------------
 
 function openDailyCase(){
-
 localStorage.setItem("caseType","daily")
 window.location.href="case.html"
-
 }
 
 function openTestCase(){
-
 localStorage.setItem("caseType","test")
 window.location.href="case.html"
-
 }
 
 const caseType = localStorage.getItem("caseType")
 
 // ----------------------
-// РУЛЕТКА
+// ЭЛЕМЕНТЫ
 // ----------------------
 
 const track = document.getElementById("rouletteTrack")
@@ -71,6 +67,11 @@ const prizeList = document.getElementById("prizeList")
 const rollingDrop = document.getElementById("rollingDrop")
 
 let spinning=false
+let syncInterval=null
+
+// ----------------------
+// ПРЕДМЕТЫ
+// ----------------------
 
 let items=[
 
@@ -204,7 +205,7 @@ pool.push(item)
 
 })
 
-// случайная часть
+// случайная часть рулетки
 for(let i=0;i<60;i++){
 
 let random=pool[Math.floor(Math.random()*pool.length)]
@@ -234,6 +235,46 @@ track.appendChild(win)
 }
 
 // ----------------------
+// СИНХРОНИЗАЦИЯ DROПА
+// ----------------------
+
+function syncRollingDrop(){
+
+syncInterval=setInterval(()=>{
+
+const elements=document.querySelectorAll(".item")
+if(!elements.length) return
+
+const pointerX=window.innerWidth/2
+
+let closest=null
+let minDistance=9999
+
+elements.forEach(el=>{
+
+let rect=el.getBoundingClientRect()
+let center=rect.left+rect.width/2
+
+let dist=Math.abs(pointerX-center)
+
+if(dist<minDistance){
+
+minDistance=dist
+closest=el
+
+}
+
+})
+
+if(closest && rollingDrop){
+rollingDrop.innerText=closest.innerText
+}
+
+},60)
+
+}
+
+// ----------------------
 // запуск кейса
 // ----------------------
 
@@ -252,23 +293,8 @@ let winnerIndex=pickWinner()
 
 buildRoulette(winnerIndex)
 
-// ----------------------
-// отображение дропа
-// ----------------------
-
-let roll=setInterval(()=>{
-
-let random=Math.floor(Math.random()*items.length)
-
-if(rollingDrop){
-rollingDrop.innerText=items[random].name
-}
-
-},120)
-
-// ----------------------
-// старт вращения
-// ----------------------
+// синхронизация дропа
+syncRollingDrop()
 
 track.style.transition="none"
 track.style.transform="translateX(0px)"
@@ -277,13 +303,13 @@ setTimeout(()=>{
 
 let distance=track.scrollWidth-420
 
-// slow motion easing
+// slow motion
 track.style.transition="transform 7s cubic-bezier(.05,.9,.15,1)"
 track.style.transform=`translateX(-${distance}px)`
 
 setTimeout(()=>{
 
-clearInterval(roll)
+clearInterval(syncInterval)
 
 if(rollingDrop){
 rollingDrop.innerText=items[winnerIndex].name
