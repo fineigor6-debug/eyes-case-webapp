@@ -2,16 +2,18 @@ body{
 
 margin:0;
 font-family:Arial;
-background:linear-gradient(180deg,#8e2de2,#1b0033);
+
+background:linear-gradient(180deg,#8a00ff,#000);
+
 color:white;
 
 }
 
-.container{
+.app{
 
-max-width:900px;
+max-width:420px;
 margin:auto;
-padding:20px;
+padding-bottom:80px;
 
 }
 
@@ -20,7 +22,8 @@ padding:20px;
 display:flex;
 justify-content:space-between;
 align-items:center;
-margin-bottom:30px;
+
+padding:20px;
 
 }
 
@@ -34,21 +37,13 @@ gap:10px;
 
 .avatar{
 
-width:45px;
-height:45px;
+width:42px;
+height:42px;
 border-radius:50%;
-object-fit:cover;
-background:orange;
 
 }
 
-.name{
-
-font-weight:bold;
-
-}
-
-.sub{
+.subtitle{
 
 font-size:12px;
 opacity:0.7;
@@ -58,83 +53,142 @@ opacity:0.7;
 .balance{
 
 background:rgba(255,255,255,0.15);
-padding:8px 15px;
+
+padding:8px 14px;
+
 border-radius:20px;
 
 }
 
-.cards{
+.gifts{
 
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:20px;
+display:flex;
+gap:12px;
+
+padding:15px;
 
 }
 
-.card{
+.gift{
 
-background:linear-gradient(135deg,#6a00ff,#b300ff);
+flex:1;
+
+background:#111;
+
+padding:20px;
+
+border-radius:15px;
+
+text-align:center;
+
+font-size:22px;
+
+}
+
+.gift-price{
+
+font-size:12px;
+
+margin-top:5px;
+
+opacity:0.7;
+
+}
+
+.banner{
+
+margin:15px;
+
+border-radius:20px;
+
 padding:25px;
-border-radius:20px;
-box-shadow:0 10px 25px rgba(0,0,0,0.4);
+
+background:linear-gradient(135deg,#7a00ff,#ff00c8);
 
 }
 
-.card h2{
+.rocket{
+
+background:linear-gradient(135deg,#ff7a00,#ff0066);
+
+}
+
+.banner-text h2{
 
 margin:0;
 
 }
 
-.card p{
+.banner-text p{
 
 opacity:0.8;
+
 margin-top:5px;
 
 }
 
 button{
 
-margin-top:15px;
+margin-top:10px;
+
 background:#00ff6a;
+
 border:none;
-padding:12px;
-width:100%;
+
+padding:10px 15px;
+
 border-radius:10px;
+
 font-weight:bold;
+
 cursor:pointer;
 
 }
 
-button:hover{
+.menu{
 
-transform:scale(1.03);
+position:fixed;
 
-}
+bottom:0;
 
-#result{
+width:100%;
 
-margin-top:25px;
-text-align:center;
-font-size:20px;
+max-width:420px;
 
-}
+display:flex;
 
-/* адаптация телефона */
+justify-content:space-around;
 
-@media(max-width:600px){
+background:#000;
 
-.cards{
-
-grid-template-columns:1fr;
+padding:10px 0;
 
 }
 
-.header{
+.menu-item{
+
+display:flex;
 
 flex-direction:column;
-gap:15px;
+
+align-items:center;
+
+font-size:20px;
+
+opacity:0.6;
 
 }
+
+.menu-item span{
+
+font-size:10px;
+
+margin-top:3px;
+
+}
+
+.active{
+
+opacity:1;
 
 }
