@@ -27,7 +27,7 @@ avatar.src = user.photo_url
 }
 
 // ----------------------
-// НАВИГАЦИЯ
+// NAVIGATION
 // ----------------------
 
 function openCases(){
@@ -68,6 +68,7 @@ const rollingDrop = document.getElementById("rollingDrop")
 
 let spinning=false
 let syncInterval=null
+let strip=[]
 
 // ----------------------
 // ITEMS
@@ -192,9 +193,9 @@ return 0
 function buildRoulette(winnerIndex){
 
 track.innerHTML=""
+strip=[]
 
-let strip=[]
-
+// случайная лента
 for(let i=0;i<60;i++){
 
 strip.push(
@@ -205,21 +206,20 @@ Math.floor(Math.random()*items.length)
 
 // near miss
 if(Math.random()<0.35){
-
 strip[57]=items.length-1
-
 }
 
 // позиция победителя
 let winPosition=strip.length
-
 strip.push(winnerIndex)
 
+// создаем DOM
 strip.forEach(index=>{
 
 let div=document.createElement("div")
 div.className="item"
 div.innerText=items[index].name
+
 track.appendChild(div)
 
 })
@@ -234,34 +234,22 @@ return winPosition
 
 function syncRollingDrop(){
 
+const itemWidth=105
+
 syncInterval=setInterval(()=>{
 
-const elements=document.querySelectorAll(".item")
-if(!elements.length) return
+let transform=track.style.transform
 
-const pointerX=window.innerWidth/2
+let currentX=0
 
-let closest=null
-let minDistance=9999
-
-elements.forEach(el=>{
-
-let rect=el.getBoundingClientRect()
-let center=rect.left+rect.width/2
-
-let dist=Math.abs(pointerX-center)
-
-if(dist<minDistance){
-
-minDistance=dist
-closest=el
-
+if(transform.includes("translateX")){
+currentX=parseFloat(transform.split("(")[1])
 }
 
-})
+let index=Math.floor(Math.abs(currentX)/itemWidth)
 
-if(closest && rollingDrop){
-rollingDrop.innerText=closest.innerText
+if(strip[index]!==undefined && rollingDrop){
+rollingDrop.innerText=items[strip[index]].name
 }
 
 },16)
@@ -294,7 +282,7 @@ track.style.transform="translateX(0px)"
 
 setTimeout(()=>{
 
-const itemWidth=100
+const itemWidth=105
 
 const centerOffset=(window.innerWidth/2)-(itemWidth/2)
 
