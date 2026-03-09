@@ -15,25 +15,17 @@ content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable
 
 <style>
 
-/* убрать синий tap эффект на телефонах */
-
 *{
 -webkit-tap-highlight-color: transparent;
 }
-
-/* плавные анимации интерфейса */
 
 .case{
 transition: transform 0.15s ease, box-shadow 0.15s ease;
 }
 
-/* эффект нажатия */
-
 .case:active{
 transform: scale(0.96);
 }
-
-/* анимация кнопки назад */
 
 .back-btn{
 transition: transform 0.15s ease;
@@ -42,8 +34,6 @@ transition: transform 0.15s ease;
 .back-btn:active{
 transform: scale(0.9);
 }
-
-/* плавное появление кейсов */
 
 .cases-grid{
 animation: fadeCases 0.35s ease;
@@ -69,6 +59,8 @@ transform: translateY(0);
 
 <body>
 
+<div class="app">  <!-- ВОТ ЭТО ВАЖНО -->
+
 <div class="cases-screen">
 
 <!-- HEADER -->
@@ -89,12 +81,9 @@ stroke-linejoin="round"/>
 
 </div>
 
-
 <!-- GRID С КЕЙСАМИ -->
 
 <div class="cases-grid">
-
-<!-- ЕЖЕДНЕВНЫЙ КЕЙС -->
 
 <div class="case" onclick="openDailyCase()">
 
@@ -108,9 +97,6 @@ stroke-linejoin="round"/>
 
 </div>
 
-
-<!-- ТЕСТОВЫЙ КЕЙС -->
-
 <div class="case" onclick="openTestCase()">
 
 <div class="badge">NEW</div>
@@ -120,6 +106,8 @@ stroke-linejoin="round"/>
 <h3>Тестовый кейс</h3>
 
 <div class="price">1 ⭐</div>
+
+</div>
 
 </div>
 
