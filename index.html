@@ -1,11 +1,10 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 <head>
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
 <title>Eyes Case</title>
 
@@ -15,20 +14,43 @@ content="width=device-width, initial-scale=1, viewport-fit=cover">
 
 <style>
 
+/* ПЕРЕМЕННЫЕ */
+
 :root{
 --accent:#00f2ff;
 --gold:#ffcc00;
 }
 
-html, body{
-margin:0;
-padding:0;
-overflow-x:hidden;
-width:100%;
-}
+/* ГЛОБАЛЬНЫЙ ФИКС */
 
 *{
--webkit-tap-highlight-color: transparent;
+margin:0;
+padding:0;
+box-sizing:border-box;
+-webkit-tap-highlight-color:transparent;
+}
+
+html{
+width:100%;
+max-width:100%;
+overflow-x:hidden;
+}
+
+body{
+width:100%;
+max-width:100%;
+overflow-x:hidden;
+touch-action:pan-y;
+}
+
+/* ОСНОВНОЙ КОНТЕЙНЕР */
+
+.app{
+max-width:420px;
+width:100%;
+margin:auto;
+min-height:100vh;
+overflow:hidden;
 }
 
 </style>
@@ -60,7 +82,6 @@ width:100%;
 
 </div>
 
-
 <!-- LIVE DROPS -->
 
 <div class="live-drops">
@@ -74,7 +95,6 @@ width:100%;
 </div>
 
 </div>
-
 
 <!-- КЕЙС -->
 
@@ -94,6 +114,36 @@ width:100%;
 </div>
 
 <script src="app.js"></script>
+
+<script>
+
+const tg = window.Telegram.WebApp
+
+tg.ready()
+
+/* аккуратно разворачиваем приложение */
+
+setTimeout(()=>{
+tg.expand()
+},200)
+
+/* блокируем горизонтальный свайп */
+
+document.addEventListener("touchmove",function(e){
+
+if(e.touches.length==1){
+
+let touch=e.touches[0]
+
+if(touch.clientX<0 || touch.clientX>window.innerWidth){
+e.preventDefault()
+}
+
+}
+
+},{passive:false})
+
+</script>
 
 </body>
 </html>
