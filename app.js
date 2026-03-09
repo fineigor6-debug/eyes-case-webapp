@@ -43,30 +43,16 @@ window.history.back()
 }
 
 // ----------------------
-// CASE TYPE
-// ----------------------
-
-function openDailyCase(){
-localStorage.setItem("caseType","daily")
-window.location.href="case.html"
-}
-
-function openTestCase(){
-localStorage.setItem("caseType","test")
-window.location.href="case.html"
-}
-
-// ----------------------
 // ELEMENTS
 // ----------------------
 
 const track = document.getElementById("rouletteTrack")
-const rollingDrop = document.getElementById("rollingDrop")
+const prizeList = document.getElementById("prizeList")
 
 let spinning=false
 
 // ----------------------
-// DROP TABLE (ADMIN ONLY)
+// DROP TABLE
 // ----------------------
 
 const dropTable=[
@@ -80,6 +66,33 @@ const dropTable=[
 { name:"50 ⭐", chance:0.1 }
 
 ]
+
+// ----------------------
+// RENDER PRIZES
+// ----------------------
+
+function renderPrizeList(){
+
+if(!prizeList) return
+
+prizeList.innerHTML=""
+
+dropTable.forEach(item=>{
+
+let row=document.createElement("div")
+
+row.className="prize-row"
+
+row.innerHTML=`
+<div>${item.name}</div>
+<div>${item.chance}%</div>
+`
+
+prizeList.appendChild(row)
+
+})
+
+}
 
 // ----------------------
 // DROP ROLL
@@ -96,10 +109,11 @@ sum+=item.chance
 
 if(rand<=sum){
 
-console.log("🎰 CASE DROP")
-console.log("User:", user?.id)
-console.log("Drop:", item.name)
-console.log("Random:", rand)
+// ADMIN LOG
+console.log("🎰 CASE OPEN")
+console.log("User:",user?.id)
+console.log("Drop:",item.name)
+console.log("Random:",rand)
 
 return item
 
@@ -121,7 +135,7 @@ track.innerHTML=""
 
 let strip=[]
 
-// длинная лента (infinite illusion)
+// длинная рулетка
 for(let i=0;i<120;i++){
 
 let r=Math.floor(Math.random()*dropTable.length)
@@ -130,22 +144,15 @@ strip.push(dropTable[r].name)
 
 }
 
-// ----------------------
-// NEAR MISS ENGINE
-// ----------------------
-
-if(Math.random()<0.45){
+// near miss
+if(Math.random()<0.4){
 
 let rare=dropTable[dropTable.length-1].name
-
 strip[110]=rare
 
 }
 
-// ----------------------
-// WINNER
-// ----------------------
-
+// победитель
 strip.push(winItem.name)
 
 // DOM
@@ -177,7 +184,7 @@ spinning=true
 const openBtn=document.getElementById("openCaseBtn")
 if(openBtn) openBtn.disabled=true
 
-// заранее определяем результат
+// выбираем дроп
 let winItem=rollDrop()
 
 // строим рулетку
@@ -194,17 +201,12 @@ const centerOffset=(window.innerWidth/2)-(itemWidth/2)
 
 const distance=(winPosition*itemWidth)-centerOffset
 
-// случайная длительность
 let spinTime=5000+Math.random()*2000
 
 track.style.transition=`transform ${spinTime}ms cubic-bezier(.05,.9,.15,1)`
 track.style.transform=`translateX(-${distance}px)`
 
 setTimeout(()=>{
-
-if(rollingDrop){
-rollingDrop.innerText=winItem.name
-}
 
 alert("Вы выиграли: "+winItem.name)
 
@@ -216,3 +218,9 @@ if(openBtn) openBtn.disabled=false
 },50)
 
 }
+
+// ----------------------
+// INIT
+// ----------------------
+
+renderPrizeList()
