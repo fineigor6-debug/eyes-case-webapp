@@ -1,9 +1,17 @@
 body{
 
-background: linear-gradient(180deg,#6a00ff,#12002b);
-font-family:Arial;
 margin:0;
+font-family:Arial;
+background:linear-gradient(180deg,#8e2de2,#1b0033);
 color:white;
+
+}
+
+.container{
+
+max-width:900px;
+margin:auto;
+padding:20px;
 
 }
 
@@ -12,8 +20,7 @@ color:white;
 display:flex;
 justify-content:space-between;
 align-items:center;
-
-padding:20px;
+margin-bottom:30px;
 
 }
 
@@ -27,15 +34,14 @@ gap:10px;
 
 .avatar{
 
-width:40px;
-height:40px;
-
-background:orange;
+width:45px;
+height:45px;
 border-radius:50%;
-
+background:orange;
 display:flex;
 align-items:center;
 justify-content:center;
+font-size:20px;
 
 }
 
@@ -45,82 +51,93 @@ font-weight:bold;
 
 }
 
+.sub{
+
+font-size:12px;
+opacity:0.7;
+
+}
+
 .balance{
 
-background:rgba(255,255,255,0.1);
+background:rgba(255,255,255,0.15);
 padding:8px 15px;
 border-radius:20px;
 
 }
 
-.menu{
+.cards{
 
-padding:20px;
-
-display:flex;
-flex-direction:column;
-
+display:grid;
+grid-template-columns:1fr 1fr;
 gap:20px;
 
 }
 
 .card{
 
-background:linear-gradient(135deg,#8e2de2,#4a00e0);
-
-border-radius:20px;
-
+background:linear-gradient(135deg,#6a00ff,#b300ff);
 padding:25px;
-
-box-shadow:0 10px 30px rgba(0,0,0,0.4);
-
-}
-
-.card-title{
-
-font-size:22px;
-font-weight:bold;
+border-radius:20px;
+box-shadow:0 10px 25px rgba(0,0,0,0.4);
 
 }
 
-.card-desc{
+.card h2{
 
-margin-top:5px;
+margin:0;
+
+}
+
+.card p{
 
 opacity:0.8;
+margin-top:5px;
 
 }
 
 button{
 
 margin-top:15px;
-
 background:#00ff6a;
-
 border:none;
-
-padding:12px 20px;
-
+padding:12px;
+width:100%;
 border-radius:10px;
-
 font-weight:bold;
-
 cursor:pointer;
 
 }
 
 button:hover{
 
-transform:scale(1.05);
+transform:scale(1.03);
 
 }
 
 #result{
 
-margin-top:20px;
-
+margin-top:25px;
 text-align:center;
-
 font-size:20px;
+
+}
+
+/* адаптация телефона */
+
+@media(max-width:600px){
+
+.cards{
+
+grid-template-columns:1fr;
+
+}
+
+.header{
+
+flex-direction:column;
+gap:15px;
+
+}
 
 }
