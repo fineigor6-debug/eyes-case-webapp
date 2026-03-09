@@ -1,11 +1,12 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Cases</title>
+<title>Кейсы</title>
 
 <link rel="stylesheet" href="style.css">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -16,17 +17,20 @@
 
 <div class="cases-page">
 
+<!-- HEADER -->
+
 <div class="header">
 
-<button onclick="goBack()">Назад</button>
-<h2>Кейсы</h2>
+<button class="back-btn" onclick="goBack()">←</button>
+
+<h2 class="cases-title">Кейсы</h2>
 
 </div>
 
 
 <!-- ЕЖЕДНЕВНЫЙ КЕЙС -->
 
-<div class="case" onclick="openCase()">
+<div class="case" onclick="openDailyCase()">
 
 <div class="badge">Ежедневный</div>
 
@@ -35,6 +39,21 @@
 <h3>Ежедневный кейс</h3>
 
 <div class="price">Бесплатно</div>
+
+</div>
+
+
+<!-- ТЕСТОВЫЙ КЕЙС -->
+
+<div class="case" onclick="openTestCase()">
+
+<div class="badge">NEW</div>
+
+<img src="test.png">
+
+<h3>Тестовый кейс</h3>
+
+<div class="price">1 ⭐</div>
 
 </div>
 
