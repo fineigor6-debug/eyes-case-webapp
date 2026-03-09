@@ -27,6 +27,48 @@ avatar.src = user.photo_url
 }
 
 // ----------------------
+// LIVE DROPS
+// ----------------------
+
+const dropsTrack = document.getElementById("dropsTrack")
+
+if(dropsTrack){
+
+const users = [
+"Alex","Ivan","Max","Leo","Nick","Artem","Den"
+]
+
+const dropItems = [
+"🧸","🍫","💎","🍩","🎁","🍬","🍰"
+]
+
+function createDrop(){
+
+const user = users[Math.floor(Math.random()*users.length)]
+const item = dropItems[Math.floor(Math.random()*dropItems.length)]
+
+const card = document.createElement("div")
+
+card.className="drop-card"
+
+card.innerHTML=`
+<div>${item}</div>
+<div class="drop-user">${user}</div>
+`
+
+dropsTrack.appendChild(card)
+
+if(dropsTrack.children.length > 15){
+dropsTrack.removeChild(dropsTrack.firstChild)
+}
+
+}
+
+setInterval(createDrop,2000)
+
+}
+
+// ----------------------
 // НАВИГАЦИЯ
 // ----------------------
 
