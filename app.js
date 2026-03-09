@@ -2,7 +2,7 @@ let tg = window.Telegram.WebApp
 
 tg.expand()
 
-/* ПОЛУЧАЕМ ПОЛЬЗОВАТЕЛЯ TELEGRAM */
+/* ПОЛУЧЕНИЕ ДАННЫХ TELEGRAM */
 
 let user = tg.initDataUnsafe.user
 
@@ -26,7 +26,7 @@ avatarBlock.src =
 
 }
 
-/* ОТКРЫТЬ ЭКРАН С КЕЙСАМИ */
+/* ПЕРЕХОД НА ЭКРАН КЕЙСОВ */
 
 function openCases(){
 
@@ -42,10 +42,24 @@ window.location.href = "index.html"
 
 }
 
-/* ОТКРЫТИЕ КЕЙСА */
+/* ОТКРЫТИЕ КЕЙСА ВЕОЛА */
 
-function openCase(){
+function openVeolaCase(){
 
-alert("Кейс открывается 🎰")
+window.location.href = "case.html"
+
+}
+
+/* КРУТИТЬ РУЛЕТКУ */
+
+function spin(){
+
+let track = document.getElementById("rouletteTrack")
+
+if(!track) return
+
+let random = Math.floor(Math.random()*800)+800
+
+track.style.transform = "translateX(-"+random+"px)"
 
 }
