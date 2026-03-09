@@ -577,3 +577,35 @@ opacity:0.8;
 font-size:14px;
 
 }
+
+/* стрелка назад */
+
+.back-btn{
+
+background:none;
+border:none;
+color:white;
+font-size:26px;
+cursor:pointer;
+padding:10px;
+
+transition:0.2s;
+
+}
+
+.back-btn:hover{
+
+transform:scale(1.2);
+
+}
+
+/* заголовок */
+
+.cases-title{
+
+position:absolute;
+left:50%;
+transform:translateX(-50%);
+font-weight:700;
+
+}
