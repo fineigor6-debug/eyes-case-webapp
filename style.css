@@ -442,3 +442,7 @@ margin-top:3px;
 .active{
 opacity:1;
 }
+
+html, body{
+height:100%;
+}
