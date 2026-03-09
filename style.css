@@ -105,6 +105,54 @@ padding:25px;
 
 background:linear-gradient(135deg,#7a00ff,#ff00c8);
 
+position:relative;
+
+overflow:hidden;
+
+}
+
+.case-img{
+
+position:absolute;
+
+width:100%;
+height:100%;
+
+object-fit:cover;
+
+left:0;
+top:0;
+
+opacity:0.9;
+
+}
+
+.banner-text{
+
+position:relative;
+
+z-index:2;
+
+}
+
+.banner::after{
+
+content:"";
+
+position:absolute;
+
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+background:linear-gradient(
+to top,
+rgba(0,0,0,0.7),
+rgba(0,0,0,0)
+);
+
 }
 
 .rocket{
