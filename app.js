@@ -2,7 +2,7 @@ let tg = window.Telegram.WebApp
 
 tg.expand()
 
-/* ПОЛУЧЕНИЕ ДАННЫХ TELEGRAM */
+/* ПОЛУЧАЕМ ДАННЫЕ ПОЛЬЗОВАТЕЛЯ TELEGRAM */
 
 let user = tg.initDataUnsafe.user
 
@@ -34,7 +34,7 @@ window.location.href = "cases.html"
 
 }
 
-/* НАЗАД */
+/* КНОПКА НАЗАД */
 
 function goBack(){
 
@@ -50,7 +50,7 @@ window.location.href = "case.html"
 
 }
 
-/* КРУТИТЬ РУЛЕТКУ */
+/* РУЛЕТКА КЕЙСА */
 
 function spin(){
 
@@ -58,8 +58,21 @@ let track = document.getElementById("rouletteTrack")
 
 if(!track) return
 
-let random = Math.floor(Math.random()*800)+800
+/* сброс позиции */
+
+track.style.transition = "none"
+track.style.transform = "translateX(0px)"
+
+/* небольшая задержка */
+
+setTimeout(() => {
+
+let random = Math.floor(Math.random()*1500)+1500
+
+track.style.transition = "transform 5s cubic-bezier(.1,.7,.1,1)"
 
 track.style.transform = "translateX(-"+random+"px)"
+
+},50)
 
 }
