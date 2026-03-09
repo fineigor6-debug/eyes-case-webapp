@@ -1,242 +1,26 @@
-body{
+let tg = window.Telegram.WebApp
 
-margin:0;
-font-family:Arial;
+tg.expand()
 
-background:linear-gradient(180deg,#8a00ff,#000);
+let user = tg.initDataUnsafe.user
 
-color:white;
+if(user){
 
-}
+let name = user.username || user.first_name
 
-.app{
+document.getElementById("username").innerText = name
 
-max-width:420px;
-margin:auto;
-padding-bottom:80px;
+if(user.username){
 
-}
-
-.header{
-
-display:flex;
-justify-content:space-between;
-align-items:center;
-
-padding:20px;
+document.getElementById("avatar").src =
+"https://t.me/i/userpic/320/" + user.username + ".jpg"
 
 }
 
-.profile{
-
-display:flex;
-align-items:center;
-gap:10px;
-
 }
 
-.avatar{
+function openCase(){
 
-width:42px;
-height:42px;
-border-radius:50%;
-
-}
-
-.subtitle{
-
-font-size:12px;
-opacity:0.7;
-
-}
-
-.balance{
-
-background:rgba(255,255,255,0.15);
-
-padding:8px 14px;
-
-border-radius:20px;
-
-}
-
-.gifts{
-
-display:flex;
-gap:12px;
-
-padding:15px;
-
-}
-
-.gift{
-
-flex:1;
-
-background:#111;
-
-padding:20px;
-
-border-radius:15px;
-
-text-align:center;
-
-font-size:22px;
-
-}
-
-.gift-price{
-
-font-size:12px;
-
-margin-top:5px;
-
-opacity:0.7;
-
-}
-
-.banner{
-
-margin:15px;
-
-border-radius:20px;
-
-padding:25px;
-
-background:linear-gradient(135deg,#7a00ff,#ff00c8);
-
-position:relative;
-
-overflow:hidden;
-
-}
-
-.case-img{
-
-position:absolute;
-
-width:100%;
-height:100%;
-
-object-fit:cover;
-
-left:0;
-top:0;
-
-opacity:0.9;
-
-}
-
-.banner-text{
-
-position:relative;
-
-z-index:2;
-
-}
-
-.banner::after{
-
-content:"";
-
-position:absolute;
-
-top:0;
-left:0;
-
-width:100%;
-height:100%;
-
-background:linear-gradient(
-to top,
-rgba(0,0,0,0.7),
-rgba(0,0,0,0)
-);
-
-}
-
-.rocket{
-
-background:linear-gradient(135deg,#ff7a00,#ff0066);
-
-}
-
-.banner-text h2{
-
-margin:0;
-
-}
-
-.banner-text p{
-
-opacity:0.8;
-
-margin-top:5px;
-
-}
-
-button{
-
-margin-top:10px;
-
-background:#00ff6a;
-
-border:none;
-
-padding:10px 15px;
-
-border-radius:10px;
-
-font-weight:bold;
-
-cursor:pointer;
-
-}
-
-.menu{
-
-position:fixed;
-
-bottom:0;
-
-width:100%;
-
-max-width:420px;
-
-display:flex;
-
-justify-content:space-around;
-
-background:#000;
-
-padding:10px 0;
-
-}
-
-.menu-item{
-
-display:flex;
-
-flex-direction:column;
-
-align-items:center;
-
-font-size:20px;
-
-opacity:0.6;
-
-}
-
-.menu-item span{
-
-font-size:10px;
-
-margin-top:3px;
-
-}
-
-.active{
-
-opacity:1;
+alert("Кейс открывается 🎰")
 
 }
