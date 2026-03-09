@@ -70,7 +70,7 @@ const caseType = localStorage.getItem("caseType")
 if(title){
 
 if(caseType === "test"){
-title.innerText="Тестовый кейс (10⭐)"
+title.innerText="Тестовый кейс"
 }else{
 title.innerText="Ежедневный кейс"
 }
@@ -83,17 +83,17 @@ title.innerText="Ежедневный кейс"
 
 const track = document.getElementById("rouletteTrack")
 const prizeList = document.getElementById("prizeList")
+const rollingDrop = document.getElementById("rollingDrop")
 
 let items = [
 
+{icon:"⭐",name:"1 ⭐"},
 {icon:"⭐",name:"2 ⭐"},
+{icon:"⭐",name:"3 ⭐"},
 {icon:"⭐",name:"5 ⭐"},
-{icon:"⭐",name:"8 ⭐"},
 {icon:"⭐",name:"10 ⭐"},
-{icon:"⭐",name:"15 ⭐"},
 {icon:"⭐",name:"25 ⭐"},
-{icon:"⭐",name:"50 ⭐"},
-{icon:"⭐",name:"100 ⭐"}
+{icon:"⭐",name:"50 ⭐"}
 
 ]
 
@@ -102,20 +102,17 @@ let spinning=false
 
 // ----------------------
 // ЭКОНОМИКА ТЕСТ КЕЙСА
-// цена кейса = 10⭐
-// RTP ≈ 84%
 // ----------------------
 
 const testCaseChances = [
 
-25,   // 2⭐
-25,   // 5⭐
-20,   // 8⭐
-15,   // 10⭐
-8,    // 15⭐
-5,    // 25⭐
-1.8,  // 50⭐
-0.2   // 100⭐
+45,
+25,
+15,
+10,
+4,
+0.9,
+0.1
 
 ]
 
@@ -259,6 +256,17 @@ if(openBtn) openBtn.disabled = true
 generateChances()
 buildRoulette()
 
+// прокрутка отображения дропа
+let rollInterval = setInterval(()=>{
+
+let randomIndex = Math.floor(Math.random()*items.length)
+
+if(rollingDrop){
+rollingDrop.innerText = items[randomIndex].name
+}
+
+},100)
+
 track.style.transition="none"
 track.style.transform="translateX(0px)"
 
@@ -272,6 +280,13 @@ track.style.transition="transform 5s cubic-bezier(.1,.7,.1,1)"
 track.style.transform=`translateX(-${stopPosition}px)`
 
 setTimeout(()=>{
+
+clearInterval(rollInterval)
+
+// показываем реальный выигрыш
+if(rollingDrop){
+rollingDrop.innerText = items[winnerIndex].name
+}
 
 alert("Вы выиграли: "+items[winnerIndex].name)
 
@@ -309,11 +324,13 @@ const lastOpen = localStorage.getItem("dailyCaseTime")
 if(!lastOpen) return
 
 const now = Date.now()
+
 const diff = now - lastOpen
 
 if(diff < cooldown){
 
 openBtn.disabled = true
+
 updateTimer(cooldown - diff)
 
 }
