@@ -27,28 +27,68 @@ avatar.src = user.photo_url
 }
 
 // ----------------------
-// LIVE DROPS ROULETTE
+// LIVE DROPS (AUTO SCROLL)
 // ----------------------
 
 const dropsTrack = document.getElementById("dropsTrack")
 
 if(dropsTrack){
 
-const dropItems = [
+const items = [
 "🧸","🍫","💎","🍩","🎁","🍬","🍰","🍪","🍭"
 ]
 
-// создаем предмет
-function createDrop(){
+// создаем стартовые предметы
+for(let i=0;i<20;i++){
 
-const item = dropItems[Math.floor(Math.random()*dropItems.length)]
-
-const div = document.createElement("div")
-
-div.className = "drop-item"
-div.innerHTML = item
+const div=document.createElement("div")
+div.className="drop-item"
+div.innerHTML=items[Math.floor(Math.random()*items.length)]
 
 dropsTrack.appendChild(div)
+
+}
+
+// генерация новых
+setInterval(()=>{
+
+const div=document.createElement("div")
+div.className="drop-item"
+div.innerHTML=items[Math.floor(Math.random()*items.length)]
+
+dropsTrack.appendChild(div)
+
+},1200)
+
+// движение вправо
+let pos = -300
+
+function animate(){
+
+pos += 0.4
+
+dropsTrack.style.transform=`translateX(${pos}px)`
+
+// автоочистка
+const first=dropsTrack.firstElementChild
+
+if(first){
+
+const rect=first.getBoundingClientRect()
+
+if(rect.left > window.innerWidth){
+
+first.remove()
+
+}
+
+}
+
+requestAnimationFrame(animate)
+
+}
+
+animate()
 
 }
 
