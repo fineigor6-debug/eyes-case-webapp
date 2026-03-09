@@ -27,69 +27,55 @@ avatar.src = user.photo_url
 }
 
 // ----------------------
-// LIVE DROPS ROULETTE
+// LIVE DROPS
 // ----------------------
 
 const dropsTrack = document.getElementById("dropsTrack")
 
-if (dropsTrack) {
+if(dropsTrack){
 
 const dropItems = [
 "🧸","🍫","💎","🍩","🎁","🍬","🍰","🍪","🍭"
 ]
 
 // стартовые предметы
-for(let i=0;i<25;i++){
+for(let i=0;i<8;i++){
 
-const div = document.createElement("div")
-div.className = "drop-item"
-div.innerHTML = dropItems[Math.floor(Math.random()*dropItems.length)]
+const div=document.createElement("div")
+div.className="drop-item"
+div.innerHTML=dropItems[Math.floor(Math.random()*dropItems.length)]
 
 dropsTrack.appendChild(div)
 
 }
 
-// добавление новых
+// каждые 2 секунды новый предмет
 setInterval(()=>{
 
-const div = document.createElement("div")
-div.className = "drop-item"
-div.innerHTML = dropItems[Math.floor(Math.random()*dropItems.length)]
+const div=document.createElement("div")
+div.className="drop-item"
+div.innerHTML=dropItems[Math.floor(Math.random()*dropItems.length)]
 
-dropsTrack.appendChild(div)
+// добавляем в начало
+dropsTrack.prepend(div)
 
-},1500)
+// плавный сдвиг
+dropsTrack.style.transition="transform 0.4s"
+dropsTrack.style.transform="translateX(-74px)"
 
-let position = 0
+setTimeout(()=>{
 
-function animateDrops(){
+dropsTrack.style.transition="none"
+dropsTrack.style.transform="translateX(0px)"
 
-position -= 0.4
-
-dropsTrack.style.transform = `translateX(${position}px)`
-
-// удаляем старые элементы
-const first = dropsTrack.firstElementChild
-
-if(first){
-
-const rect = first.getBoundingClientRect()
-
-if(rect.right < 0){
-
-first.remove()
-
-position += 74
-
+// удаляем последний
+if(dropsTrack.children.length > 8){
+dropsTrack.lastElementChild.remove()
 }
 
-}
+},400)
 
-requestAnimationFrame(animateDrops)
-
-}
-
-animateDrops()
+},2000)
 
 }
 
