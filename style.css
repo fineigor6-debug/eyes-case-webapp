@@ -9,8 +9,6 @@ font-family:'Inter', sans-serif;
 font-weight:600;
 color:white;
 
-/* ФОН */
-
 background-image:url("CC63F4C5-493A-48B4-AB60-390857E41A58.png");
 background-size:cover;
 background-position:center;
@@ -139,8 +137,6 @@ padding:25px;
 position:relative;
 overflow:hidden;
 
-/* ONYX BLACK */
-
 background:#0F0F0F;
 
 backdrop-filter:blur(12px);
@@ -174,14 +170,11 @@ z-index:2;
 font-weight:800;
 }
 
-/* ---------------- */
 /* КНОПКИ */
-/* ---------------- */
 
 button{
 
 display:block;
-
 width:100%;
 
 margin-top:15px;
@@ -221,52 +214,132 @@ button:hover{
 filter:brightness(1.1);
 }
 
-/* ЭКРАН КЕЙСОВ */
+/* ===================== */
+/* CASES SCREEN */
+/* ===================== */
 
 .cases-page{
 
 max-width:420px;
 margin:auto;
 
+display:flex;
+flex-direction:column;
+
+min-height:100vh;
+
+}
+
+/* HEADER */
+
+.header{
+
+position:relative;
+
+height:70px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+background:rgba(0,0,0,0.45);
+
+backdrop-filter:blur(12px);
+
+border-bottom:1px solid rgba(255,255,255,0.08);
+
+}
+
+/* TITLE */
+
+.cases-title{
+
+font-size:18px;
+font-weight:800;
+
+}
+
+/* BACK BUTTON */
+
+.back-btn{
+
+position:absolute;
+
+left:12px;
+top:50%;
+
+transform:translateY(-50%);
+
+width:44px;
+height:44px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+border-radius:50%;
+
+background:rgba(255,255,255,0.08);
+
+border:1px solid rgba(255,255,255,0.15);
+
+cursor:pointer;
+
+transition:0.2s;
+
+}
+
+.back-btn:hover{
+background:rgba(255,255,255,0.15);
+}
+
+.back-btn:active{
+transform:translateY(-50%) scale(0.92);
+}
+
+/* GRID */
+
+.cases-grid{
+
+padding:20px;
+
 display:grid;
 
 grid-template-columns:1fr 1fr;
 
-gap:18px;
-
-padding:20px;
+gap:16px;
 
 }
 
-/* КАРТОЧКА КЕЙСА */
+/* CASE CARD */
 
 .case{
-
-width:calc(50% - 8px);
 
 background:rgba(0,0,0,0.55);
 
 border-radius:18px;
 
-padding:15px;
+padding:14px;
 
 text-align:center;
-
-position:relative;
 
 border:1px solid rgba(255,255,255,0.15);
 
 transition:0.25s;
 
-display:flex;
-flex-direction:column;
-align-items:center;
+position:relative;
+
+overflow:hidden;
 
 }
 
 .case:hover{
-transform:scale(1.05);
+
+transform:translateY(-6px) scale(1.03);
+
 }
+
+/* IMAGE */
 
 .case img{
 
@@ -281,30 +354,36 @@ margin-bottom:8px;
 
 }
 
+/* TITLE */
+
 .case h3{
-margin:5px 0;
+
+font-size:14px;
 font-weight:800;
+
+margin:4px 0;
+
 }
 
-/* ЦЕНА */
+/* PRICE */
 
 .price{
 
-background:rgba(255,255,255,0.15);
-
 display:inline-block;
+
+background:rgba(255,255,255,0.15);
 
 padding:6px 12px;
 
 border-radius:20px;
 
-margin-top:8px;
+font-size:13px;
 
-font-weight:700;
+margin-top:6px;
 
 }
 
-/* БЕЙДЖ */
+/* BADGE */
 
 .badge{
 
@@ -313,90 +392,21 @@ position:absolute;
 top:10px;
 left:10px;
 
-background:#1e3cff;
+background:linear-gradient(135deg,#3b5cff,#1e3cff);
 
-padding:5px 10px;
+padding:4px 10px;
 
 border-radius:20px;
 
-font-size:12px;
+font-size:11px;
+
+font-weight:700;
 
 }
 
-/* ---------------- */
-/* РУЛЕТКА */
-/* ---------------- */
-
-.roulette{
-
-position:relative;
-
-margin:40px 20px;
-
-overflow:hidden;
-
-border-radius:16px;
-
-background:rgba(0,0,0,0.65);
-
-padding:30px 0;
-
-}
-
-.pointer{
-
-position:absolute;
-
-top:-10px;
-
-left:50%;
-
-transform:translateX(-50%);
-
-width:0;
-height:0;
-
-border-left:12px solid transparent;
-border-right:12px solid transparent;
-border-top:20px solid #00ffd0;
-
-z-index:2;
-
-}
-
-.roulette-track{
-
-display:flex;
-
-gap:15px;
-
-padding-left:20px;
-
-transition:transform 5s cubic-bezier(.1,.7,.1,1);
-
-}
-
-.item{
-
-min-width:90px;
-
-height:90px;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-font-size:34px;
-
-background:rgba(255,255,255,0.08);
-
-border-radius:14px;
-
-}
-
+/* ===================== */
 /* НИЖНЕЕ МЕНЮ */
+/* ===================== */
 
 .menu{
 
@@ -443,423 +453,4 @@ margin-top:3px;
 
 .active{
 opacity:1;
-}
-
-/* ПРИЗЫ */
-
-.prizes{
-
-margin:25px 20px;
-
-background:rgba(0,0,0,0.6);
-
-border-radius:16px;
-
-padding:18px;
-
-border:1px solid rgba(255,255,255,0.08);
-
-}
-
-.prizes h3{
-
-margin-bottom:12px;
-
-font-weight:800;
-
-}
-
-.prize-row{
-
-display:flex;
-
-justify-content:space-between;
-
-padding:8px 0;
-
-border-bottom:1px solid rgba(255,255,255,0.08);
-
-}
-
-.prize-row:last-child{
-border:none;
-}
-
-.prize-name{
-display:flex;
-gap:10px;
-}
-
-.prize-chance{
-opacity:0.7;
-}
-
-#cooldownTimer{
-
-text-align:center;
-
-margin-top:10px;
-
-opacity:0.8;
-
-font-size:14px;
-
-}
-
-/* IOS TELEGRAM BACK BUTTON */
-
-.back-btn{
-
-position:absolute;
-
-left:10px;
-top:1%;
-
-transform:translateY(-50%);
-
-width:46px;
-height:46px;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-border-radius:50%;
-
-background:rgba(0,0,0,0.35);
-
-backdrop-filter:blur(10px);
-
-border:1px solid rgba(255,255,255,0.1);
-
-cursor:pointer;
-
-transition:0.15s;
-
-}
-
-.back-btn:hover{
-background:rgba(0,0,0,0.55);
-}
-
-.back-btn:active{
-transform:translateY(-50%) scale(0.92);
-}
-
-/* ЗАГОЛОВОК */
-
-.cases-title{
-
-position:absolute;
-
-left:50%;
-
-transform:translateX(-50%);
-
-font-weight:800;
-
-}
-
-/* -------- CASES PRO UI -------- */
-
-.cases-page{
-
-max-width:420px;
-
-margin:auto;
-
-display:grid;
-
-grid-template-columns:1fr 1fr;
-
-gap:18px;
-
-padding:20px;
-
-margin-top:20px;
-
-}
-
-/* карточка кейса */
-
-.case{
-
-position:relative;
-
-background:rgba(0,0,0,0.55);
-
-border-radius:20px;
-
-padding:16px;
-
-text-align:center;
-
-border:1px solid rgba(255,255,255,0.12);
-
-backdrop-filter:blur(12px);
-
-transition:all .25s ease;
-
-overflow:hidden;
-
-}
-
-/* glow эффект */
-
-.case::before{
-
-content:"";
-
-position:absolute;
-
-inset:0;
-
-background:linear-gradient(
-120deg,
-transparent,
-rgba(255,255,255,0.15),
-transparent
-);
-
-opacity:0;
-
-transition:0.35s;
-
-}
-
-/* hover */
-
-.case:hover{
-
-transform:translateY(-6px) scale(1.03);
-
-border-color:rgba(255,255,255,0.25);
-
-}
-
-.case:hover::before{
-opacity:1;
-}
-
-/* изображение кейса */
-
-.case img{
-
-width:100%;
-height:130px;
-
-object-fit:cover;
-
-border-radius:14px;
-
-margin-bottom:10px;
-
-box-shadow:0 6px 20px rgba(0,0,0,0.4);
-
-}
-
-/* название */
-
-.case h3{
-
-font-weight:800;
-
-font-size:15px;
-
-margin:6px 0;
-
-}
-
-/* цена */
-
-.price{
-
-background:rgba(255,255,255,0.15);
-
-padding:6px 12px;
-
-border-radius:20px;
-
-font-size:13px;
-
-font-weight:700;
-
-display:inline-block;
-
-margin-top:6px;
-
-}
-
-/* бейдж */
-
-.badge{
-
-position:absolute;
-
-top:10px;
-left:10px;
-
-background:linear-gradient(135deg,#3b5cff,#1e3cff);
-
-padding:4px 10px;
-
-border-radius:20px;
-
-font-size:11px;
-
-font-weight:700;
-
-box-shadow:0 4px 10px rgba(0,0,0,0.4);
-
-}
-
-/* ===== CASES SCREEN ===== */
-
-.cases-screen{
-
-max-width:420px;
-margin:auto;
-
-min-height:100vh;
-
-display:flex;
-flex-direction:column;
-
-}
-
-/* HEADER */
-
-.cases-header{
-
-height:70px;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-position:relative;
-
-background:rgba(0,0,0,0.45);
-
-backdrop-filter:blur(12px);
-
-border-bottom:1px solid rgba(255,255,255,0.08);
-
-}
-
-/* TITLE */
-
-.cases-title{
-
-font-size:18px;
-font-weight:800;
-
-}
-
-/* BACK BUTTON */
-
-.back-btn{
-
-position:absolute;
-
-left:12px;
-
-width:44px;
-height:44px;
-
-display:flex;
-align-items:center;
-justify-content:center;
-
-border-radius:50%;
-
-background:rgba(255,255,255,0.08);
-
-border:1px solid rgba(255,255,255,0.15);
-
-font-size:22px;
-
-cursor:pointer;
-
-}
-
-/* GRID */
-
-.cases-grid{
-
-padding:20px;
-
-display:grid;
-
-grid-template-columns:1fr 1fr;
-
-gap:16px;
-
-}
-
-/* CASE CARD */
-
-.case{
-
-background:rgba(0,0,0,0.55);
-
-border-radius:18px;
-
-padding:14px;
-
-text-align:center;
-
-border:1px solid rgba(255,255,255,0.15);
-
-transition:0.2s;
-
-}
-
-.case:hover{
-
-transform:scale(1.04);
-
-}
-
-/* IMAGE */
-
-.case img{
-
-width:100%;
-height:120px;
-
-object-fit:cover;
-
-border-radius:12px;
-
-margin-bottom:8px;
-
-}
-
-/* TITLE */
-
-.case h3{
-
-font-size:14px;
-
-margin:4px 0;
-
-}
-
-/* PRICE */
-
-.price{
-
-display:inline-block;
-
-background:rgba(255,255,255,0.15);
-
-padding:5px 10px;
-
-border-radius:14px;
-
-font-size:12px;
-
-margin-top:5px;
-
 }
