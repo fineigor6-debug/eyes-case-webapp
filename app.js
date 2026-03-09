@@ -231,3 +231,79 @@ alert("Вы выиграли: "+items[winnerIndex].name)
 
 generateChances()
 buildRoulette()
+
+// ----------------
+// DAILY CASE TIMER
+// ----------------
+
+const openBtn = document.getElementById("openCaseBtn")
+const timer = document.getElementById("cooldownTimer")
+
+const cooldown = 24 * 60 * 60 * 1000
+
+function checkCooldown(){
+
+const lastOpen = localStorage.getItem("dailyCaseTime")
+
+if(!lastOpen) return
+
+const now = Date.now()
+
+const diff = now - lastOpen
+
+if(diff < cooldown){
+
+openBtn.disabled = true
+
+updateTimer(cooldown - diff)
+
+}
+
+}
+
+function updateTimer(time){
+
+setInterval(()=>{
+
+time -= 1000
+
+if(time <= 0){
+
+openBtn.disabled = false
+
+timer.innerText="Кейс снова доступен!"
+
+return
+
+}
+
+let hours = Math.floor(time / 3600000)
+let minutes = Math.floor((time % 3600000) / 60000)
+let seconds = Math.floor((time % 60000) / 1000)
+
+timer.innerText =
+`Следующий кейс через ${hours}ч ${minutes}м ${seconds}с`
+
+},1000)
+
+}
+
+
+// ОБНОВЛЯЕМ spinCase
+
+const oldSpin = spinCase
+
+spinCase = function(){
+
+localStorage.setItem("dailyCaseTime", Date.now())
+
+oldSpin()
+
+checkCooldown()
+
+}
+
+
+// ПРИ ЗАГРУЗКЕ
+
+checkCooldown()
