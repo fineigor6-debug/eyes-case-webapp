@@ -51,6 +51,7 @@ const prizeList = document.getElementById("prizeList")
 const openBtn = document.getElementById("openCaseBtn")
 
 let spinning=false
+let lastSpinTime=0
 
 // ----------------------
 // DROP TABLE
@@ -81,6 +82,7 @@ prizeList.innerHTML=""
 dropTable.forEach(item=>{
 
 let row=document.createElement("div")
+
 row.className="prize-row"
 
 row.innerHTML=`
@@ -95,12 +97,25 @@ prizeList.appendChild(row)
 }
 
 // ----------------------
-// DROP ROLL
+// SECURE RANDOM
+// ----------------------
+
+function secureRandom(){
+
+const array = new Uint32Array(1)
+crypto.getRandomValues(array)
+
+return array[0] / (2**32)
+
+}
+
+// ----------------------
+// DROP ROLL (ANTI ABUSE)
 // ----------------------
 
 function rollDrop(){
 
-let rand=Math.random()*100
+let rand=secureRandom()*100
 let sum=0
 
 for(let item of dropTable){
@@ -140,13 +155,14 @@ let strip=[]
 // длинная рулетка
 for(let i=0;i<120;i++){
 
-let r=Math.floor(Math.random()*dropTable.length)
+let r=Math.floor(secureRandom()*dropTable.length)
+
 strip.push(dropTable[r].name)
 
 }
 
 // near miss
-if(Math.random()<0.4){
+if(secureRandom()<0.4){
 
 let rare=dropTable[dropTable.length-1].name
 strip[110]=rare
@@ -160,6 +176,7 @@ strip.push(winItem.name)
 strip.forEach(name=>{
 
 let div=document.createElement("div")
+
 div.className="item"
 div.innerText=name
 
@@ -178,8 +195,13 @@ return strip.length-1
 function spinCase(){
 
 if(!track) return
-if(spinning) return
 
+// анти спам
+const now=Date.now()
+if(now-lastSpinTime<1500) return
+lastSpinTime=now
+
+if(spinning) return
 spinning=true
 
 if(openBtn) openBtn.disabled=true
@@ -195,13 +217,15 @@ track.style.transform="translateX(0px)"
 
 setTimeout(()=>{
 
-const itemWidth=105
+// динамическая ширина
+const item = track.querySelector(".item")
+const itemWidth = item ? item.offsetWidth : 105
 
 const centerOffset=(window.innerWidth/2)-(itemWidth/2)
 
 const distance=(winPosition*itemWidth)-centerOffset
 
-let spinTime=5000+Math.random()*2000
+let spinTime=5000+(secureRandom()*2000)
 
 track.style.transition=`transform ${spinTime}ms cubic-bezier(.05,.9,.15,1)`
 track.style.transform=`translateX(-${distance}px)`
@@ -225,22 +249,4 @@ if(openBtn) openBtn.disabled=false
 
 if(prizeList){
 renderPrizeList()
-}
-
-// ----------------------
-// CASE OPEN
-// ----------------------
-
-function openDailyCase(){
-
-localStorage.setItem("caseType","daily")
-window.location.href="case.html"
-
-}
-
-function openTestCase(){
-
-localStorage.setItem("caseType","test")
-window.location.href="case.html"
-
 }
