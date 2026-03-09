@@ -1,17 +1,22 @@
-let tg = window.Telegram.WebApp
+/* TELEGRAM MINI APP */
 
+const tg = window.Telegram.WebApp
 tg.expand()
 
-/* ПОЛУЧАЕМ ДАННЫЕ ПОЛЬЗОВАТЕЛЯ TELEGRAM */
+/* ---------------------------
+ПОЛУЧЕНИЕ ПОЛЬЗОВАТЕЛЯ
+--------------------------- */
 
-let user = tg.initDataUnsafe.user
+const user = tg.initDataUnsafe?.user
 
-if(user){
+function initUser(){
 
-let name = user.username || user.first_name
+if(!user) return
 
-let usernameBlock = document.getElementById("username")
-let avatarBlock = document.getElementById("avatar")
+const usernameBlock = document.getElementById("username")
+const avatarBlock = document.getElementById("avatar")
+
+let name = user.username || user.first_name || "Player"
 
 if(usernameBlock){
 usernameBlock.innerText = name
@@ -26,53 +31,110 @@ avatarBlock.src =
 
 }
 
-/* ПЕРЕХОД НА ЭКРАН КЕЙСОВ */
+initUser()
+
+/* ---------------------------
+НАВИГАЦИЯ
+--------------------------- */
 
 function openCases(){
+
+buttonClick()
 
 window.location.href = "cases.html"
 
 }
 
-/* КНОПКА НАЗАД */
-
-function goBack(){
-
-window.location.href = "index.html"
-
-}
-
-/* ОТКРЫТИЕ КЕЙСА ВЕОЛА */
-
 function openVeolaCase(){
+
+buttonClick()
 
 window.location.href = "case.html"
 
 }
 
-/* РУЛЕТКА КЕЙСА */
+function goBack(){
+
+buttonClick()
+
+window.history.back()
+
+}
+
+/* ---------------------------
+АНИМАЦИЯ КНОПОК
+--------------------------- */
+
+function buttonClick(){
+
+try{
+tg.HapticFeedback.impactOccurred("light")
+}catch(e){}
+
+}
+
+/* ---------------------------
+РУЛЕТКА
+--------------------------- */
+
+let spinning = false
 
 function spin(){
 
-let track = document.getElementById("rouletteTrack")
+if(spinning) return
+
+const track = document.getElementById("rouletteTrack")
 
 if(!track) return
+
+spinning = true
+
+buttonClick()
 
 /* сброс позиции */
 
 track.style.transition = "none"
 track.style.transform = "translateX(0px)"
 
-/* небольшая задержка */
-
 setTimeout(() => {
 
-let random = Math.floor(Math.random()*1500)+1500
+let random = Math.floor(Math.random()*1800)+1800
 
-track.style.transition = "transform 5s cubic-bezier(.1,.7,.1,1)"
+track.style.transition =
+"transform 5s cubic-bezier(.1,.7,.1,1)"
 
 track.style.transform = "translateX(-"+random+"px)"
 
 },50)
 
+/* конец вращения */
+
+setTimeout(()=>{
+
+spinning = false
+
+try{
+tg.HapticFeedback.notificationOccurred("success")
+}catch(e){}
+
+},5200)
+
 }
+
+/* ---------------------------
+ПЛАВНОЕ НАЖАТИЕ КНОПОК
+--------------------------- */
+
+document.addEventListener("click",(e)=>{
+
+const btn = e.target.closest("button")
+
+if(!btn) return
+
+btn.style.transform = "scale(0.96)"
+
+setTimeout(()=>{
+btn.style.transform = "scale(1)"
+},120)
+
+})
