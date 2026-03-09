@@ -12,7 +12,7 @@ font-weight:600;
 
 color:white;
 
-/* ОСНОВНОЙ ФОН */
+/* ФОН */
 
 background-image:url("CC63F4C5-493A-48B4-AB60-390857E41A58.png");
 background-size:cover;
@@ -38,7 +38,7 @@ height:100%;
 
 background:rgba(0,0,0,0.65);
 
-z-index:-2;
+z-index:-1;
 
 }
 
@@ -47,6 +47,7 @@ z-index:-2;
 .app{
 
 max-width:420px;
+
 margin:auto;
 
 padding-bottom:110px;
@@ -58,7 +59,9 @@ padding-bottom:110px;
 .header{
 
 display:flex;
+
 justify-content:space-between;
+
 align-items:center;
 
 padding:20px;
@@ -70,6 +73,7 @@ padding:20px;
 .profile{
 
 display:flex;
+
 align-items:center;
 
 gap:12px;
@@ -207,17 +211,19 @@ font-weight:800;
 
 }
 
-/* ------------------ */
-/* МЕГА КНОПКИ */
-/* ------------------ */
+/* ---------------- */
+/* КНОПКИ */
+/* ---------------- */
 
 button{
+
+display:block;
 
 width:100%;
 
 margin-top:15px;
 
-padding:15px;
+padding:15px 18px;
 
 border:none;
 
@@ -227,11 +233,13 @@ font-size:16px;
 
 font-weight:800;
 
+font-family:'Inter', sans-serif;
+
 color:white;
 
 cursor:pointer;
 
-/* ТВОЁ ИЗОБРАЖЕНИЕ */
+/* ФОН КНОПОК */
 
 background-image:url("IMG_0649.jpeg");
 
@@ -239,7 +247,7 @@ background-size:cover;
 
 background-position:center;
 
-/* затемнение чтобы текст читался */
+/* затемнение для текста */
 
 box-shadow: inset 0 0 0 2000px rgba(0,0,0,0.35);
 
@@ -247,7 +255,7 @@ transition:all 0.2s ease;
 
 }
 
-/* нажатие */
+/* НАЖАТИЕ */
 
 button:active{
 
@@ -255,39 +263,7 @@ transform:scale(0.95);
 
 }
 
-/* ФОН КНОПКИ */
-
-background-image:url("IMG_0649.jpeg");
-
-background-size:cover;
-
-background-position:center;
-
-/* тёмное стекло */
-
-background-blend-mode:overlay;
-
-box-shadow:
-
-0 6px 18px rgba(0,0,0,0.6);
-
-transition:all 0.2s ease;
-
-}
-
-/* нажатие */
-
-button:active{
-
-transform:scale(0.95);
-
-box-shadow:
-
-0 3px 10px rgba(0,0,0,0.7);
-
-}
-
-/* hover ПК */
+/* HOVER ДЛЯ ПК */
 
 button:hover{
 
@@ -404,7 +380,9 @@ font-size:12px;
 
 }
 
+/* ---------------- */
 /* РУЛЕТКА */
+/* ---------------- */
 
 .roulette{
 
@@ -481,7 +459,7 @@ border-radius:14px;
 
 }
 
-/* МЕНЮ */
+/* НИЖНЕЕ МЕНЮ */
 
 .menu{
 
