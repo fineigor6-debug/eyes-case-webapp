@@ -2,7 +2,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
 
-/* ГЛОБАЛЬНЫЙ ФИКС */
+/* ГЛОБАЛЬНЫЙ ФИКС СКРОЛЛА */
 
 *{
 box-sizing:border-box;
@@ -53,8 +53,6 @@ min-height:100vh;
 display:flex;
 flex-direction:column;
 overflow:hidden;
-position:relative;
-z-index:2;
 }
 
 /* HEADER */
@@ -298,8 +296,8 @@ border-bottom:1px solid rgba(255,255,255,0.08);
 }
 
 .cases-title{
+font-size:20px;
 font-weight:800;
-font-size:18px;
 }
 
 /* кнопка назад */
@@ -310,9 +308,10 @@ left:15px;
 
 width:40px;
 height:40px;
-border-radius:12px;
 
+border-radius:12px;
 background:rgba(255,255,255,0.08);
+
 display:flex;
 align-items:center;
 justify-content:center;
@@ -326,7 +325,7 @@ cursor:pointer;
 /* ---------------- */
 
 .cases-grid{
-padding:15px;
+padding:16px;
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:14px;
