@@ -1,59 +1,16 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html>
 <head>
 
 <meta charset="UTF-8">
 
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
 <title>Eyes Case</title>
 
 <link rel="stylesheet" href="style.css">
 
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-<style>
-
-/* ПЕРЕМЕННЫЕ */
-
-:root{
---accent:#00f2ff;
---gold:#ffcc00;
-}
-
-/* ГЛОБАЛЬНЫЙ ФИКС */
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
--webkit-tap-highlight-color:transparent;
-}
-
-html{
-width:100%;
-max-width:100%;
-overflow-x:hidden;
-}
-
-body{
-width:100%;
-max-width:100%;
-overflow-x:hidden;
-touch-action:pan-y;
-}
-
-/* ОСНОВНОЙ КОНТЕЙНЕР */
-
-.app{
-max-width:420px;
-width:100%;
-margin:auto;
-min-height:100vh;
-overflow:hidden;
-}
-
-</style>
 
 </head>
 
@@ -82,23 +39,30 @@ overflow:hidden;
 
 </div>
 
-<!-- LIVE DROPS -->
+<!-- ПОДАРКИ -->
 
-<div class="live-drops">
+<div class="gifts">
 
-<div class="live-title">LIVE DROPS</div>
+<div class="gift">
+🍭
+<div class="gift-price">4.62 ⭐</div>
+</div>
 
-<div class="drops-roulette">
+<div class="gift">
+🍰
+<div class="gift-price">4.93 ⭐</div>
+</div>
 
-<div class="drops-track" id="dropsTrack"></div>
-
+<div class="gift">
+🍬
+<div class="gift-price">8.55 ⭐</div>
 </div>
 
 </div>
 
-<!-- КЕЙС -->
+<!-- БАННЕР КЕЙСОВ -->
 
-<div class="banner case-banner">
+<div class="banner">
 
 <div class="banner-text">
 
@@ -114,36 +78,6 @@ overflow:hidden;
 </div>
 
 <script src="app.js"></script>
-
-<script>
-
-const tg = window.Telegram.WebApp
-
-tg.ready()
-
-/* аккуратно разворачиваем приложение */
-
-setTimeout(()=>{
-tg.expand()
-},200)
-
-/* блокируем горизонтальный свайп */
-
-document.addEventListener("touchmove",function(e){
-
-if(e.touches.length==1){
-
-let touch=e.touches[0]
-
-if(touch.clientX<0 || touch.clientX>window.innerWidth){
-e.preventDefault()
-}
-
-}
-
-},{passive:false})
-
-</script>
 
 </body>
 </html>
