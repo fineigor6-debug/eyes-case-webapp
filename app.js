@@ -54,18 +54,18 @@ let spinning=false
 let lastSpinTime=0
 
 // ----------------------
-// DROP TABLE
+// DROP TABLE (RTP 65%)
 // ----------------------
 
 const dropTable=[
 
-{ name:"1 ⭐", chance:45 },
-{ name:"2 ⭐", chance:25 },
-{ name:"3 ⭐", chance:15 },
-{ name:"5 ⭐", chance:10 },
-{ name:"10 ⭐", chance:4 },
-{ name:"25 ⭐", chance:0.9 },
-{ name:"50 ⭐", chance:0.1 }
+{ name:"1 ⭐", chance:28 },
+{ name:"2 ⭐", chance:22 },
+{ name:"3 ⭐", chance:18 },
+{ name:"5 ⭐", chance:14 },
+{ name:"10 ⭐", chance:10 },
+{ name:"25 ⭐", chance:6 },
+{ name:"50 ⭐", chance:2 }
 
 ]
 
@@ -110,12 +110,26 @@ return array[0] / (2**32)
 }
 
 // ----------------------
-// DROP ROLL (ANTI ABUSE)
+// ANTI RNG ABUSE
+// ----------------------
+
+let rngSalt = Date.now() + (user?.id || 0)
+
+function secureRoll(){
+
+rngSalt += Math.floor(secureRandom()*100000)
+
+return (secureRandom() + (rngSalt % 1)) % 1
+
+}
+
+// ----------------------
+// DROP ROLL
 // ----------------------
 
 function rollDrop(){
 
-let rand=secureRandom()*100
+let rand=secureRoll()*100
 let sum=0
 
 for(let item of dropTable){
@@ -155,14 +169,14 @@ let strip=[]
 // длинная рулетка
 for(let i=0;i<120;i++){
 
-let r=Math.floor(secureRandom()*dropTable.length)
+let r=Math.floor(secureRoll()*dropTable.length)
 
 strip.push(dropTable[r].name)
 
 }
 
 // near miss
-if(secureRandom()<0.4){
+if(secureRoll()<0.35){
 
 let rare=dropTable[dropTable.length-1].name
 strip[110]=rare
@@ -196,9 +210,14 @@ function spinCase(){
 
 if(!track) return
 
-// анти спам
+// анти-спам
 const now=Date.now()
-if(now-lastSpinTime<1500) return
+
+if(now-lastSpinTime<2000){
+console.log("Spin blocked (spam protection)")
+return
+}
+
 lastSpinTime=now
 
 if(spinning) return
@@ -225,7 +244,7 @@ const centerOffset=(window.innerWidth/2)-(itemWidth/2)
 
 const distance=(winPosition*itemWidth)-centerOffset
 
-let spinTime=5000+(secureRandom()*2000)
+let spinTime=5200+(secureRoll()*1800)
 
 track.style.transition=`transform ${spinTime}ms cubic-bezier(.05,.9,.15,1)`
 track.style.transform=`translateX(-${distance}px)`
@@ -235,11 +254,12 @@ setTimeout(()=>{
 alert("Вы выиграли: "+winItem.name)
 
 spinning=false
+
 if(openBtn) openBtn.disabled=false
 
 },spinTime)
 
-},50)
+},60)
 
 }
 
