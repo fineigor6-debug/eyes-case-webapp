@@ -99,7 +99,7 @@ let items = [
 
 let chances=[]
 let spinning=false
-let rollingInterval=null
+let rollInterval=null
 
 // ----------------------
 // ЭКОНОМИКА
@@ -136,13 +136,16 @@ let total=0
 for(let i=0;i<items.length;i++){
 
 let value=Math.random()
+
 chances.push(value)
 total+=value
 
 }
 
 for(let i=0;i<chances.length;i++){
+
 chances[i]=(chances[i]/total*100).toFixed(2)
+
 }
 
 }
@@ -182,7 +185,7 @@ prizeList.appendChild(row)
 // построение рулетки
 // ----------------------
 
-function buildRoulette(){
+function buildRoulette(winnerIndex, nearMissIndex){
 
 if(!track) return
 
@@ -200,7 +203,8 @@ pool.push(item)
 
 })
 
-for(let i=0;i<100;i++){
+// случайная часть рулетки
+for(let i=0;i<70;i++){
 
 let random=pool[Math.floor(Math.random()*pool.length)]
 
@@ -212,45 +216,24 @@ track.appendChild(div)
 
 }
 
-}
+// near miss предмет
+if(nearMissIndex !== null){
 
-// ----------------------
-// синхронизация дропа
-// ----------------------
+let near=document.createElement("div")
+near.className="item rare"
+near.innerText=items[nearMissIndex].name
 
-function startRollingPreview(){
-
-rollingInterval=setInterval(()=>{
-
-const elements=document.querySelectorAll(".item")
-if(!elements.length) return
-
-const pointerX=window.innerWidth/2
-
-let closest=null
-let minDistance=9999
-
-elements.forEach(el=>{
-
-let rect=el.getBoundingClientRect()
-let center=rect.left+rect.width/2
-
-let dist=Math.abs(pointerX-center)
-
-if(dist<minDistance){
-
-minDistance=dist
-closest=el
+track.appendChild(near)
 
 }
 
-})
+// победный предмет
 
-if(closest && rollingDrop){
-rollingDrop.innerText=closest.innerText
-}
+let win=document.createElement("div")
+win.className="item win"
+win.innerText=items[winnerIndex].name
 
-},60)
+track.appendChild(win)
 
 }
 
@@ -278,24 +261,6 @@ return 0
 }
 
 // ----------------------
-// NEAR MISS
-// ----------------------
-
-function applyNearMiss(index){
-
-if(Math.random()<0.35){
-
-if(index>0){
-return index-1
-}
-
-}
-
-return index
-
-}
-
-// ----------------------
 // запуск кейса
 // ----------------------
 
@@ -309,28 +274,45 @@ const openBtn=document.getElementById("openCaseBtn")
 if(openBtn) openBtn.disabled=true
 
 generateChances()
-buildRoulette()
 
-startRollingPreview()
+let winnerIndex=pickWinner()
+
+// near miss шанс
+let nearMissIndex=null
+
+if(Math.random()<0.35 && winnerIndex < items.length-1){
+
+nearMissIndex=winnerIndex+1
+
+}
+
+buildRoulette(winnerIndex, nearMissIndex)
+
+// отображение дропа
+rollInterval=setInterval(()=>{
+
+let randomIndex=Math.floor(Math.random()*items.length)
+
+if(rollingDrop){
+rollingDrop.innerText=items[randomIndex].name
+}
+
+},100)
 
 track.style.transition="none"
 track.style.transform="translateX(0px)"
 
 setTimeout(()=>{
 
-let winnerIndex=pickWinner()
+let stopPosition=track.scrollWidth-450
 
-// near miss
-winnerIndex=applyNearMiss(winnerIndex)
-
-let stopPosition=(winnerIndex*105)+2600
-
-track.style.transition="transform 5s cubic-bezier(.1,.7,.1,1)"
+// slow motion
+track.style.transition="transform 6.5s cubic-bezier(.08,.8,.15,1)"
 track.style.transform=`translateX(-${stopPosition}px)`
 
 setTimeout(()=>{
 
-clearInterval(rollingInterval)
+clearInterval(rollInterval)
 
 if(rollingDrop){
 rollingDrop.innerText=items[winnerIndex].name
@@ -341,12 +323,12 @@ alert("Вы выиграли: "+items[winnerIndex].name)
 spinning=false
 if(openBtn) openBtn.disabled=false
 
-},5000)
+},6500)
 
 },50)
 
 if(caseType==="daily"){
-localStorage.setItem("dailyCaseTime",Date.now())
+localStorage.setItem("dailyCaseTime", Date.now())
 }
 
 }
@@ -370,6 +352,7 @@ const lastOpen=localStorage.getItem("dailyCaseTime")
 if(!lastOpen) return
 
 const now=Date.now()
+
 const diff=now-lastOpen
 
 if(diff<cooldown){
@@ -419,6 +402,4 @@ timer.innerText=
 // ----------------------
 
 generateChances()
-buildRoulette()
-
 checkCooldown()
