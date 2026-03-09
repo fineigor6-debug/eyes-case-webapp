@@ -63,7 +63,6 @@ const caseType = localStorage.getItem("caseType")
 // ----------------------
 
 const track = document.getElementById("rouletteTrack")
-const prizeList = document.getElementById("prizeList")
 const rollingDrop = document.getElementById("rollingDrop")
 
 let spinning=false
@@ -86,145 +85,29 @@ let items=[
 
 ]
 
-let chances=[]
-
-// ----------------------
-// ECONOMY
-// ----------------------
-
-const testCaseChances=[
-
-45,
-25,
-15,
-10,
-4,
-0.9,
-0.1
-
-]
-
-// ----------------------
-// GENERATE CHANCES
-// ----------------------
-
-function generateChances(){
-
-if(caseType==="test"){
-
-chances=[...testCaseChances]
-
-}else{
-
-let total=0
-chances=[]
-
-for(let i=0;i<items.length;i++){
-
-let v=Math.random()
-chances.push(v)
-total+=v
-
-}
-
-for(let i=0;i<chances.length;i++){
-chances[i]=(chances[i]/total*100)
-}
-
-}
-
-renderPrizeList()
-
-}
-
-// ----------------------
-// PRIZE LIST
-// ----------------------
-
-function renderPrizeList(){
-
-if(!prizeList) return
-
-prizeList.innerHTML=""
-
-items.forEach((item,i)=>{
-
-let row=document.createElement("div")
-row.className="prize-row"
-
-row.innerHTML=`
-<div>${item.name}</div>
-<div>${chances[i].toFixed(2)}%</div>
-`
-
-prizeList.appendChild(row)
-
-})
-
-}
-
-// ----------------------
-// PICK WINNER
-// ----------------------
-
-function pickWinner(){
-
-let rand=Math.random()*100
-let sum=0
-
-for(let i=0;i<chances.length;i++){
-
-sum+=parseFloat(chances[i])
-
-if(rand<=sum){
-return i
-}
-
-}
-
-return 0
-
-}
-
 // ----------------------
 // BUILD ROULETTE
 // ----------------------
 
-function buildRoulette(winnerIndex){
+function buildRoulette(){
 
 track.innerHTML=""
 strip=[]
 
-// случайная лента
-for(let i=0;i<60;i++){
+// длинная случайная лента
+for(let i=0;i<80;i++){
 
-strip.push(
-Math.floor(Math.random()*items.length)
-)
+let randomIndex=Math.floor(Math.random()*items.length)
 
-}
-
-// near miss
-if(Math.random()<0.35){
-strip[57]=items.length-1
-}
-
-// позиция победителя
-let winPosition=strip.length
-strip.push(winnerIndex)
-
-// создаем DOM
-strip.forEach(index=>{
+strip.push(randomIndex)
 
 let div=document.createElement("div")
 div.className="item"
-div.innerText=items[index].name
+div.innerText=items[randomIndex].name
 
 track.appendChild(div)
 
-})
-
-return winPosition
+}
 
 }
 
@@ -239,7 +122,6 @@ const itemWidth=105
 syncInterval=setInterval(()=>{
 
 let transform=track.style.transform
-
 let currentX=0
 
 if(transform.includes("translateX")){
@@ -269,11 +151,7 @@ spinning=true
 const openBtn=document.getElementById("openCaseBtn")
 if(openBtn) openBtn.disabled=true
 
-generateChances()
-
-let winnerIndex=pickWinner()
-
-let winPosition=buildRoulette(winnerIndex)
+buildRoulette()
 
 syncRollingDrop()
 
@@ -286,7 +164,10 @@ const itemWidth=105
 
 const centerOffset=(window.innerWidth/2)-(itemWidth/2)
 
-const distance=(winPosition*itemWidth)-centerOffset
+// случайная остановка
+let stopIndex=50+Math.floor(Math.random()*20)
+
+const distance=(stopIndex*itemWidth)-centerOffset
 
 let spinTime=5000+Math.random()*1500
 
@@ -297,11 +178,16 @@ setTimeout(()=>{
 
 clearInterval(syncInterval)
 
+// определяем выигрыш
+let winIndex=strip[stopIndex]
+
+let winItem=items[winIndex].name
+
 if(rollingDrop){
-rollingDrop.innerText=items[winnerIndex].name
+rollingDrop.innerText=winItem
 }
 
-alert("Вы выиграли: "+items[winnerIndex].name)
+alert("Вы выиграли: "+winItem)
 
 spinning=false
 if(openBtn) openBtn.disabled=false
@@ -311,9 +197,3 @@ if(openBtn) openBtn.disabled=false
 },50)
 
 }
-
-// ----------------------
-// INIT
-// ----------------------
-
-generateChances()
