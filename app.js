@@ -29,59 +29,6 @@ avatar.src = user.photo_url
 }
 
 // ----------------------
-// LIVE DROPS
-// ----------------------
-
-const dropsTrack = document.getElementById("dropsTrack")
-
-if(dropsTrack){
-
-const dropItems = [
-"🧸","🍫","💎","🍩","🎁","🍬","🍰","🍪","🍭"
-]
-
-// стартовые предметы
-for(let i=0;i<8;i++){
-
-const div=document.createElement("div")
-div.className="drop-item"
-div.innerHTML=dropItems[Math.floor(Math.random()*dropItems.length)]
-
-dropsTrack.appendChild(div)
-
-}
-
-// каждые 2 секунды новый предмет
-setInterval(()=>{
-
-const div=document.createElement("div")
-div.className="drop-item"
-div.innerHTML=dropItems[Math.floor(Math.random()*dropItems.length)]
-
-// добавляем в начало
-dropsTrack.prepend(div)
-
-// плавный сдвиг
-dropsTrack.style.transition="transform 0.4s"
-dropsTrack.style.transform="translateX(-74px)"
-
-setTimeout(()=>{
-
-dropsTrack.style.transition="none"
-dropsTrack.style.transform="translateX(0px)"
-
-// удаляем последний
-if(dropsTrack.children.length > 8){
-dropsTrack.lastElementChild.remove()
-}
-
-},400)
-
-},2000)
-
-}
-
-// ----------------------
 // НАВИГАЦИЯ
 // ----------------------
 
@@ -285,7 +232,6 @@ if(openBtn) openBtn.disabled = true
 generateChances()
 buildRoulette()
 
-// СБРОС РУЛЕТКИ
 track.style.transition="none"
 track.style.transform="translateX(0px)"
 
@@ -308,8 +254,6 @@ if(openBtn) openBtn.disabled=false
 },5000)
 
 },50)
-
-// cooldown для daily
 
 if(caseType === "daily"){
 
