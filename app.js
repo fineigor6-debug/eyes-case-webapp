@@ -325,3 +325,23 @@ localStorage.setItem("caseType","test")
 window.location.href="case.html"
 
 }
+
+// определение кейса
+
+const title = document.getElementById("caseTitle")
+
+const caseType = localStorage.getItem("caseType")
+
+if(title){
+
+if(caseType === "test"){
+
+title.innerText="Тестовый кейс"
+
+}else{
+
+title.innerText="Ежедневный кейс"
+
+}
+
+}
