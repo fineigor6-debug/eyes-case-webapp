@@ -230,15 +230,13 @@ filter:brightness(1.1);
 max-width:420px;
 margin:auto;
 
-padding-top:80px;
+display:grid;
 
-display:flex;
-flex-wrap:wrap;
+grid-template-columns:1fr 1fr;
 
-gap:16px;
+gap:18px;
 
-padding-left:20px;
-padding-right:20px;
+padding:20px;
 
 }
 
