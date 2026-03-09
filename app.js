@@ -66,7 +66,7 @@ const rollingDrop = document.getElementById("rollingDrop")
 let spinning=false
 
 // ----------------------
-// DROP TABLE (АДМИН ВИДИТ)
+// DROP TABLE (ADMIN ONLY)
 // ----------------------
 
 const dropTable=[
@@ -82,7 +82,7 @@ const dropTable=[
 ]
 
 // ----------------------
-// ВЫБОР ДРОПА
+// DROP ROLL
 // ----------------------
 
 function rollDrop(){
@@ -96,7 +96,6 @@ sum+=item.chance
 
 if(rand<=sum){
 
-// АДМИН ЛОГ
 console.log("🎰 CASE DROP")
 console.log("User:", user?.id)
 console.log("Drop:", item.name)
@@ -122,8 +121,8 @@ track.innerHTML=""
 
 let strip=[]
 
-// случайная лента
-for(let i=0;i<60;i++){
+// длинная лента (infinite illusion)
+for(let i=0;i<120;i++){
 
 let r=Math.floor(Math.random()*dropTable.length)
 
@@ -131,15 +130,25 @@ strip.push(dropTable[r].name)
 
 }
 
-// near miss
-if(Math.random()<0.35){
-strip[58]="50 ⭐"
+// ----------------------
+// NEAR MISS ENGINE
+// ----------------------
+
+if(Math.random()<0.45){
+
+let rare=dropTable[dropTable.length-1].name
+
+strip[110]=rare
+
 }
 
-// победитель
+// ----------------------
+// WINNER
+// ----------------------
+
 strip.push(winItem.name)
 
-// создаем DOM
+// DOM
 strip.forEach(name=>{
 
 let div=document.createElement("div")
@@ -168,10 +177,10 @@ spinning=true
 const openBtn=document.getElementById("openCaseBtn")
 if(openBtn) openBtn.disabled=true
 
-// результат определяется заранее
+// заранее определяем результат
 let winItem=rollDrop()
 
-// строим рулетку вокруг результата
+// строим рулетку
 let winPosition=buildRoulette(winItem)
 
 track.style.transition="none"
@@ -185,7 +194,8 @@ const centerOffset=(window.innerWidth/2)-(itemWidth/2)
 
 const distance=(winPosition*itemWidth)-centerOffset
 
-let spinTime=5000+Math.random()*1500
+// случайная длительность
+let spinTime=5000+Math.random()*2000
 
 track.style.transition=`transform ${spinTime}ms cubic-bezier(.05,.9,.15,1)`
 track.style.transform=`translateX(-${distance}px)`
@@ -199,7 +209,6 @@ rollingDrop.innerText=winItem.name
 alert("Вы выиграли: "+winItem.name)
 
 spinning=false
-
 if(openBtn) openBtn.disabled=false
 
 },spinTime)
