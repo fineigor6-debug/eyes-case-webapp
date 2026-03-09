@@ -31,11 +31,11 @@ avatar.src = user.photo_url
 // ----------------------
 
 function openCases(){
-window.location.href = "cases.html"
+window.location.href="cases.html"
 }
 
 function openCase(){
-window.location.href = "case.html"
+window.location.href="case.html"
 }
 
 function goBack(){
@@ -60,22 +60,7 @@ window.location.href="case.html"
 
 }
 
-// ----------------------
-// ЗАГОЛОВОК
-// ----------------------
-
-const title = document.getElementById("caseTitle")
 const caseType = localStorage.getItem("caseType")
-
-if(title){
-
-if(caseType === "test"){
-title.innerText="Тестовый кейс"
-}else{
-title.innerText="Ежедневный кейс"
-}
-
-}
 
 // ----------------------
 // РУЛЕТКА
@@ -85,27 +70,27 @@ const track = document.getElementById("rouletteTrack")
 const prizeList = document.getElementById("prizeList")
 const rollingDrop = document.getElementById("rollingDrop")
 
-let items = [
+let spinning=false
 
-{icon:"⭐",name:"1 ⭐"},
-{icon:"⭐",name:"2 ⭐"},
-{icon:"⭐",name:"3 ⭐"},
-{icon:"⭐",name:"5 ⭐"},
-{icon:"⭐",name:"10 ⭐"},
-{icon:"⭐",name:"25 ⭐"},
-{icon:"⭐",name:"50 ⭐"}
+let items=[
+
+{name:"1 ⭐"},
+{name:"2 ⭐"},
+{name:"3 ⭐"},
+{name:"5 ⭐"},
+{name:"10 ⭐"},
+{name:"25 ⭐"},
+{name:"50 ⭐"}
 
 ]
 
 let chances=[]
-let spinning=false
-let rollInterval=null
 
 // ----------------------
 // ЭКОНОМИКА
 // ----------------------
 
-const testCaseChances = [
+const testCaseChances=[
 
 45,
 25,
@@ -123,29 +108,25 @@ const testCaseChances = [
 
 function generateChances(){
 
-chances=[]
-
-if(caseType === "test"){
+if(caseType==="test"){
 
 chances=[...testCaseChances]
 
 }else{
 
 let total=0
+chances=[]
 
 for(let i=0;i<items.length;i++){
 
-let value=Math.random()
-
-chances.push(value)
-total+=value
+let v=Math.random()
+chances.push(v)
+total+=v
 
 }
 
 for(let i=0;i<chances.length;i++){
-
-chances[i]=(chances[i]/total*100).toFixed(2)
-
+chances[i]=(chances[i]/total*100)
 }
 
 }
@@ -167,73 +148,16 @@ prizeList.innerHTML=""
 items.forEach((item,i)=>{
 
 let row=document.createElement("div")
-
 row.className="prize-row"
 
 row.innerHTML=`
-<div class="prize-name">${item.icon} ${item.name}</div>
-<div class="prize-chance">${chances[i]}%</div>
+<div>${item.name}</div>
+<div>${chances[i]}%</div>
 `
 
 prizeList.appendChild(row)
 
 })
-
-}
-
-// ----------------------
-// построение рулетки
-// ----------------------
-
-function buildRoulette(winnerIndex, nearMissIndex){
-
-if(!track) return
-
-track.innerHTML=""
-
-let pool=[]
-
-items.forEach((item,i)=>{
-
-let count=Math.round(chances[i])
-
-for(let j=0;j<count;j++){
-pool.push(item)
-}
-
-})
-
-// случайная часть рулетки
-for(let i=0;i<70;i++){
-
-let random=pool[Math.floor(Math.random()*pool.length)]
-
-let div=document.createElement("div")
-div.className="item"
-div.innerText=random.name
-
-track.appendChild(div)
-
-}
-
-// near miss предмет
-if(nearMissIndex !== null){
-
-let near=document.createElement("div")
-near.className="item rare"
-near.innerText=items[nearMissIndex].name
-
-track.appendChild(near)
-
-}
-
-// победный предмет
-
-let win=document.createElement("div")
-win.className="item win"
-win.innerText=items[winnerIndex].name
-
-track.appendChild(win)
 
 }
 
@@ -261,6 +185,55 @@ return 0
 }
 
 // ----------------------
+// построение рулетки
+// ----------------------
+
+function buildRoulette(winnerIndex){
+
+track.innerHTML=""
+
+let pool=[]
+
+items.forEach((item,i)=>{
+
+let count=Math.round(chances[i])
+
+for(let j=0;j<count;j++){
+pool.push(item)
+}
+
+})
+
+// случайная часть
+for(let i=0;i<60;i++){
+
+let random=pool[Math.floor(Math.random()*pool.length)]
+
+let div=document.createElement("div")
+div.className="item"
+div.innerText=random.name
+
+track.appendChild(div)
+
+}
+
+// near miss
+let nearIndex=Math.min(winnerIndex+1,items.length-1)
+
+let near=document.createElement("div")
+near.className="item rare"
+near.innerText=items[nearIndex].name
+track.appendChild(near)
+
+// победитель
+let win=document.createElement("div")
+win.className="item win"
+win.innerText=items[winnerIndex].name
+track.appendChild(win)
+
+}
+
+// ----------------------
 // запуск кейса
 // ----------------------
 
@@ -277,42 +250,40 @@ generateChances()
 
 let winnerIndex=pickWinner()
 
-// near miss шанс
-let nearMissIndex=null
+buildRoulette(winnerIndex)
 
-if(Math.random()<0.35 && winnerIndex < items.length-1){
-
-nearMissIndex=winnerIndex+1
-
-}
-
-buildRoulette(winnerIndex, nearMissIndex)
-
+// ----------------------
 // отображение дропа
-rollInterval=setInterval(()=>{
+// ----------------------
 
-let randomIndex=Math.floor(Math.random()*items.length)
+let roll=setInterval(()=>{
+
+let random=Math.floor(Math.random()*items.length)
 
 if(rollingDrop){
-rollingDrop.innerText=items[randomIndex].name
+rollingDrop.innerText=items[random].name
 }
 
-},100)
+},120)
+
+// ----------------------
+// старт вращения
+// ----------------------
 
 track.style.transition="none"
 track.style.transform="translateX(0px)"
 
 setTimeout(()=>{
 
-let stopPosition=track.scrollWidth-450
+let distance=track.scrollWidth-420
 
-// slow motion
-track.style.transition="transform 6.5s cubic-bezier(.08,.8,.15,1)"
-track.style.transform=`translateX(-${stopPosition}px)`
+// slow motion easing
+track.style.transition="transform 7s cubic-bezier(.05,.9,.15,1)"
+track.style.transform=`translateX(-${distance}px)`
 
 setTimeout(()=>{
 
-clearInterval(rollInterval)
+clearInterval(roll)
 
 if(rollingDrop){
 rollingDrop.innerText=items[winnerIndex].name
@@ -323,77 +294,9 @@ alert("Вы выиграли: "+items[winnerIndex].name)
 spinning=false
 if(openBtn) openBtn.disabled=false
 
-},6500)
+},7000)
 
 },50)
-
-if(caseType==="daily"){
-localStorage.setItem("dailyCaseTime", Date.now())
-}
-
-}
-
-// ----------------------
-// DAILY TIMER
-// ----------------------
-
-const openBtn=document.getElementById("openCaseBtn")
-const timer=document.getElementById("cooldownTimer")
-
-const cooldown=24*60*60*1000
-
-function checkCooldown(){
-
-if(!openBtn) return
-if(caseType!=="daily") return
-
-const lastOpen=localStorage.getItem("dailyCaseTime")
-
-if(!lastOpen) return
-
-const now=Date.now()
-
-const diff=now-lastOpen
-
-if(diff<cooldown){
-
-openBtn.disabled=true
-updateTimer(cooldown-diff)
-
-}
-
-}
-
-function updateTimer(time){
-
-setInterval(()=>{
-
-time-=1000
-
-if(time<=0){
-
-openBtn.disabled=false
-
-if(timer){
-timer.innerText="Кейс снова доступен!"
-}
-
-return
-
-}
-
-let hours=Math.floor(time/3600000)
-let minutes=Math.floor((time%3600000)/60000)
-let seconds=Math.floor((time%60000)/1000)
-
-if(timer){
-
-timer.innerText=
-`Следующий кейс через ${hours}ч ${minutes}м ${seconds}с`
-
-}
-
-},1000)
 
 }
 
@@ -402,4 +305,3 @@ timer.innerText=
 // ----------------------
 
 generateChances()
-checkCooldown()
