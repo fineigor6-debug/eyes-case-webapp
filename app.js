@@ -1,37 +1,42 @@
-const items = [
-{ name:"💎 кейс от #пыльвглаза", chance:1, color:"#ff00ff" },
-{ name:"👁 кейс веола", chance:4, color:"#ff9900" },
-{ name:"🔵 кейс окуп меллгифтс", chance:10, color:"#a335ee" },
-{ name:"🟢 кейс бича", chance:25, color:"#0070dd" },
-{ name:"⚪ Обычный кейс", chance:60, color:"#aaaaaa" }
-]
+let tg = window.Telegram.WebApp
+
+tg.expand()
+
+let user = tg.initDataUnsafe.user
+
+if(user){
+
+let name = user.username || user.first_name
+
+document.getElementById("username").innerText = name
+
+if(user.username){
+
+let avatarUrl = "https://t.me/i/userpic/320/" + user.username + ".jpg"
+
+document.getElementById("avatar").src = avatarUrl
+
+}
+
+}
 
 function openCase(){
 
-const result = document.getElementById("result")
+let items = [
 
-result.innerText="Opening..."
-result.classList.add("spin")
+"⚪ мегарекий Eye",
+"🟢 редкий Eye",
+"🔵 пися",
+"👁 жопа член",
+"💎 пнуть веола"
 
-setTimeout(()=>{
+]
 
-result.classList.remove("spin")
+let random = Math.floor(Math.random()*items.length)
 
-let random = Math.random()*100
-let current=0
-let win=null
+let win = items[random]
 
-for(let item of items){
-current+=item.chance
-if(random<=current){
-win=item
-break
-}
-}
-
-result.innerText=win.name
-result.style.color=win.color
-
-},2000)
+document.getElementById("result").innerText =
+"Вы выиграли: " + win
 
 }
