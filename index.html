@@ -1,24 +1,20 @@
 <!DOCTYPE html>
 <html>
-
 <head>
-
 <meta charset="UTF-8">
-
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
 <title>Eyes Case</title>
 
 <link rel="stylesheet" href="style.css">
-
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 </head>
 
 <body>
 
-<div class="container">
+<div class="app">
 
+<!-- HEADER -->
 <div class="header">
 
 <div class="profile">
@@ -26,59 +22,78 @@
 <img id="avatar" class="avatar">
 
 <div>
-
-<div class="name" id="username">Player</div>
-
-<div class="sub">Eyes Case</div>
-
+<div id="username">Player</div>
+<div class="subtitle">Eyes Case</div>
 </div>
 
 </div>
 
 <div class="balance">
-
-💎 0.05
-
+⭐ 0.03
 </div>
 
 </div>
 
+<!-- TOP GIFTS -->
+<div class="gifts">
 
-<div class="cards">
+<div class="gift">
+🍭
+<div class="gift-price">4.62 ⭐</div>
+</div>
 
-<div class="card">
+<div class="gift">
+🍰
+<div class="gift-price">4.93 ⭐</div>
+</div>
 
-<h2>🎰 Кейсы</h2>
+<div class="gift">
+🍬
+<div class="gift-price">8.55 ⭐</div>
+</div>
 
+</div>
+
+<!-- CASE BANNER -->
+<div class="banner">
+
+<div class="banner-text">
+
+<h2>Кейсы</h2>
 <p>Открывай кейсы и получай призы</p>
 
-<button onclick="openCase()">
-
-ОТКРЫТЬ КЕЙС
-
-</button>
+<button onclick="openCase()">Открыть кейс</button>
 
 </div>
 
+</div>
 
-<div class="card">
+<!-- ROCKET BANNER -->
 
-<h2>🚀 Ракета</h2>
+<div class="banner rocket">
 
+<div class="banner-text">
+
+<h2>Ракета</h2>
 <p>Запускай ракету и выигрывай звезды</p>
 
-<button>
-
-ИГРАТЬ
-
-</button>
+<button>Играть</button>
 
 </div>
 
 </div>
 
+</div>
 
-<div id="result"></div>
+
+<!-- BOTTOM MENU -->
+
+<div class="menu">
+
+<div class="menu-item">🏆<span>Лидерборд</span></div>
+<div class="menu-item active">🎮<span>Играть</span></div>
+<div class="menu-item">⚡<span>Задания</span></div>
+<div class="menu-item">👤<span>Профиль</span></div>
 
 </div>
 
