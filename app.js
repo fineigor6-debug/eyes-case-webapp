@@ -86,17 +86,34 @@ const prizeList = document.getElementById("prizeList")
 
 let items = [
 
-{icon:"🍭",name:"Candy"},
-{icon:"🍬",name:"Sweet"},
-{icon:"🍰",name:"Cake"},
-{icon:"🍩",name:"Donut"},
-{icon:"🍫",name:"Chocolate"},
-{icon:"🍪",name:"Cookie"}
+{icon:"⭐",name:"1 ⭐"},
+{icon:"⭐",name:"2 ⭐"},
+{icon:"⭐",name:"3 ⭐"},
+{icon:"⭐",name:"5 ⭐"},
+{icon:"⭐",name:"10 ⭐"},
+{icon:"⭐",name:"25 ⭐"},
+{icon:"⭐",name:"50 ⭐"}
 
 ]
 
 let chances=[]
 let spinning=false
+
+// ----------------------
+// ФИКСИРОВАННЫЕ ШАНСЫ ТЕСТ КЕЙСА
+// ----------------------
+
+const testCaseChances = [
+
+40, // 1⭐
+25, // 2⭐
+15, // 3⭐
+10, // 5⭐
+7,  // 10⭐
+2,  // 25⭐
+1   // 50⭐
+
+]
 
 // ----------------------
 // генерация шансов
@@ -106,6 +123,12 @@ function generateChances(){
 
 chances=[]
 let total=0
+
+if(caseType === "test"){
+
+chances = [...testCaseChances]
+
+}else{
 
 for(let i=0;i<items.length;i++){
 
@@ -119,6 +142,8 @@ total+=value
 for(let i=0;i<chances.length;i++){
 
 chances[i]=(chances[i]/total*100).toFixed(2)
+
+}
 
 }
 
@@ -273,7 +298,6 @@ const cooldown = 24 * 60 * 60 * 1000
 function checkCooldown(){
 
 if(!openBtn) return
-
 if(caseType !== "daily") return
 
 const lastOpen = localStorage.getItem("dailyCaseTime")
