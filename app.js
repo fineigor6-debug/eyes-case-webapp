@@ -96,10 +96,10 @@ let items = [
 ]
 
 let chances=[]
-let spinning = false
+let spinning=false
 
 // ----------------------
-// генерация случайных шансов
+// генерация шансов
 // ----------------------
 
 function generateChances(){
@@ -230,26 +230,31 @@ if(openBtn) openBtn.disabled = true
 generateChances()
 buildRoulette()
 
-let winnerIndex=pickWinner()
+// СБРОС РУЛЕТКИ
+track.style.transition="none"
+track.style.transform="translateX(0px)"
+
+setTimeout(()=>{
+
+let winnerIndex = pickWinner()
 
 let stopPosition=(winnerIndex*100)+2500
 
 track.style.transition="transform 5s cubic-bezier(.1,.7,.1,1)"
 track.style.transform=`translateX(-${stopPosition}px)`
 
-// результат
-
 setTimeout(()=>{
 
 alert("Вы выиграли: "+items[winnerIndex].name)
 
-spinning = false
-
-if(openBtn) openBtn.disabled = false
+spinning=false
+if(openBtn) openBtn.disabled=false
 
 },5000)
 
-// КД только для Daily
+},50)
+
+// cooldown для daily
 
 if(caseType === "daily"){
 
