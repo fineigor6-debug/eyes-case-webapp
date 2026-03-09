@@ -1,140 +1,237 @@
-/* TELEGRAM MINI APP */
+// TELEGRAM WEBAPP
 
 const tg = window.Telegram.WebApp
+
 tg.expand()
 
-/* ---------------------------
-ПОЛУЧЕНИЕ ПОЛЬЗОВАТЕЛЯ
---------------------------- */
+// USER DATA
 
 const user = tg.initDataUnsafe?.user
 
-function initUser(){
+if(user){
 
-if(!user) return
+document.getElementById("username").innerText =
+user.first_name || "Player"
 
-const usernameBlock = document.getElementById("username")
-const avatarBlock = document.getElementById("avatar")
-
-let name = user.username || user.first_name || "Player"
-
-if(usernameBlock){
-usernameBlock.innerText = name
-}
-
-if(user.username && avatarBlock){
-
-avatarBlock.src =
-"https://t.me/i/userpic/320/" + user.username + ".jpg"
-
+if(user.photo_url){
+document.getElementById("avatar").src = user.photo_url
 }
 
 }
 
-initUser()
 
-/* ---------------------------
-НАВИГАЦИЯ
---------------------------- */
+// ПЕРЕХОД НА ЭКРАН КЕЙСОВ
 
 function openCases(){
-
-buttonClick()
 
 window.location.href = "cases.html"
 
 }
 
-function openVeolaCase(){
 
-buttonClick()
+// ПЕРЕХОД НА ЭКРАН ОТКРЫТИЯ КЕЙСА
+
+function openCase(){
 
 window.location.href = "case.html"
 
 }
 
-function goBack(){
 
-buttonClick()
 
-window.history.back()
-
-}
-
-/* ---------------------------
-АНИМАЦИЯ КНОПОК
---------------------------- */
-
-function buttonClick(){
-
-try{
-tg.HapticFeedback.impactOccurred("light")
-}catch(e){}
-
-}
-
-/* ---------------------------
-РУЛЕТКА
---------------------------- */
-
-let spinning = false
-
-function spin(){
-
-if(spinning) return
+// ----------------------
+// РУЛЕТКА
+// ----------------------
 
 const track = document.getElementById("rouletteTrack")
+const prizeList = document.getElementById("prizeList")
+
+
+// ПРЕДМЕТЫ КЕЙСА
+
+let items = [
+
+{icon:"🍭", name:"Candy"},
+{icon:"🍬", name:"Sweet"},
+{icon:"🍰", name:"Cake"},
+{icon:"🍩", name:"Donut"},
+{icon:"🍫", name:"Chocolate"},
+{icon:"🍪", name:"Cookie"}
+
+]
+
+let chances = []
+
+
+// ГЕНЕРАЦИЯ СЛУЧАЙНЫХ ШАНСОВ
+
+function generateChances(){
+
+chances=[]
+
+let total=0
+
+for(let i=0;i<items.length;i++){
+
+let value=Math.random()
+
+chances.push(value)
+
+total+=value
+
+}
+
+for(let i=0;i<chances.length;i++){
+
+chances[i]=(chances[i]/total*100).toFixed(2)
+
+}
+
+renderPrizeList()
+
+}
+
+
+// ОТОБРАЖЕНИЕ ТАБЛИЦЫ ШАНСОВ
+
+function renderPrizeList(){
+
+if(!prizeList) return
+
+prizeList.innerHTML=""
+
+items.forEach((item,i)=>{
+
+let row=document.createElement("div")
+
+row.className="prize-row"
+
+row.innerHTML=`
+
+<div class="prize-name">
+${item.icon} ${item.name}
+</div>
+
+<div class="prize-chance">
+${chances[i]}%
+</div>
+
+`
+
+prizeList.appendChild(row)
+
+})
+
+}
+
+
+
+// СОЗДАНИЕ ЛЕНТЫ РУЛЕТКИ
+
+function buildRoulette(){
 
 if(!track) return
 
-spinning = true
+track.innerHTML=""
 
-buttonClick()
+let pool=[]
 
-/* сброс позиции */
 
-track.style.transition = "none"
-track.style.transform = "translateX(0px)"
+// СОЗДАЕМ ПУЛ ПРЕДМЕТОВ ПО ВЕРОЯТНОСТИ
 
-setTimeout(() => {
+items.forEach((item,i)=>{
 
-let random = Math.floor(Math.random()*1800)+1800
+let count=Math.round(chances[i])
+
+for(let j=0;j<count;j++){
+
+pool.push(item)
+
+}
+
+})
+
+
+// ЗАПОЛНЯЕМ ЛЕНТУ
+
+for(let i=0;i<80;i++){
+
+let random = pool[Math.floor(Math.random()*pool.length)]
+
+let div=document.createElement("div")
+
+div.className="item"
+
+div.innerHTML=random.icon
+
+track.appendChild(div)
+
+}
+
+}
+
+
+
+// ВЫБОР ПОБЕДИТЕЛЯ
+
+function pickWinner(){
+
+let rand=Math.random()*100
+
+let sum=0
+
+for(let i=0;i<chances.length;i++){
+
+sum+=parseFloat(chances[i])
+
+if(rand<=sum){
+
+return i
+
+}
+
+}
+
+return 0
+
+}
+
+
+
+// ЗАПУСК РУЛЕТКИ
+
+function spinCase(){
+
+generateChances()
+
+buildRoulette()
+
+let winnerIndex = pickWinner()
+
+
+let stopPosition = (winnerIndex * 100) + 2500
+
 
 track.style.transition =
 "transform 5s cubic-bezier(.1,.7,.1,1)"
 
-track.style.transform = "translateX(-"+random+"px)"
+track.style.transform =
+`translateX(-${stopPosition}px)`
 
-},50)
 
-/* конец вращения */
+// ПОСЛЕ 5 СЕКУНД
 
 setTimeout(()=>{
 
-spinning = false
+alert("Вы выиграли: " + items[winnerIndex].name)
 
-try{
-tg.HapticFeedback.notificationOccurred("success")
-}catch(e){}
-
-},5200)
+},5000)
 
 }
 
-/* ---------------------------
-ПЛАВНОЕ НАЖАТИЕ КНОПОК
---------------------------- */
 
-document.addEventListener("click",(e)=>{
 
-const btn = e.target.closest("button")
+// ПЕРВИЧНАЯ ГЕНЕРАЦИЯ
 
-if(!btn) return
-
-btn.style.transform = "scale(0.96)"
-
-setTimeout(()=>{
-btn.style.transform = "scale(1)"
-},120)
-
-})
+generateChances()
+buildRoulette()
