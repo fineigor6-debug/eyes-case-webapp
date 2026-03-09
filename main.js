@@ -1,4 +1,4 @@
-// TELEGRAM INIT
+// TELEGRAM
 const tg = window.Telegram.WebApp
 tg.ready()
 
