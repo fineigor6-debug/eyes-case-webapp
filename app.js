@@ -1,5 +1,3 @@
-document.addEventListener("DOMContentLoaded", () => {
-
 // ----------------------
 // TELEGRAM
 // ----------------------
@@ -337,5 +335,3 @@ generateChances()
 buildRoulette()
 
 checkCooldown()
-
-})
