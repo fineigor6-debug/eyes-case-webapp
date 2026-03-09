@@ -5,11 +5,8 @@
 body{
 
 margin:0;
-
 font-family:'Inter', sans-serif;
-
 font-weight:600;
-
 color:white;
 
 /* ФОН */
@@ -27,9 +24,7 @@ background-attachment:fixed;
 body::before{
 
 content:"";
-
 position:fixed;
-
 top:0;
 left:0;
 
@@ -45,23 +40,19 @@ z-index:-1;
 /* КОНТЕЙНЕР */
 
 .app{
-
 max-width:420px;
-
 margin:auto;
-
 padding-bottom:110px;
-
 }
 
 /* HEADER */
 
 .header{
 
+position:relative;
+
 display:flex;
-
 justify-content:space-between;
-
 align-items:center;
 
 padding:20px;
@@ -71,36 +62,25 @@ padding:20px;
 /* ПРОФИЛЬ */
 
 .profile{
-
 display:flex;
-
 align-items:center;
-
 gap:12px;
-
 }
 
 /* АВАТАР */
 
 .avatar{
-
 width:44px;
 height:44px;
-
 border-radius:50%;
-
 border:2px solid rgba(255,255,255,0.35);
-
 }
 
 /* USERNAME */
 
 #username{
-
 font-weight:800;
-
 font-size:16px;
-
 }
 
 /* БАЛАНС */
@@ -108,13 +88,9 @@ font-size:16px;
 .balance{
 
 background:rgba(255,255,255,0.12);
-
 padding:9px 16px;
-
 border-radius:20px;
-
 font-weight:700;
-
 backdrop-filter:blur(10px);
 
 }
@@ -122,27 +98,18 @@ backdrop-filter:blur(10px);
 /* ПОДАРКИ */
 
 .gifts{
-
 display:flex;
-
 gap:12px;
-
 padding:15px;
-
 }
 
 .gift{
 
 flex:1;
-
 background:rgba(255,255,255,0.08);
-
 padding:20px;
-
 border-radius:16px;
-
 text-align:center;
-
 font-size:22px;
 
 border:1px solid rgba(255,255,255,0.15);
@@ -150,13 +117,9 @@ border:1px solid rgba(255,255,255,0.15);
 }
 
 .gift-price{
-
 font-size:12px;
-
 opacity:0.7;
-
 margin-top:6px;
-
 }
 
 /* БАННЕР */
@@ -164,13 +127,10 @@ margin-top:6px;
 .banner{
 
 margin:15px;
-
 border-radius:20px;
-
 padding:25px;
 
 position:relative;
-
 overflow:hidden;
 
 /* ONYX BLACK */
@@ -200,17 +160,12 @@ opacity:0.5;
 }
 
 .banner-text{
-
 position:relative;
-
 z-index:2;
-
 }
 
 .banner-text h2{
-
 font-weight:800;
-
 }
 
 /* ---------------- */
@@ -246,10 +201,7 @@ cursor:pointer;
 background-image:url("IMG_0649.jpeg");
 
 background-size:cover;
-
 background-position:center;
-
-/* затемнение для текста */
 
 box-shadow: inset 0 0 0 2000px rgba(0,0,0,0.35);
 
@@ -260,27 +212,20 @@ transition:all 0.2s ease;
 /* НАЖАТИЕ */
 
 button:active{
-
 transform:scale(0.95);
-
 }
 
-/* HOVER ДЛЯ ПК */
+/* HOVER */
 
 button:hover{
-
 filter:brightness(1.1);
-
 }
 
 /* ЭКРАН КЕЙСОВ */
 
 .cases-page{
-
 max-width:420px;
-
 margin:auto;
-
 }
 
 /* СЕТКА КЕЙСОВ */
@@ -318,15 +263,12 @@ transition:0.25s;
 }
 
 .case:hover{
-
 transform:scale(1.05);
-
 }
 
 .case img{
 
 width:100%;
-
 height:120px;
 
 object-fit:cover;
@@ -338,11 +280,8 @@ margin-bottom:8px;
 }
 
 .case h3{
-
 margin:5px 0;
-
 font-weight:800;
-
 }
 
 /* ЦЕНА */
@@ -402,7 +341,7 @@ padding:30px 0;
 
 }
 
-/* стрелка */
+/* стрелка рулетки */
 
 .pointer{
 
@@ -507,10 +446,10 @@ margin-top:3px;
 }
 
 .active{
-
 opacity:1;
-
 }
+
+/* ПРИЗЫ */
 
 .prizes{
 
@@ -547,23 +486,16 @@ border-bottom:1px solid rgba(255,255,255,0.08);
 }
 
 .prize-row:last-child{
-
 border:none;
-
 }
 
 .prize-name{
-
 display:flex;
-
 gap:10px;
-
 }
 
 .prize-chance{
-
 opacity:0.7;
-
 }
 
 #cooldownTimer{
@@ -578,34 +510,58 @@ font-size:14px;
 
 }
 
-/* стрелка назад */
+/* ---------------- */
+/* IOS TELEGRAM BACK BUTTON */
+/* ---------------- */
 
 .back-btn{
 
-background:none;
-border:none;
-color:white;
-font-size:26px;
-cursor:pointer;
-padding:10px;
+position:absolute;
 
-transition:0.2s;
+left:10px;
+top:50%;
+
+transform:translateY(-50%);
+
+width:42px;
+height:42px;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+border-radius:50%;
+
+background:rgba(0,0,0,0.35);
+
+backdrop-filter:blur(10px);
+
+border:1px solid rgba(255,255,255,0.08);
+
+cursor:pointer;
+
+transition:all 0.15s ease;
 
 }
 
 .back-btn:hover{
-
-transform:scale(1.2);
-
+background:rgba(0,0,0,0.55);
 }
 
-/* заголовок */
+.back-btn:active{
+transform:translateY(-50%) scale(0.92);
+}
+
+/* ЗАГОЛОВОК */
 
 .cases-title{
 
 position:absolute;
+
 left:50%;
+
 transform:translateX(-50%);
-font-weight:700;
+
+font-weight:800;
 
 }
