@@ -153,7 +153,7 @@ row.className="prize-row"
 
 row.innerHTML=`
 <div>${item.name}</div>
-<div>${chances[i]}%</div>
+<div>${chances[i].toFixed(2)}%</div>
 `
 
 prizeList.appendChild(row)
@@ -186,56 +186,93 @@ return 0
 }
 
 // ----------------------
-// построение рулетки
+// WEIGHTED VISUAL STRIP
+// ----------------------
+
+function generateWeightedPool(){
+
+let pool=[]
+
+items.forEach((item,i)=>{
+
+let count=Math.round(chances[i]*2)
+
+for(let j=0;j<count;j++){
+pool.push(i)
+}
+
+})
+
+return pool
+
+}
+
+// ----------------------
+// BUILD PROFESSIONAL ROULETTE
 // ----------------------
 
 function buildRoulette(winnerIndex){
 
 track.innerHTML=""
 
-let pool=[]
+let pool=generateWeightedPool()
 
-items.forEach((item,i)=>{
+// основная лента
+let strip=[]
 
-let count=Math.round(chances[i])
-
-for(let j=0;j<count;j++){
-pool.push(item)
+for(let i=0;i<70;i++){
+strip.push(pool[Math.floor(Math.random()*pool.length)])
 }
 
-})
+// ----------------------
+// NEAR MISS ENGINE
+// ----------------------
 
-// случайная часть рулетки
-for(let i=0;i<60;i++){
+if(Math.random()<0.35){
 
-let random=pool[Math.floor(Math.random()*pool.length)]
+let rareIndex=items.length-1
+let pos=strip.length-3
+
+strip[pos]=rareIndex
+
+}
+
+// вставляем победителя
+strip.push(winnerIndex)
+
+// ----------------------
+// создаем элементы
+// ----------------------
+
+let winElement=null
+
+strip.forEach((index,i)=>{
 
 let div=document.createElement("div")
+
 div.className="item"
-div.innerText=random.name
+
+if(index>=5){
+div.classList.add("rare")
+}
+
+div.innerText=items[index].name
+
+if(i===strip.length-1){
+div.classList.add("win")
+winElement=div
+}
 
 track.appendChild(div)
 
-}
+})
 
-// near miss
-let nearIndex=Math.min(winnerIndex+1,items.length-1)
-
-let near=document.createElement("div")
-near.className="item rare"
-near.innerText=items[nearIndex].name
-track.appendChild(near)
-
-// победитель
-let win=document.createElement("div")
-win.className="item win"
-win.innerText=items[winnerIndex].name
-track.appendChild(win)
+return winElement
 
 }
 
 // ----------------------
-// СИНХРОНИЗАЦИЯ DROПА
+// SYNC DROP
 // ----------------------
 
 function syncRollingDrop(){
@@ -270,12 +307,12 @@ if(closest && rollingDrop){
 rollingDrop.innerText=closest.innerText
 }
 
-},60)
+},16)
 
 }
 
 // ----------------------
-// запуск кейса
+// SPIN CASE
 // ----------------------
 
 function spinCase(){
@@ -291,9 +328,8 @@ generateChances()
 
 let winnerIndex=pickWinner()
 
-buildRoulette(winnerIndex)
+let winElement=buildRoulette(winnerIndex)
 
-// синхронизация дропа
 syncRollingDrop()
 
 track.style.transition="none"
@@ -301,10 +337,15 @@ track.style.transform="translateX(0px)"
 
 setTimeout(()=>{
 
-let distance=track.scrollWidth-420
+const rect=winElement.getBoundingClientRect()
+const trackRect=track.getBoundingClientRect()
 
-// slow motion
-track.style.transition="transform 7s cubic-bezier(.05,.9,.15,1)"
+const distance=rect.left-trackRect.left-(window.innerWidth/2)+(rect.width/2)
+
+// variable spin time
+let spinTime=4500+Math.random()*2000
+
+track.style.transition=`transform ${spinTime}ms cubic-bezier(.05,.9,.15,1)`
 track.style.transform=`translateX(-${distance}px)`
 
 setTimeout(()=>{
@@ -320,7 +361,7 @@ alert("Вы выиграли: "+items[winnerIndex].name)
 spinning=false
 if(openBtn) openBtn.disabled=false
 
-},7000)
+},spinTime)
 
 },50)
 
