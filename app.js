@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", () => {
 // ----------------------
 
 const tg = window.Telegram.WebApp
-tg.expand()
+tg.ready()
 
 // ----------------------
 // USER DATA
