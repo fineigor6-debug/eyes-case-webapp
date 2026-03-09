@@ -6,7 +6,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Кейс Веола</title>
+<title>Ежедневный кейс</title>
 
 <link rel="stylesheet" href="style.css">
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
@@ -23,7 +23,7 @@
 
 <button onclick="goBack()">Назад</button>
 
-<h2>Кейс Веола</h2>
+<h2>Ежедневный кейс</h2>
 
 </div>
 
@@ -41,8 +41,11 @@
 
 <!-- КНОПКА ОТКРЫТИЯ -->
 
-<button onclick="spinCase()">Открыть кейс</button>
+<button id="openCaseBtn" onclick="spinCase()">
+Открыть кейс
+</button>
 
+<div id="cooldownTimer"></div>
 
 <!-- СПИСОК ПРИЗОВ -->
 
