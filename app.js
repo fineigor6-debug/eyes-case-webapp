@@ -61,7 +61,7 @@ window.location.href="case.html"
 }
 
 // ----------------------
-// ЗАГОЛОВОК 3 ЭКРАНА
+// ЗАГОЛОВОК
 // ----------------------
 
 const title = document.getElementById("caseTitle")
@@ -99,9 +99,10 @@ let items = [
 
 let chances=[]
 let spinning=false
+let rollingInterval=null
 
 // ----------------------
-// ЭКОНОМИКА ТЕСТ КЕЙСА
+// ЭКОНОМИКА
 // ----------------------
 
 const testCaseChances = [
@@ -123,27 +124,25 @@ const testCaseChances = [
 function generateChances(){
 
 chances=[]
-let total=0
 
 if(caseType === "test"){
 
-chances = [...testCaseChances]
+chances=[...testCaseChances]
 
 }else{
+
+let total=0
 
 for(let i=0;i<items.length;i++){
 
 let value=Math.random()
-
 chances.push(value)
 total+=value
 
 }
 
 for(let i=0;i<chances.length;i++){
-
 chances[i]=(chances[i]/total*100).toFixed(2)
-
 }
 
 }
@@ -201,19 +200,57 @@ pool.push(item)
 
 })
 
-for(let i=0;i<80;i++){
+for(let i=0;i<100;i++){
 
-let random = pool[Math.floor(Math.random()*pool.length)]
+let random=pool[Math.floor(Math.random()*pool.length)]
 
 let div=document.createElement("div")
-
 div.className="item"
-
-div.innerHTML=random.icon
+div.innerText=random.name
 
 track.appendChild(div)
 
 }
+
+}
+
+// ----------------------
+// синхронизация дропа
+// ----------------------
+
+function startRollingPreview(){
+
+rollingInterval=setInterval(()=>{
+
+const elements=document.querySelectorAll(".item")
+if(!elements.length) return
+
+const pointerX=window.innerWidth/2
+
+let closest=null
+let minDistance=9999
+
+elements.forEach(el=>{
+
+let rect=el.getBoundingClientRect()
+let center=rect.left+rect.width/2
+
+let dist=Math.abs(pointerX-center)
+
+if(dist<minDistance){
+
+minDistance=dist
+closest=el
+
+}
+
+})
+
+if(closest && rollingDrop){
+rollingDrop.innerText=closest.innerText
+}
+
+},60)
 
 }
 
@@ -241,6 +278,24 @@ return 0
 }
 
 // ----------------------
+// NEAR MISS
+// ----------------------
+
+function applyNearMiss(index){
+
+if(Math.random()<0.35){
+
+if(index>0){
+return index-1
+}
+
+}
+
+return index
+
+}
+
+// ----------------------
 // запуск кейса
 // ----------------------
 
@@ -248,44 +303,37 @@ function spinCase(){
 
 if(spinning) return
 
-spinning = true
+spinning=true
 
-const openBtn = document.getElementById("openCaseBtn")
-if(openBtn) openBtn.disabled = true
+const openBtn=document.getElementById("openCaseBtn")
+if(openBtn) openBtn.disabled=true
 
 generateChances()
 buildRoulette()
 
-// прокрутка отображения дропа
-let rollInterval = setInterval(()=>{
-
-let randomIndex = Math.floor(Math.random()*items.length)
-
-if(rollingDrop){
-rollingDrop.innerText = items[randomIndex].name
-}
-
-},100)
+startRollingPreview()
 
 track.style.transition="none"
 track.style.transform="translateX(0px)"
 
 setTimeout(()=>{
 
-let winnerIndex = pickWinner()
+let winnerIndex=pickWinner()
 
-let stopPosition=(winnerIndex*100)+2500
+// near miss
+winnerIndex=applyNearMiss(winnerIndex)
+
+let stopPosition=(winnerIndex*105)+2600
 
 track.style.transition="transform 5s cubic-bezier(.1,.7,.1,1)"
 track.style.transform=`translateX(-${stopPosition}px)`
 
 setTimeout(()=>{
 
-clearInterval(rollInterval)
+clearInterval(rollingInterval)
 
-// показываем реальный выигрыш
 if(rollingDrop){
-rollingDrop.innerText = items[winnerIndex].name
+rollingDrop.innerText=items[winnerIndex].name
 }
 
 alert("Вы выиграли: "+items[winnerIndex].name)
@@ -297,41 +345,37 @@ if(openBtn) openBtn.disabled=false
 
 },50)
 
-if(caseType === "daily"){
-
-localStorage.setItem("dailyCaseTime", Date.now())
-
+if(caseType==="daily"){
+localStorage.setItem("dailyCaseTime",Date.now())
 }
 
 }
 
 // ----------------------
-// DAILY CASE TIMER
+// DAILY TIMER
 // ----------------------
 
-const openBtn = document.getElementById("openCaseBtn")
-const timer = document.getElementById("cooldownTimer")
+const openBtn=document.getElementById("openCaseBtn")
+const timer=document.getElementById("cooldownTimer")
 
-const cooldown = 24 * 60 * 60 * 1000
+const cooldown=24*60*60*1000
 
 function checkCooldown(){
 
 if(!openBtn) return
-if(caseType !== "daily") return
+if(caseType!=="daily") return
 
-const lastOpen = localStorage.getItem("dailyCaseTime")
+const lastOpen=localStorage.getItem("dailyCaseTime")
 
 if(!lastOpen) return
 
-const now = Date.now()
+const now=Date.now()
+const diff=now-lastOpen
 
-const diff = now - lastOpen
+if(diff<cooldown){
 
-if(diff < cooldown){
-
-openBtn.disabled = true
-
-updateTimer(cooldown - diff)
+openBtn.disabled=true
+updateTimer(cooldown-diff)
 
 }
 
@@ -341,11 +385,11 @@ function updateTimer(time){
 
 setInterval(()=>{
 
-time -= 1000
+time-=1000
 
-if(time <= 0){
+if(time<=0){
 
-openBtn.disabled = false
+openBtn.disabled=false
 
 if(timer){
 timer.innerText="Кейс снова доступен!"
@@ -355,13 +399,13 @@ return
 
 }
 
-let hours = Math.floor(time / 3600000)
-let minutes = Math.floor((time % 3600000) / 60000)
-let seconds = Math.floor((time % 60000) / 1000)
+let hours=Math.floor(time/3600000)
+let minutes=Math.floor((time%3600000)/60000)
+let seconds=Math.floor((time%60000)/1000)
 
 if(timer){
 
-timer.innerText =
+timer.innerText=
 `Следующий кейс через ${hours}ч ${minutes}м ${seconds}с`
 
 }
@@ -371,7 +415,7 @@ timer.innerText =
 }
 
 // ----------------------
-// ПЕРВИЧНАЯ ГЕНЕРАЦИЯ
+// INIT
 // ----------------------
 
 generateChances()
