@@ -2,7 +2,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap');
 
-/* ГЛОБАЛЬНЫЙ ФИКС СКРОЛЛА */
+/* ГЛОБАЛЬНЫЙ ФИКС */
 
 *{
 box-sizing:border-box;
@@ -53,6 +53,8 @@ min-height:100vh;
 display:flex;
 flex-direction:column;
 overflow:hidden;
+position:relative;
+z-index:2;
 }
 
 /* HEADER */
@@ -278,49 +280,57 @@ margin-top:3px;
 opacity:1;
 }
 
-/* HEADER ЭКРАНА КЕЙСОВ */
+/* ---------------- */
+/* HEADER КЕЙСОВ */
+/* ---------------- */
 
 .cases-header{
-position:relative;
+height:70px;
 display:flex;
 align-items:center;
 justify-content:center;
-margin-bottom:20px;
+padding:0 15px;
+position:relative;
+
+background:rgba(0,0,0,0.45);
+backdrop-filter:blur(12px);
+border-bottom:1px solid rgba(255,255,255,0.08);
 }
 
 .cases-title{
-font-size:22px;
 font-weight:800;
-text-align:center;
+font-size:18px;
 }
 
 /* кнопка назад */
 
 .back-btn{
 position:absolute;
-left:0;
-top:50%;
-transform:translateY(-50%);
-background:rgba(0,0,0,0.45);
-backdrop-filter:blur(10px);
-border:1px solid rgba(255,255,255,0.15);
+left:15px;
+
 width:40px;
 height:40px;
 border-radius:12px;
+
+background:rgba(255,255,255,0.08);
 display:flex;
 align-items:center;
 justify-content:center;
+
+border:none;
+cursor:pointer;
 }
 
-/* сетка кейсов */
+/* ---------------- */
+/* КЕЙСЫ */
+/* ---------------- */
 
 .cases-grid{
+padding:15px;
 display:grid;
 grid-template-columns:1fr 1fr;
 gap:14px;
 }
-
-/* карточка кейса */
 
 .case{
 background:#141414;
@@ -336,29 +346,21 @@ transition:transform .15s ease;
 transform:scale(.96);
 }
 
-/* картинка кейса */
-
 .case img{
 width:100%;
 border-radius:12px;
 margin-bottom:10px;
 }
 
-/* название */
-
 .case h3{
 font-size:15px;
 margin:6px 0;
 }
 
-/* цена */
-
 .price{
 font-size:13px;
 opacity:.7;
 }
-
-/* badge */
 
 .badge{
 position:absolute;
