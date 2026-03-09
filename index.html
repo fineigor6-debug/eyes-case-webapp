@@ -1,44 +1,11 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 <meta charset="UTF-8">
 <title>Eyes Case</title>
 
-<script src="https://telegram.org/js/telegram-web-app.js"></script>
-
-<style>
-
-.spin{
-animation: spin 1s linear infinite;
-}
-
-@keyframes spin{
-0%{transform:rotate(0deg)}
-100%{transform:rotate(360deg)}
-}
-
-body{
-font-family: Arial;
-text-align:center;
-background:#0f172a;
-color:white;
-}
-
-button{
-background:#22c55e;
-border:none;
-padding:15px 30px;
-font-size:20px;
-border-radius:10px;
-cursor:pointer;
-}
-
-.case{
-margin-top:40px;
-font-size:24px;
-}
-
-</style>
+<link rel="stylesheet" href="style.css">
 
 </head>
 
@@ -46,35 +13,11 @@ font-size:24px;
 
 <h1>👁 Eyes Case</h1>
 
-<div class="case">
-Press button to open case
-</div>
-
-<br>
+<div id="result"></div>
 
 <button onclick="openCase()">OPEN CASE</button>
 
-<h2 id="result"></h2>
-
-<script>
-
-function openCase(){
-
-let rewards = [
-"⭐ 5 Stars",
-"⭐ 10 Stars",
-"🎁 Rare Gift",
-"❌ Nothing",
-"💎 SUPER GIFT"
-]
-
-let random = rewards[Math.floor(Math.random()*rewards.length)]
-
-document.getElementById("result").innerText = random
-
-}
-
-</script>
+<script src="app.js"></script>
 
 </body>
 </html>
