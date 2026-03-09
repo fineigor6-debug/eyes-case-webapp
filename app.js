@@ -48,6 +48,7 @@ window.history.back()
 
 const track = document.getElementById("rouletteTrack")
 const prizeList = document.getElementById("prizeList")
+const openBtn = document.getElementById("openCaseBtn")
 
 let spinning=false
 
@@ -80,7 +81,6 @@ prizeList.innerHTML=""
 dropTable.forEach(item=>{
 
 let row=document.createElement("div")
-
 row.className="prize-row"
 
 row.innerHTML=`
@@ -131,6 +131,8 @@ return dropTable[0]
 
 function buildRoulette(winItem){
 
+if(!track) return 0
+
 track.innerHTML=""
 
 let strip=[]
@@ -139,7 +141,6 @@ let strip=[]
 for(let i=0;i<120;i++){
 
 let r=Math.floor(Math.random()*dropTable.length)
-
 strip.push(dropTable[r].name)
 
 }
@@ -159,7 +160,6 @@ strip.push(winItem.name)
 strip.forEach(name=>{
 
 let div=document.createElement("div")
-
 div.className="item"
 div.innerText=name
 
@@ -177,11 +177,11 @@ return strip.length-1
 
 function spinCase(){
 
+if(!track) return
 if(spinning) return
 
 spinning=true
 
-const openBtn=document.getElementById("openCaseBtn")
 if(openBtn) openBtn.disabled=true
 
 // выбираем дроп
@@ -223,4 +223,6 @@ if(openBtn) openBtn.disabled=false
 // INIT
 // ----------------------
 
+if(prizeList){
 renderPrizeList()
+}
