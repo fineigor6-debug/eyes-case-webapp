@@ -27,80 +27,44 @@ avatar.src = user.photo_url
 }
 
 // ----------------------
-// LIVE DROPS (AUTO SCROLL)
+// LIVE DROPS ROULETTE
 // ----------------------
 
 const dropsTrack = document.getElementById("dropsTrack")
 
-if(dropsTrack){
+if (dropsTrack) {
 
-const items = [
+const dropItems = [
 "🧸","🍫","💎","🍩","🎁","🍬","🍰","🍪","🍭"
 ]
 
-// создаем стартовые предметы
-for(let i=0;i<20;i++){
+// стартовые предметы
+for(let i=0;i<25;i++){
 
-const div=document.createElement("div")
-div.className="drop-item"
-div.innerHTML=items[Math.floor(Math.random()*items.length)]
+const div = document.createElement("div")
+div.className = "drop-item"
+div.innerHTML = dropItems[Math.floor(Math.random()*dropItems.length)]
 
 dropsTrack.appendChild(div)
 
 }
 
-// генерация новых
+// добавление новых
 setInterval(()=>{
 
-const div=document.createElement("div")
-div.className="drop-item"
-div.innerHTML=items[Math.floor(Math.random()*items.length)]
+const div = document.createElement("div")
+div.className = "drop-item"
+div.innerHTML = dropItems[Math.floor(Math.random()*dropItems.length)]
 
 dropsTrack.appendChild(div)
 
-},1200)
+},1500)
 
-// движение вправо
-let pos = -300
-
-function animate(){
-
-pos += 0.4
-
-dropsTrack.style.transform=`translateX(${pos}px)`
-
-// автоочистка
-const first=dropsTrack.firstElementChild
-
-if(first){
-
-const rect=first.getBoundingClientRect()
-
-if(rect.left > window.innerWidth){
-
-first.remove()
-
-}
-
-}
-
-requestAnimationFrame(animate)
-
-}
-
-animate()
-
-}
-
-// генерация новых предметов
-setInterval(createDrop,1500)
-
-// движение рулетки
 let position = 0
 
 function animateDrops(){
 
-position += 0.5
+position -= 0.4
 
 dropsTrack.style.transform = `translateX(${position}px)`
 
@@ -111,9 +75,11 @@ if(first){
 
 const rect = first.getBoundingClientRect()
 
-if(rect.left > window.innerWidth){
+if(rect.right < 0){
 
 first.remove()
+
+position += 74
 
 }
 
