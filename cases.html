@@ -1,56 +1,105 @@
 <!DOCTYPE html>
-<html>
+<html lang="ru">
 
 <head>
 
 <meta charset="UTF-8">
 
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 
 <title>Кейсы</title>
 
 <link rel="stylesheet" href="style.css">
+
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 <style>
 
-*{
--webkit-tap-highlight-color: transparent;
+/* контейнер */
+
+.cases-screen{
+max-width:420px;
+margin:auto;
+padding:16px;
 }
 
-.case{
-transition: transform 0.15s ease, box-shadow 0.15s ease;
-}
+/* header */
 
-.case:active{
-transform: scale(0.96);
+.cases-header{
+display:flex;
+align-items:center;
+gap:14px;
+margin-bottom:20px;
 }
 
 .back-btn{
-transition: transform 0.15s ease;
+background:none;
+border:none;
+cursor:pointer;
 }
 
-.back-btn:active{
-transform: scale(0.9);
+.cases-title{
+font-size:22px;
+font-weight:800;
 }
+
+/* grid кейсов */
 
 .cases-grid{
-animation: fadeCases 0.35s ease;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:14px;
 }
 
-@keyframes fadeCases{
+/* карточка кейса */
 
-from{
-opacity:0;
-transform: translateY(10px);
+.case{
+background:#141414;
+border-radius:16px;
+padding:14px;
+text-align:center;
+position:relative;
+border:1px solid rgba(255,255,255,0.08);
+transition:transform .15s;
 }
 
-to{
-opacity:1;
-transform: translateY(0);
+.case:active{
+transform:scale(0.96);
 }
 
+/* картинка */
+
+.case img{
+width:100%;
+border-radius:12px;
+margin-bottom:10px;
+}
+
+/* название */
+
+.case h3{
+font-size:15px;
+margin-bottom:6px;
+}
+
+/* цена */
+
+.price{
+font-size:13px;
+opacity:.7;
+}
+
+/* badge */
+
+.badge{
+position:absolute;
+top:10px;
+left:10px;
+background:#00aaff;
+padding:4px 7px;
+font-size:10px;
+border-radius:8px;
+font-weight:700;
 }
 
 </style>
@@ -59,54 +108,54 @@ transform: translateY(0);
 
 <body>
 
-<div class="app">  <!-- ВОТ ЭТО ВАЖНО -->
-
 <div class="cases-screen">
-
-<!-- HEADER -->
 
 <div class="cases-header">
 
 <button class="back-btn" onclick="goBack()">
-<svg width="30" height="30" viewBox="0 0 24 24">
-<path d="M15 18L9 12L15 6"
-stroke="white"
-stroke-width="2.5"
-stroke-linecap="round"
-stroke-linejoin="round"/>
-</svg>
+⬅
 </button>
 
-<h2 class="cases-title">Кейсы</h2>
+<div class="cases-title">
+Кейсы
+</div>
 
 </div>
 
-<!-- GRID С КЕЙСАМИ -->
-
 <div class="cases-grid">
+
+<!-- DAILY CASE -->
 
 <div class="case" onclick="openDailyCase()">
 
-<div class="badge">Ежедневный</div>
+<div class="badge">
+FREE
+</div>
 
 <img src="IMG_0640.jpeg">
 
 <h3>Ежедневный кейс</h3>
 
-<div class="price">Бесплатно</div>
+<div class="price">
+Бесплатно
+</div>
 
 </div>
 
+<!-- TEST CASE -->
+
 <div class="case" onclick="openTestCase()">
 
-<div class="badge">NEW</div>
+<div class="badge">
+NEW
+</div>
 
 <img src="test.png">
 
 <h3>Тестовый кейс</h3>
 
-<div class="price">1 ⭐</div>
-
+<div class="price">
+1 ⭐
 </div>
 
 </div>
@@ -118,4 +167,5 @@ stroke-linejoin="round"/>
 <script src="app.js"></script>
 
 </body>
+
 </html>
