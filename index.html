@@ -2,7 +2,11 @@
 <html>
 
 <head>
+
 <meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>Eyes Case</title>
 
 <link rel="stylesheet" href="style.css">
@@ -13,34 +17,45 @@
 
 <body>
 
+<div class="container">
+
 <div class="header">
 
 <div class="profile">
+
 <div class="avatar">👤</div>
-<div class="name">Player</div>
+
+<div>
+
+<div class="name" id="username">Player</div>
+
+<div class="sub">Eyes Case</div>
+
+</div>
+
 </div>
 
 <div class="balance">
+
 💎 0.05
-</div>
 
 </div>
 
+</div>
 
-<div class="menu">
+
+<div class="cards">
 
 <div class="card">
 
-<div class="card-title">
-🎰 Кейсы
-</div>
+<h2>🎰 Кейсы</h2>
 
-<div class="card-desc">
-Открывай кейсы и получай призы
-</div>
+<p>Открывай кейсы и получай призы</p>
 
 <button onclick="openCase()">
+
 ОТКРЫТЬ КЕЙС
+
 </button>
 
 </div>
@@ -48,13 +63,15 @@
 
 <div class="card">
 
-<div class="card-title">
-🚀 Ракета
-</div>
+<h2>🚀 Ракета</h2>
 
-<div class="card-desc">
-Запускай ракету и выигрывай звезды
-</div>
+<p>Запускай ракету и выигрывай звезды</p>
+
+<button>
+
+ИГРАТЬ
+
+</button>
 
 </div>
 
@@ -62,6 +79,8 @@
 
 
 <div id="result"></div>
+
+</div>
 
 <script src="app.js"></script>
 
