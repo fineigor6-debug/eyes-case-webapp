@@ -17,44 +17,44 @@ let dropTable = [
 
 {
 name:"Magic Potion",
-img:"https://raw.githubusercontent.com/telegram-cases/nft/main/magic_potion.png",
+img:"IMG_0667.jpeg",
 link:"https://t.me/nft/MagicPotion-4099",
 chance:30
 },
 
 {
 name:"Ion Gem",
-img:"https://raw.githubusercontent.com/telegram-cases/nft/main/ion_gem.png",
+img:"IMG_0668.webp",
 link:"https://t.me/nft/IonGem-2149",
 chance:22
 },
 
 {
 name:"Mini Oscar",
-img:"https://raw.githubusercontent.com/telegram-cases/nft/main/mini_oscar.png",
+img:"IMG_0669.webp",
 link:"https://t.me/nft/MiniOscar-3627",
 chance:18
 },
 
 {
 name:"Heroic Helmet",
-img:"https://raw.githubusercontent.com/telegram-cases/nft/main/heroic_helmet.png",
+img:"IMG_0670.jpeg",
 link:"https://t.me/nft/HeroicHelmet-1880",
 chance:14
 },
 
 {
 name:"Precious Peach",
-img:"https://raw.githubusercontent.com/telegram-cases/nft/main/precious_peach.png",
+img:"IMG_0671.webp",
 link:"https://t.me/nft/PreciousPeach-527",
-chance:9
+chance:10
 },
 
 {
 name:"Durov's Cap",
-img:"https://raw.githubusercontent.com/telegram-cases/nft/main/durovs_cap.png",
+img:"IMG_0672.webp",
 link:"https://t.me/nft/DurovsCap-4110",
-chance:5
+chance:6
 }
 
 ]
@@ -113,7 +113,7 @@ currentStrip.push(item)
 let div=document.createElement("div")
 div.className="item"
 
-div.innerHTML = `
+div.innerHTML=`
 <a href="${item.link}" target="_blank">
 <img src="${item.img}">
 </a>
@@ -141,6 +141,7 @@ buildRoulette()
 setTimeout(()=>{
 
 const item = track.querySelector(".item")
+
 const itemWidth = item.offsetWidth
 const gap = parseInt(getComputedStyle(track).gap) || 0
 const step = itemWidth + gap
@@ -173,7 +174,7 @@ openBtn.disabled=false
 }
 
 // ----------------------
-// WIN POPUP
+// POPUP
 // ----------------------
 
 function showWinPopup(item){
@@ -181,8 +182,8 @@ function showWinPopup(item){
 const popup=document.getElementById("winPopup")
 const winItem=document.getElementById("winItem")
 
-winItem.innerHTML = `
-<img src="${item.img}" style="width:80px;margin-bottom:10px"><br>
+winItem.innerHTML=`
+<img src="${item.img}" style="width:90px;margin-bottom:10px"><br>
 ${item.name}
 `
 
@@ -209,6 +210,7 @@ prizeList.innerHTML=""
 dropTable.forEach(item=>{
 
 let row=document.createElement("div")
+
 row.className="prize-row"
 
 row.innerHTML=`
