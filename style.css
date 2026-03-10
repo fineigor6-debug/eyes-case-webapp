@@ -188,6 +188,17 @@ will-change:transform;
 transform:translateX(0);
 }
 
+.item{
+min-width:90px;
+height:90px;
+display:flex;
+align-items:center;
+justify-content:center;
+background:rgba(255,255,255,0.08);
+border-radius:14px;
+flex-shrink:0;
+}
+
 .item img{
 width:70px;
 height:70px;
