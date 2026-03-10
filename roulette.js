@@ -26,7 +26,7 @@ let dropTable = [
 ]
 
 // ----------------------
-// RANDOM (SECURE)
+// RANDOM
 // ----------------------
 
 function random(){
@@ -48,7 +48,6 @@ function rollDrop(){
 
 let modifiedTable = [...dropTable]
 
-// если игроку долго не везёт
 if(badLuck > 10){
 
 modifiedTable[4].chance += 2
@@ -65,7 +64,6 @@ sum += item.chance
 
 if(r <= sum){
 
-// если выпал хороший дроп — сбрасываем
 if(
 item.name.includes("10") ||
 item.name.includes("25") ||
@@ -100,7 +98,6 @@ track.innerHTML = ""
 let strip = []
 let winIndex = 0
 
-// случайная часть
 for(let i=0;i<70;i++){
 
 let r = Math.floor(random()*dropTable.length)
@@ -108,19 +105,16 @@ strip.push(dropTable[r].name)
 
 }
 
-// near miss
-if(random() < 0.5){
+if(random()<0.5){
 
 let rare = dropTable[dropTable.length-2].name
 strip.push(rare)
 
 }
 
-// победитель
 winIndex = strip.length
 strip.push(winItem.name)
 
-// хвост
 for(let i=0;i<20;i++){
 
 let r = Math.floor(random()*dropTable.length)
@@ -128,7 +122,6 @@ strip.push(dropTable[r].name)
 
 }
 
-// DOM
 strip.forEach(name=>{
 
 let div = document.createElement("div")
@@ -165,11 +158,20 @@ track.style.transform = "translateX(0px)"
 setTimeout(()=>{
 
 const item = track.querySelector(".item")
-const itemWidth = item ? item.offsetWidth : 105
+const itemWidth = item ? item.offsetWidth : 90
+
+// получаем gap из CSS
+const style = window.getComputedStyle(track)
+const gap = parseInt(style.columnGap || style.gap) || 0
+
+// padding
+const paddingLeft = parseInt(style.paddingLeft) || 0
+
+const totalItemWidth = itemWidth + gap
 
 const centerOffset = (window.innerWidth/2)-(itemWidth/2)
 
-const distance = (winPos*itemWidth)-centerOffset
+const distance = (winPos * totalItemWidth) - centerOffset + paddingLeft
 
 let spinTime = 6000 + random()*2000
 
@@ -210,13 +212,12 @@ popup.classList.add("show")
 function closeWinPopup(){
 
 const popup = document.getElementById("winPopup")
-
 popup.classList.remove("show")
 
 }
 
 // ----------------------
-// RENDER PRIZE LIST
+// RENDER PRIZES
 // ----------------------
 
 function renderPrizeList(){
