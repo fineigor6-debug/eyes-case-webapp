@@ -26,7 +26,7 @@ let dropTable = [
 ]
 
 // ----------------------
-// RANDOM
+// RANDOM (SECURE)
 // ----------------------
 
 function random(){
@@ -105,7 +105,7 @@ strip.push(dropTable[r].name)
 
 }
 
-if(random()<0.5){
+if(random() < 0.5){
 
 let rare = dropTable[dropTable.length-2].name
 strip.push(rare)
@@ -149,7 +149,6 @@ spinning = true
 if(openBtn) openBtn.disabled = true
 
 let winItem = rollDrop()
-
 let winPos = buildRoulette(winItem)
 
 track.style.transition = "none"
@@ -160,18 +159,14 @@ setTimeout(()=>{
 const item = track.querySelector(".item")
 const itemWidth = item ? item.offsetWidth : 90
 
-// получаем gap из CSS
 const style = window.getComputedStyle(track)
-const gap = parseInt(style.columnGap || style.gap) || 0
+const gap = parseInt(style.gap) || 0
 
-// padding
-const paddingLeft = parseInt(style.paddingLeft) || 0
+const totalWidth = itemWidth + gap
 
-const totalItemWidth = itemWidth + gap
+const centerOffset = (window.innerWidth / 2) - (itemWidth / 2)
 
-const centerOffset = (window.innerWidth/2)-(itemWidth/2)
-
-const distance = (winPos * totalItemWidth) - centerOffset + paddingLeft
+const distance = (winPos * totalWidth) - centerOffset
 
 let spinTime = 6000 + random()*2000
 
@@ -183,7 +178,6 @@ setTimeout(()=>{
 showWinPopup(winItem.name)
 
 spinning = false
-
 if(openBtn) openBtn.disabled = false
 
 },spinTime)
@@ -204,7 +198,6 @@ const winItem = document.getElementById("winItem")
 if(!popup) return
 
 winItem.innerText = item
-
 popup.classList.add("show")
 
 }
