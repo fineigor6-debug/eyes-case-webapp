@@ -64,9 +64,12 @@ chance:5
 // ----------------------
 
 function random(){
+
 const arr = new Uint32Array(1)
 crypto.getRandomValues(arr)
+
 return arr[0] / 4294967296
+
 }
 
 // ----------------------
@@ -110,7 +113,7 @@ currentStrip.push(item)
 let div=document.createElement("div")
 div.className="item"
 
-div.innerHTML=`
+div.innerHTML = `
 <a href="${item.link}" target="_blank">
 <img src="${item.img}">
 </a>
@@ -135,9 +138,6 @@ openBtn.disabled=true
 
 buildRoulette()
 
-track.style.transition="none"
-track.style.transform="translateX(0)"
-
 setTimeout(()=>{
 
 const item = track.querySelector(".item")
@@ -149,9 +149,10 @@ const roulette = document.querySelector(".roulette")
 const center = roulette.offsetWidth/2 - itemWidth/2
 
 const targetIndex = 80
+
 const distance = targetIndex * step - center
 
-const spinTime = 6000
+const spinTime = 6000 + random()*2000
 
 track.style.transition=`transform ${spinTime}ms cubic-bezier(.12,.7,.2,1)`
 track.style.transform=`translateX(-${distance}px)`
@@ -172,7 +173,7 @@ openBtn.disabled=false
 }
 
 // ----------------------
-// POPUP
+// WIN POPUP
 // ----------------------
 
 function showWinPopup(item){
@@ -180,8 +181,8 @@ function showWinPopup(item){
 const popup=document.getElementById("winPopup")
 const winItem=document.getElementById("winItem")
 
-winItem.innerHTML=`
-<img src="${item.img}" style="width:80px"><br>
+winItem.innerHTML = `
+<img src="${item.img}" style="width:80px;margin-bottom:10px"><br>
 ${item.name}
 `
 
@@ -190,7 +191,9 @@ popup.classList.add("show")
 }
 
 function closeWinPopup(){
+
 document.getElementById("winPopup").classList.remove("show")
+
 }
 
 // ----------------------
@@ -209,10 +212,11 @@ let row=document.createElement("div")
 row.className="prize-row"
 
 row.innerHTML=`
-<div style="display:flex;gap:10px;align-items:center">
-<img src="${item.img}" width="24">
+<div style="display:flex;align-items:center;gap:10px">
+<img src="${item.img}" style="width:28px">
 ${item.name}
 </div>
+
 <div>${item.chance}%</div>
 `
 
