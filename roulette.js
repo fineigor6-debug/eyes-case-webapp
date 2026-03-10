@@ -120,7 +120,7 @@ strip.push(rare)
 winIndex = strip.length
 strip.push(winItem.name)
 
-// хвост рулетки
+// хвост
 for(let i=0;i<20;i++){
 
 let r = Math.floor(random()*dropTable.length)
@@ -178,7 +178,7 @@ track.style.transform = `translateX(-${distance}px)`
 
 setTimeout(()=>{
 
-alert("Вы выиграли: " + winItem.name)
+showWinPopup(winItem.name)
 
 spinning = false
 
@@ -187,6 +187,31 @@ if(openBtn) openBtn.disabled = false
 },spinTime)
 
 },60)
+
+}
+
+// ----------------------
+// WIN POPUP
+// ----------------------
+
+function showWinPopup(item){
+
+const popup = document.getElementById("winPopup")
+const winItem = document.getElementById("winItem")
+
+if(!popup) return
+
+winItem.innerText = item
+
+popup.classList.add("show")
+
+}
+
+function closeWinPopup(){
+
+const popup = document.getElementById("winPopup")
+
+popup.classList.remove("show")
 
 }
 
