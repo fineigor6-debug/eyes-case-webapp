@@ -2,17 +2,17 @@
 // ELEMENTS
 // ----------------------
 
-const track = document.getElementById("rouletteTrack")
-const prizeList = document.getElementById("prizeList")
-const openBtn = document.getElementById("openCaseBtn")
+const track=document.getElementById("rouletteTrack")
+const prizeList=document.getElementById("prizeList")
+const openBtn=document.getElementById("openCaseBtn")
 
 let spinning=false
 
 // ----------------------
-// DROP ECONOMY
+// DROP TABLE
 // ----------------------
 
-const dropTable=[
+let dropTable=[
 
 { name:"1 ⭐", chance:30 },
 { name:"2 ⭐", chance:22 },
@@ -20,7 +20,8 @@ const dropTable=[
 { name:"5 ⭐", chance:14 },
 { name:"10 ⭐", chance:9 },
 { name:"25 ⭐", chance:5 },
-{ name:"50 ⭐", chance:2 }
+{ name:"50 ⭐", chance:1.95 },
+{ name:"100 ⭐", chance:0.05 }
 
 ]
 
@@ -38,25 +39,46 @@ return arr[0]/4294967296
 }
 
 // ----------------------
-// ROLL DROP
+// DYNAMIC RTP
 // ----------------------
 
+let badLuck=0
+
 function rollDrop(){
+
+let modifiedTable=[...dropTable]
+
+// если игроку долго не везёт
+if(badLuck>10){
+
+modifiedTable[4].chance+=2
+modifiedTable[5].chance+=1
+
+}
 
 let r=random()*100
 let sum=0
 
-for(let item of dropTable){
+for(let item of modifiedTable){
 
 sum+=item.chance
 
 if(r<=sum){
+
+// если выпал хороший дроп — сбрасываем
+if(item.name.includes("10") || item.name.includes("25") || item.name.includes("50")){
+badLuck=0
+}else{
+badLuck++
+}
+
 return item
-}
 
 }
 
-return dropTable[0]
+}
+
+return modifiedTable[0]
 
 }
 
@@ -79,9 +101,9 @@ strip.push(dropTable[r].name)
 }
 
 // near miss
-if(random()<0.45){
+if(random()<0.5){
 
-let rare=dropTable[dropTable.length-1].name
+let rare=dropTable[dropTable.length-2].name
 strip.push(rare)
 
 }
@@ -89,7 +111,7 @@ strip.push(rare)
 // победитель
 strip.push(winItem.name)
 
-// ещё немного после
+// хвост рулетки
 for(let i=0;i<20;i++){
 
 let r=Math.floor(random()*dropTable.length)
@@ -108,13 +130,12 @@ track.appendChild(div)
 
 })
 
-// позиция победителя
 return strip.indexOf(winItem.name)
 
 }
 
 // ----------------------
-// SPIN CASE
+// SPIN
 // ----------------------
 
 function spinCase(){
@@ -124,13 +145,10 @@ spinning=true
 
 if(openBtn) openBtn.disabled=true
 
-// выбираем дроп
-const winItem=rollDrop()
+let winItem=rollDrop()
 
-// строим рулетку
-const winPos=buildRoulette(winItem)
+let winPos=buildRoulette(winItem)
 
-// reset
 track.style.transition="none"
 track.style.transform="translateX(0px)"
 
@@ -143,8 +161,7 @@ const centerOffset=(window.innerWidth/2)-(itemWidth/2)
 
 const distance=(winPos*itemWidth)-centerOffset
 
-// slow motion
-const spinTime=6000+random()*2000
+let spinTime=6000+random()*2000
 
 track.style.transition=`transform ${spinTime}ms cubic-bezier(.08,.85,.15,1)`
 track.style.transform=`translateX(-${distance}px)`
