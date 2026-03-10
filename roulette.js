@@ -98,6 +98,7 @@ if(!track) return 0
 track.innerHTML = ""
 
 let strip = []
+let winIndex = 0
 
 // случайная часть
 for(let i=0;i<70;i++){
@@ -116,6 +117,7 @@ strip.push(rare)
 }
 
 // победитель
+winIndex = strip.length
 strip.push(winItem.name)
 
 // хвост рулетки
@@ -138,7 +140,7 @@ track.appendChild(div)
 
 })
 
-return strip.indexOf(winItem.name)
+return winIndex
 
 }
 
