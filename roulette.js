@@ -148,9 +148,13 @@ const gap = parseInt(window.getComputedStyle(track).gap) || 0
 const totalWidth = itemWidth + gap
 
 const roulette = document.querySelector(".roulette")
+const rouletteStyle = window.getComputedStyle(roulette)
+
+const paddingLeft = parseInt(rouletteStyle.paddingLeft) || 0
+
 const center = roulette.offsetWidth/2 - itemWidth/2
 
-const distance = winPos*totalWidth - center
+const distance = winPos*totalWidth - center + paddingLeft
 
 let spinTime = 6000 + random()*2000
 
