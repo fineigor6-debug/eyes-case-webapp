@@ -26,7 +26,7 @@ let dropTable = [
 ]
 
 // ----------------------
-// RANDOM (SECURE)
+// RANDOM
 // ----------------------
 
 function random(){
@@ -39,7 +39,7 @@ return arr[0] / 4294967296
 }
 
 // ----------------------
-// DYNAMIC RTP
+// RTP
 // ----------------------
 
 let badLuck = 0
@@ -91,49 +91,33 @@ return modifiedTable[0]
 
 function buildRoulette(winItem){
 
-if(!track) return 0
+track.innerHTML=""
 
-track.innerHTML = ""
+const TOTAL_ITEMS = 120
+const WIN_POSITION = 80
 
 let strip = []
-let winIndex = 0
 
-for(let i=0;i<70;i++){
-
-let r = Math.floor(random()*dropTable.length)
-strip.push(dropTable[r].name)
-
-}
-
-if(random() < 0.5){
-
-let rare = dropTable[dropTable.length-2].name
-strip.push(rare)
-
-}
-
-winIndex = strip.length
-strip.push(winItem.name)
-
-for(let i=0;i<20;i++){
+for(let i=0;i<TOTAL_ITEMS;i++){
 
 let r = Math.floor(random()*dropTable.length)
 strip.push(dropTable[r].name)
 
 }
+
+strip[WIN_POSITION] = winItem.name
 
 strip.forEach(name=>{
 
 let div = document.createElement("div")
-
-div.className = "item"
-div.innerText = name
+div.className="item"
+div.innerText=name
 
 track.appendChild(div)
 
 })
 
-return winIndex
+return WIN_POSITION
 
 }
 
@@ -146,43 +130,43 @@ function spinCase(){
 if(spinning) return
 spinning = true
 
-if(openBtn) openBtn.disabled = true
+if(openBtn) openBtn.disabled=true
 
 let winItem = rollDrop()
 let winPos = buildRoulette(winItem)
 
-track.style.transition = "none"
-track.style.transform = "translateX(0px)"
+track.style.transition="none"
+track.style.transform="translateX(0px)"
 
 setTimeout(()=>{
 
 const item = track.querySelector(".item")
-const itemWidth = item ? item.offsetWidth : 90
 
-const style = window.getComputedStyle(track)
-const gap = parseInt(style.gap) || 0
+const itemWidth = item.offsetWidth
+const gap = parseInt(window.getComputedStyle(track).gap) || 0
 
 const totalWidth = itemWidth + gap
 
-const centerOffset = (window.innerWidth / 2) - (itemWidth / 2)
+const roulette = document.querySelector(".roulette")
+const center = roulette.offsetWidth/2 - itemWidth/2
 
-const distance = (winPos * totalWidth) - centerOffset
+const distance = winPos*totalWidth - center
 
 let spinTime = 6000 + random()*2000
 
-track.style.transition = `transform ${spinTime}ms cubic-bezier(.08,.85,.15,1)`
-track.style.transform = `translateX(-${distance}px)`
+track.style.transition=`transform ${spinTime}ms cubic-bezier(.08,.85,.15,1)`
+track.style.transform=`translateX(-${distance}px)`
 
 setTimeout(()=>{
 
 showWinPopup(winItem.name)
 
-spinning = false
-if(openBtn) openBtn.disabled = false
+spinning=false
+if(openBtn) openBtn.disabled=false
 
 },spinTime)
 
-},60)
+},50)
 
 }
 
@@ -197,15 +181,14 @@ const winItem = document.getElementById("winItem")
 
 if(!popup) return
 
-winItem.innerText = item
+winItem.innerText=item
 popup.classList.add("show")
 
 }
 
 function closeWinPopup(){
 
-const popup = document.getElementById("winPopup")
-popup.classList.remove("show")
+document.getElementById("winPopup").classList.remove("show")
 
 }
 
@@ -217,15 +200,15 @@ function renderPrizeList(){
 
 if(!prizeList) return
 
-prizeList.innerHTML = ""
+prizeList.innerHTML=""
 
 dropTable.forEach(item=>{
 
-let row = document.createElement("div")
+let row=document.createElement("div")
 
-row.className = "prize-row"
+row.className="prize-row"
 
-row.innerHTML = `
+row.innerHTML=`
 <div>${item.name}</div>
 <div>${item.chance}%</div>
 `
