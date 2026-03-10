@@ -7,92 +7,50 @@ const prizeList = document.getElementById("prizeList")
 const openBtn = document.getElementById("openCaseBtn")
 
 let spinning=false
-let lastSpinTime=0
 
 // ----------------------
-// DROP TABLE (RTP 65%)
+// DROP ECONOMY
 // ----------------------
 
 const dropTable=[
 
-{ name:"1 ⭐", chance:28 },
+{ name:"1 ⭐", chance:30 },
 { name:"2 ⭐", chance:22 },
 { name:"3 ⭐", chance:18 },
 { name:"5 ⭐", chance:14 },
-{ name:"10 ⭐", chance:10 },
-{ name:"25 ⭐", chance:6 },
+{ name:"10 ⭐", chance:9 },
+{ name:"25 ⭐", chance:5 },
 { name:"50 ⭐", chance:2 }
 
 ]
 
 // ----------------------
-// RENDER PRIZES
+// RANDOM
 // ----------------------
 
-function renderPrizeList(){
+function random(){
 
-if(!prizeList) return
+const arr=new Uint32Array(1)
+crypto.getRandomValues(arr)
 
-prizeList.innerHTML=""
-
-dropTable.forEach(item=>{
-
-let row=document.createElement("div")
-
-row.className="prize-row"
-
-row.innerHTML=`
-<div>${item.name}</div>
-<div>${item.chance}%</div>
-`
-
-prizeList.appendChild(row)
-
-})
+return arr[0]/4294967296
 
 }
 
 // ----------------------
-// SECURE RANDOM
-// ----------------------
-
-function secureRandom(){
-
-const array = new Uint32Array(1)
-crypto.getRandomValues(array)
-
-return array[0] / (2**32)
-
-}
-
-// ----------------------
-// RNG SALT
-// ----------------------
-
-let rngSalt = Date.now()
-
-function secureRoll(){
-
-rngSalt += Math.floor(secureRandom()*100000)
-
-return (secureRandom() + (rngSalt % 1)) % 1
-
-}
-
-// ----------------------
-// DROP ROLL
+// ROLL DROP
 // ----------------------
 
 function rollDrop(){
 
-let rand=secureRoll()*100
+let r=random()*100
 let sum=0
 
 for(let item of dropTable){
 
 sum+=item.chance
 
-if(rand<=sum){
+if(r<=sum){
 return item
 }
 
@@ -108,31 +66,38 @@ return dropTable[0]
 
 function buildRoulette(winItem){
 
-if(!track) return 0
-
 track.innerHTML=""
 
 let strip=[]
 
-// длинная рулетка
-for(let i=0;i<120;i++){
+// случайная часть
+for(let i=0;i<70;i++){
 
-let r=Math.floor(secureRoll()*dropTable.length)
+let r=Math.floor(random()*dropTable.length)
 strip.push(dropTable[r].name)
 
 }
 
 // near miss
-if(secureRoll()<0.35){
+if(random()<0.45){
 
 let rare=dropTable[dropTable.length-1].name
-strip[110]=rare
+strip.push(rare)
 
 }
 
 // победитель
 strip.push(winItem.name)
 
+// ещё немного после
+for(let i=0;i<20;i++){
+
+let r=Math.floor(random()*dropTable.length)
+strip.push(dropTable[r].name)
+
+}
+
+// DOM
 strip.forEach(name=>{
 
 let div=document.createElement("div")
@@ -143,7 +108,8 @@ track.appendChild(div)
 
 })
 
-return strip.length-1
+// позиция победителя
+return strip.indexOf(winItem.name)
 
 }
 
@@ -153,43 +119,34 @@ return strip.length-1
 
 function spinCase(){
 
-if(!track) return
-
-// анти спам
-const now=Date.now()
-
-if(now-lastSpinTime<2000){
-return
-}
-
-lastSpinTime=now
-
 if(spinning) return
 spinning=true
 
 if(openBtn) openBtn.disabled=true
 
 // выбираем дроп
-let winItem=rollDrop()
+const winItem=rollDrop()
 
 // строим рулетку
-let winPosition=buildRoulette(winItem)
+const winPos=buildRoulette(winItem)
 
+// reset
 track.style.transition="none"
 track.style.transform="translateX(0px)"
 
 setTimeout(()=>{
 
-const item = track.querySelector(".item")
-const itemWidth = item ? item.offsetWidth : 105
+const item=track.querySelector(".item")
+const itemWidth=item ? item.offsetWidth : 105
 
 const centerOffset=(window.innerWidth/2)-(itemWidth/2)
 
-const distance=(winPosition*itemWidth)-centerOffset
+const distance=(winPos*itemWidth)-centerOffset
 
-let spinTime=5200+(secureRoll()*1800)
+// slow motion
+const spinTime=6000+random()*2000
 
-track.style.transition=`transform ${spinTime}ms cubic-bezier(.05,.9,.15,1)`
+track.style.transition=`transform ${spinTime}ms cubic-bezier(.08,.85,.15,1)`
 track.style.transform=`translateX(-${distance}px)`
 
 setTimeout(()=>{
@@ -197,7 +154,6 @@ setTimeout(()=>{
 alert("Вы выиграли: "+winItem.name)
 
 spinning=false
-
 if(openBtn) openBtn.disabled=false
 
 },spinTime)
@@ -205,9 +161,3 @@ if(openBtn) openBtn.disabled=false
 },60)
 
 }
-
-// ----------------------
-// INIT
-// ----------------------
-
-renderPrizeList()
