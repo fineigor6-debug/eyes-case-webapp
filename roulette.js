@@ -14,14 +14,12 @@ let currentStrip = []
 // ----------------------
 
 const drops = [
-{ name:"1 ⭐", chance:30 },
-{ name:"2 ⭐", chance:22 },
-{ name:"3 ⭐", chance:18 },
-{ name:"5 ⭐", chance:14 },
-{ name:"10 ⭐", chance:9 },
-{ name:"25 ⭐", chance:5 },
-{ name:"50 ⭐", chance:1.95 },
-{ name:"100 ⭐", chance:0.05 }
+{ name:"Magic Potion 🧪", chance:30 },
+{ name:"Ion Gem 💎", chance:22 },
+{ name:"Mini Oscar 🏆", chance:18 },
+{ name:"Heroic Helmet 🪖", chance:14 },
+{ name:"Precious Peach 🍑", chance:9 },
+{ name:"Durov's Cap 🧢", chance:5 },
 ]
 
 // ----------------------
