@@ -407,3 +407,39 @@ border:1px solid rgba(255,255,255,0.08);
 
 backdrop-filter:blur(10px);
 }
+
+.case-description{
+
+margin-top:20px;
+padding:14px;
+
+background:#141414;
+border-radius:14px;
+
+border:1px solid rgba(255,255,255,0.08);
+
+}
+
+.case-description h3{
+
+font-size:16px;
+margin-bottom:12px;
+
+}
+
+.prize-row{
+
+display:flex;
+justify-content:space-between;
+
+padding:8px 0;
+
+border-bottom:1px solid rgba(255,255,255,0.05);
+
+font-size:14px;
+
+}
+
+.prize-row:last-child{
+border:none;
+}
