@@ -2,17 +2,17 @@
 // ELEMENTS
 // ----------------------
 
-const track=document.getElementById("rouletteTrack")
-const prizeList=document.getElementById("prizeList")
-const openBtn=document.getElementById("openCaseBtn")
+const track = document.getElementById("rouletteTrack")
+const prizeList = document.getElementById("prizeList")
+const openBtn = document.getElementById("openCaseBtn")
 
-let spinning=false
+let spinning = false
 
 // ----------------------
 // DROP TABLE
 // ----------------------
 
-let dropTable=[
+let dropTable = [
 
 { name:"1 ⭐", chance:30 },
 { name:"2 ⭐", chance:22 },
@@ -26,15 +26,15 @@ let dropTable=[
 ]
 
 // ----------------------
-// RANDOM
+// RANDOM (SECURE)
 // ----------------------
 
 function random(){
 
-const arr=new Uint32Array(1)
+const arr = new Uint32Array(1)
 crypto.getRandomValues(arr)
 
-return arr[0]/4294967296
+return arr[0] / 4294967296
 
 }
 
@@ -42,32 +42,37 @@ return arr[0]/4294967296
 // DYNAMIC RTP
 // ----------------------
 
-let badLuck=0
+let badLuck = 0
 
 function rollDrop(){
 
-let modifiedTable=[...dropTable]
+let modifiedTable = [...dropTable]
 
 // если игроку долго не везёт
-if(badLuck>10){
+if(badLuck > 10){
 
-modifiedTable[4].chance+=2
-modifiedTable[5].chance+=1
+modifiedTable[4].chance += 2
+modifiedTable[5].chance += 1
 
 }
 
-let r=random()*100
-let sum=0
+let r = random()*100
+let sum = 0
 
 for(let item of modifiedTable){
 
-sum+=item.chance
+sum += item.chance
 
-if(r<=sum){
+if(r <= sum){
 
 // если выпал хороший дроп — сбрасываем
-if(item.name.includes("10") || item.name.includes("25") || item.name.includes("50")){
-badLuck=0
+if(
+item.name.includes("10") ||
+item.name.includes("25") ||
+item.name.includes("50") ||
+item.name.includes("100")
+){
+badLuck = 0
 }else{
 badLuck++
 }
@@ -88,22 +93,24 @@ return modifiedTable[0]
 
 function buildRoulette(winItem){
 
-track.innerHTML=""
+if(!track) return 0
 
-let strip=[]
+track.innerHTML = ""
+
+let strip = []
 
 // случайная часть
 for(let i=0;i<70;i++){
 
-let r=Math.floor(random()*dropTable.length)
+let r = Math.floor(random()*dropTable.length)
 strip.push(dropTable[r].name)
 
 }
 
 // near miss
-if(random()<0.5){
+if(random() < 0.5){
 
-let rare=dropTable[dropTable.length-2].name
+let rare = dropTable[dropTable.length-2].name
 strip.push(rare)
 
 }
@@ -114,7 +121,7 @@ strip.push(winItem.name)
 // хвост рулетки
 for(let i=0;i<20;i++){
 
-let r=Math.floor(random()*dropTable.length)
+let r = Math.floor(random()*dropTable.length)
 strip.push(dropTable[r].name)
 
 }
@@ -122,9 +129,10 @@ strip.push(dropTable[r].name)
 // DOM
 strip.forEach(name=>{
 
-let div=document.createElement("div")
-div.className="item"
-div.innerText=name
+let div = document.createElement("div")
+
+div.className = "item"
+div.innerText = name
 
 track.appendChild(div)
 
@@ -141,40 +149,74 @@ return strip.indexOf(winItem.name)
 function spinCase(){
 
 if(spinning) return
-spinning=true
+spinning = true
 
-if(openBtn) openBtn.disabled=true
+if(openBtn) openBtn.disabled = true
 
-let winItem=rollDrop()
+let winItem = rollDrop()
 
-let winPos=buildRoulette(winItem)
+let winPos = buildRoulette(winItem)
 
-track.style.transition="none"
-track.style.transform="translateX(0px)"
-
-setTimeout(()=>{
-
-const item=track.querySelector(".item")
-const itemWidth=item ? item.offsetWidth : 105
-
-const centerOffset=(window.innerWidth/2)-(itemWidth/2)
-
-const distance=(winPos*itemWidth)-centerOffset
-
-let spinTime=6000+random()*2000
-
-track.style.transition=`transform ${spinTime}ms cubic-bezier(.08,.85,.15,1)`
-track.style.transform=`translateX(-${distance}px)`
+track.style.transition = "none"
+track.style.transform = "translateX(0px)"
 
 setTimeout(()=>{
 
-alert("Вы выиграли: "+winItem.name)
+const item = track.querySelector(".item")
+const itemWidth = item ? item.offsetWidth : 105
 
-spinning=false
-if(openBtn) openBtn.disabled=false
+const centerOffset = (window.innerWidth/2)-(itemWidth/2)
+
+const distance = (winPos*itemWidth)-centerOffset
+
+let spinTime = 6000 + random()*2000
+
+track.style.transition = `transform ${spinTime}ms cubic-bezier(.08,.85,.15,1)`
+track.style.transform = `translateX(-${distance}px)`
+
+setTimeout(()=>{
+
+alert("Вы выиграли: " + winItem.name)
+
+spinning = false
+
+if(openBtn) openBtn.disabled = false
 
 },spinTime)
 
 },60)
 
 }
+
+// ----------------------
+// RENDER PRIZE LIST
+// ----------------------
+
+function renderPrizeList(){
+
+if(!prizeList) return
+
+prizeList.innerHTML = ""
+
+dropTable.forEach(item=>{
+
+let row = document.createElement("div")
+
+row.className = "prize-row"
+
+row.innerHTML = `
+<div>${item.name}</div>
+<div>${item.chance}%</div>
+`
+
+prizeList.appendChild(row)
+
+})
+
+}
+
+// ----------------------
+// INIT
+// ----------------------
+
+renderPrizeList()
