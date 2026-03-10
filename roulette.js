@@ -13,13 +13,50 @@ let currentStrip = []
 // DROP TABLE
 // ----------------------
 
-const drops = [
-{ name:"Magic Potion 🧪", chance:30 },
-{ name:"Ion Gem 💎", chance:22 },
-{ name:"Mini Oscar 🏆", chance:18 },
-{ name:"Heroic Helmet 🪖", chance:14 },
-{ name:"Precious Peach 🍑", chance:9 },
-{ name:"Durov's Cap 🧢", chance:5 },
+let dropTable = [
+
+{
+name:"Magic Potion",
+img:"https://nft.fragment.com/gift/magic_potion.png",
+link:"https://t.me/nft/MagicPotion-4099",
+chance:30
+},
+
+{
+name:"Ion Gem",
+img:"https://nft.fragment.com/gift/ion_gem.png",
+link:"https://t.me/nft/IonGem-2149",
+chance:22
+},
+
+{
+name:"Mini Oscar",
+img:"https://nft.fragment.com/gift/mini_oscar.png",
+link:"https://t.me/nft/MiniOscar-3627",
+chance:18
+},
+
+{
+name:"Heroic Helmet",
+img:"https://nft.fragment.com/gift/heroic_helmet.png",
+link:"https://t.me/nft/HeroicHelmet-1880",
+chance:14
+},
+
+{
+name:"Precious Peach",
+img:"https://nft.fragment.com/gift/precious_peach.png",
+link:"https://t.me/nft/PreciousPeach-527",
+chance:9
+},
+
+{
+name:"Durov's Cap",
+img:"https://nft.fragment.com/gift/durovs_cap.png",
+link:"https://t.me/nft/DurovsCap-4110",
+chance:5
+}
+
 ]
 
 // ----------------------
@@ -93,8 +130,11 @@ openBtn.disabled=true
 
 buildRoulette()
 
-track.style.transition="none"
-track.style.transform="translateX(0)"
+div.innerHTML = `
+<a href="${item.link}" target="_blank">
+<img src="${item.img}">
+</a>
+`
 
 setTimeout(()=>{
 
