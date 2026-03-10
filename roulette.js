@@ -17,42 +17,42 @@ let dropTable = [
 
 {
 name:"Magic Potion",
-img:"https://nft.fragment.com/gift/magic_potion.png",
+img:"https://raw.githubusercontent.com/telegram-cases/nft/main/magic_potion.png",
 link:"https://t.me/nft/MagicPotion-4099",
 chance:30
 },
 
 {
 name:"Ion Gem",
-img:"https://nft.fragment.com/gift/ion_gem.png",
+img:"https://raw.githubusercontent.com/telegram-cases/nft/main/ion_gem.png",
 link:"https://t.me/nft/IonGem-2149",
 chance:22
 },
 
 {
 name:"Mini Oscar",
-img:"https://nft.fragment.com/gift/mini_oscar.png",
+img:"https://raw.githubusercontent.com/telegram-cases/nft/main/mini_oscar.png",
 link:"https://t.me/nft/MiniOscar-3627",
 chance:18
 },
 
 {
 name:"Heroic Helmet",
-img:"https://nft.fragment.com/gift/heroic_helmet.png",
+img:"https://raw.githubusercontent.com/telegram-cases/nft/main/heroic_helmet.png",
 link:"https://t.me/nft/HeroicHelmet-1880",
 chance:14
 },
 
 {
 name:"Precious Peach",
-img:"https://nft.fragment.com/gift/precious_peach.png",
+img:"https://raw.githubusercontent.com/telegram-cases/nft/main/precious_peach.png",
 link:"https://t.me/nft/PreciousPeach-527",
 chance:9
 },
 
 {
 name:"Durov's Cap",
-img:"https://nft.fragment.com/gift/durovs_cap.png",
+img:"https://raw.githubusercontent.com/telegram-cases/nft/main/durovs_cap.png",
 link:"https://t.me/nft/DurovsCap-4110",
 chance:5
 }
