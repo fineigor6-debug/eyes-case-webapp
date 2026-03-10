@@ -78,17 +78,17 @@ function rollDrop(){
 let r = random()*100
 let sum = 0
 
-for(let item of drops){
+for(let item of dropTable){
 
 sum += item.chance
 
 if(r <= sum){
-return item.name
+return item
 }
 
 }
 
-return drops[0].name
+return dropTable[0]
 
 }
 
@@ -109,7 +109,12 @@ currentStrip.push(item)
 
 let div=document.createElement("div")
 div.className="item"
-div.innerText=item
+
+div.innerHTML=`
+<a href="${item.link}" target="_blank">
+<img src="${item.img}">
+</a>
+`
 
 track.appendChild(div)
 
@@ -130,11 +135,8 @@ openBtn.disabled=true
 
 buildRoulette()
 
-div.innerHTML = `
-<a href="${item.link}" target="_blank">
-<img src="${item.img}">
-</a>
-`
+track.style.transition="none"
+track.style.transform="translateX(0)"
 
 setTimeout(()=>{
 
@@ -146,9 +148,7 @@ const step = itemWidth + gap
 const roulette = document.querySelector(".roulette")
 const center = roulette.offsetWidth/2 - itemWidth/2
 
-// куда прокрутить
 const targetIndex = 80
-
 const distance = targetIndex * step - center
 
 const spinTime = 6000
@@ -180,15 +180,17 @@ function showWinPopup(item){
 const popup=document.getElementById("winPopup")
 const winItem=document.getElementById("winItem")
 
-winItem.innerText=item
+winItem.innerHTML=`
+<img src="${item.img}" style="width:80px"><br>
+${item.name}
+`
+
 popup.classList.add("show")
 
 }
 
 function closeWinPopup(){
-
 document.getElementById("winPopup").classList.remove("show")
-
 }
 
 // ----------------------
@@ -201,13 +203,16 @@ if(!prizeList) return
 
 prizeList.innerHTML=""
 
-drops.forEach(item=>{
+dropTable.forEach(item=>{
 
 let row=document.createElement("div")
 row.className="prize-row"
 
 row.innerHTML=`
-<div>${item.name}</div>
+<div style="display:flex;gap:10px;align-items:center">
+<img src="${item.img}" width="24">
+${item.name}
+</div>
 <div>${item.chance}%</div>
 `
 
