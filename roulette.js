@@ -7,6 +7,7 @@ const prizeList = document.getElementById("prizeList")
 const openBtn = document.getElementById("openCaseBtn")
 
 let spinning = false
+let currentStrip = []
 
 // ----------------------
 // DROP TABLE
@@ -24,7 +25,7 @@ const drops = [
 ]
 
 // ----------------------
-// RANDOM SECURE
+// SECURE RANDOM
 // ----------------------
 
 function random(){
@@ -34,7 +35,7 @@ return arr[0] / 4294967296
 }
 
 // ----------------------
-// DROP ROLL
+// WEIGHTED RANDOM
 // ----------------------
 
 function rollDrop(){
@@ -47,12 +48,12 @@ for(let item of drops){
 sum += item.chance
 
 if(r <= sum){
-return item
+return item.name
 }
 
 }
 
-return drops[0]
+return drops[0].name
 
 }
 
@@ -60,43 +61,24 @@ return drops[0]
 // BUILD ROULETTE
 // ----------------------
 
-function buildRoulette(winItem){
+function buildRoulette(){
 
-track.innerHTML = ""
+track.innerHTML=""
+currentStrip=[]
 
-const TOTAL = 140
-const WIN_SLOT = 100
+for(let i=0;i<120;i++){
 
-let strip = []
+let item = rollDrop()
 
-for(let i=0;i<TOTAL;i++){
+currentStrip.push(item)
 
-let rand = drops[Math.floor(random()*drops.length)]
-strip.push(rand.name)
-
-}
-
-// near miss
-if(random() < 0.6){
-
-strip[WIN_SLOT-1] = "50 ⭐"
-strip[WIN_SLOT+1] = "50 ⭐"
-
-}
-
-strip[WIN_SLOT] = winItem.name
-
-strip.forEach(name=>{
-
-const div = document.createElement("div")
-div.className = "item"
-div.innerText = name
+let div=document.createElement("div")
+div.className="item"
+div.innerText=item
 
 track.appendChild(div)
 
-})
-
-return WIN_SLOT
+}
 
 }
 
@@ -107,41 +89,43 @@ return WIN_SLOT
 function spinCase(){
 
 if(spinning) return
-spinning = true
+spinning=true
 
-openBtn.disabled = true
+openBtn.disabled=true
 
-const winItem = rollDrop()
-const winIndex = buildRoulette(winItem)
+buildRoulette()
 
-track.style.transition = "none"
-track.style.transform = "translateX(0px)"
+track.style.transition="none"
+track.style.transform="translateX(0)"
 
 setTimeout(()=>{
 
 const item = track.querySelector(".item")
-
 const itemWidth = item.offsetWidth
-const gap = parseInt(getComputedStyle(track).gap)
-
+const gap = parseInt(getComputedStyle(track).gap) || 0
 const step = itemWidth + gap
 
 const roulette = document.querySelector(".roulette")
 const center = roulette.offsetWidth/2 - itemWidth/2
 
-const distance = winIndex * step - center
+// куда прокрутить
+const targetIndex = 80
 
-const spinTime = 5500 + random()*1500
+const distance = targetIndex * step - center
 
-track.style.transition = `transform ${spinTime}ms cubic-bezier(.1,.7,.15,1)`
-track.style.transform = `translateX(-${distance}px)`
+const spinTime = 6000
+
+track.style.transition=`transform ${spinTime}ms cubic-bezier(.12,.7,.2,1)`
+track.style.transform=`translateX(-${distance}px)`
 
 setTimeout(()=>{
 
-showWinPopup(winItem.name)
+const win = currentStrip[targetIndex]
 
-spinning = false
-openBtn.disabled = false
+showWinPopup(win)
+
+spinning=false
+openBtn.disabled=false
 
 },spinTime)
 
@@ -155,11 +139,10 @@ openBtn.disabled = false
 
 function showWinPopup(item){
 
-const popup = document.getElementById("winPopup")
-const winItem = document.getElementById("winItem")
+const popup=document.getElementById("winPopup")
+const winItem=document.getElementById("winItem")
 
-winItem.innerText = item
-
+winItem.innerText=item
 popup.classList.add("show")
 
 }
@@ -171,20 +154,21 @@ document.getElementById("winPopup").classList.remove("show")
 }
 
 // ----------------------
-// RENDER PRIZES
+// PRIZE LIST
 // ----------------------
 
 function renderPrizeList(){
 
-prizeList.innerHTML = ""
+if(!prizeList) return
+
+prizeList.innerHTML=""
 
 drops.forEach(item=>{
 
-const row = document.createElement("div")
+let row=document.createElement("div")
+row.className="prize-row"
 
-row.className = "prize-row"
-
-row.innerHTML = `
+row.innerHTML=`
 <div>${item.name}</div>
 <div>${item.chance}%</div>
 `
@@ -195,8 +179,6 @@ prizeList.appendChild(row)
 
 }
 
-// ----------------------
-// INIT
 // ----------------------
 
 renderPrizeList()
