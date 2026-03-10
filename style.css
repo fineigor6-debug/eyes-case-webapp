@@ -413,3 +413,75 @@ border-radius:14px;
 border:1px solid rgba(255,255,255,0.08);
 backdrop-filter:blur(10px);
 }
+
+/* POPUP ВЫИГРЫША */
+
+.win-popup{
+
+position:fixed;
+top:0;
+left:0;
+
+width:100%;
+height:100%;
+
+display:flex;
+align-items:center;
+justify-content:center;
+
+background:rgba(0,0,0,0.75);
+
+opacity:0;
+pointer-events:none;
+
+transition:opacity .3s ease;
+
+z-index:1000;
+
+}
+
+.win-popup.show{
+opacity:1;
+pointer-events:auto;
+}
+
+.win-card{
+
+background:#141414;
+
+padding:30px;
+border-radius:18px;
+
+text-align:center;
+
+border:1px solid rgba(255,255,255,0.1);
+
+transform:scale(.7);
+transition:transform .35s cubic-bezier(.2,1.3,.3,1);
+
+}
+
+.win-popup.show .win-card{
+transform:scale(1);
+}
+
+.win-title{
+font-size:18px;
+font-weight:800;
+margin-bottom:15px;
+}
+
+.win-item{
+
+font-size:42px;
+font-weight:800;
+
+margin-bottom:20px;
+
+background:rgba(255,255,255,0.08);
+padding:15px 25px;
+
+border-radius:14px;
+display:inline-block;
+
+}
