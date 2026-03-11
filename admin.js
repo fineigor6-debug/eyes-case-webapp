@@ -1,63 +1,56 @@
-const API = "https://bold-dew-c931.fineigor6.workers.dev"
-const ADMIN_KEY = "superSecretAdminKey"
+const API = "https://late-term-2712.fineigor6.workers.dev"
+const ADMIN_ID = 8528585798
 
-document.addEventListener("DOMContentLoaded", () => {
+let tg = window.Telegram.WebApp
+let user = tg.initDataUnsafe.user
 
-const giveBtn = document.querySelector(".btn-give")
-const removeBtn = document.querySelector(".btn-remove")
-
-if(giveBtn){
-giveBtn.addEventListener("click", adminGiveStars)
+if(!user || user.id !== ADMIN_ID){
+document.body.innerHTML="Access denied"
 }
 
-if(removeBtn){
-removeBtn.addEventListener("click", adminRemoveStars)
-}
+async function adminGiveStars(){
 
-})
+let id = document.getElementById("adminUserId").value
+let stars = parseInt(document.getElementById("adminStars").value)
 
-function adminGiveStars(){
+await fetch(API+"/api/add-balance",{
 
-const id = document.getElementById("adminUserId").value
-const stars = parseInt(document.getElementById("adminStars").value)
-
-fetch(API + "/add-balance",{
 method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
+
+headers:{"Content-Type":"application/json"},
+
 body:JSON.stringify({
 id:id,
-amount:stars,
-key:ADMIN_KEY
+amount:stars
 })
+
 })
-.then(res=>res.json())
-.then(data=>{
+
 alert("Баланс выдан")
-})
 
 }
 
-function adminRemoveStars(){
+async function adminRemoveStars(){
 
-const id = document.getElementById("adminUserId").value
-const stars = parseInt(document.getElementById("adminStars").value)
+let id = document.getElementById("adminUserId").value
+let stars = parseInt(document.getElementById("adminStars").value)
 
-fetch(API + "/add-balance",{
+await fetch(API+"/api/add-balance",{
+
 method:"POST",
-headers:{
-"Content-Type":"application/json"
-},
+
+headers:{"Content-Type":"application/json"},
+
 body:JSON.stringify({
 id:id,
-amount:-stars,
-key:ADMIN_KEY
-})
-})
-.then(res=>res.json())
-.then(data=>{
-alert("Баланс снят")
+amount:-stars
 })
 
+})
+
+alert("Баланс снят")
+
 }
+
+window.adminGiveStars = adminGiveStars
+window.adminRemoveStars = adminRemoveStars
