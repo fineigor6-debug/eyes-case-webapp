@@ -196,8 +196,7 @@ const win = currentStrip[targetIndex]
 
 showWinPopup(win)
 
-if(typeof addXP === "function") addXP(10)
-if(typeof addCaseOpened === "function") addCaseOpened()
+addCaseOpened()
 
 spinning=false
 openBtn.disabled=false
