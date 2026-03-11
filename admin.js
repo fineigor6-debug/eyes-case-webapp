@@ -1,10 +1,10 @@
 const API = "https://bold-dew-c931.fineigor6.workers.dev"
-const ADMIN_KEY = "superSecretAdminKey"
+const ADMIN_KEY = "peel"
 
 function adminGiveStars(){
 
-let id = document.getElementById("adminUserId").value
-let stars = parseInt(document.getElementById("adminStars").value)
+const id = document.getElementById("adminUserId").value
+const stars = parseInt(document.getElementById("adminStars").value)
 
 fetch(API + "/add-balance",{
 
@@ -22,16 +22,22 @@ key:ADMIN_KEY
 
 })
 .then(res=>res.json())
-.then(()=>{
+.then(data=>{
+
+if(data.error){
+alert(data.error)
+}else{
 alert("Баланс выдан")
+}
+
 })
 
 }
 
 function adminRemoveStars(){
 
-let id = document.getElementById("adminUserId").value
-let stars = parseInt(document.getElementById("adminStars").value)
+const id = document.getElementById("adminUserId").value
+const stars = parseInt(document.getElementById("adminStars").value)
 
 fetch(API + "/add-balance",{
 
@@ -49,8 +55,14 @@ key:ADMIN_KEY
 
 })
 .then(res=>res.json())
-.then(()=>{
+.then(data=>{
+
+if(data.error){
+alert(data.error)
+}else{
 alert("Баланс снят")
+}
+
 })
 
 }
