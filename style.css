@@ -666,3 +666,47 @@ opacity:.7;
 .achievement-icon{
 font-size:22px;
 }
+
+/* ---------------- */
+/* ACHIEVEMENT POPUP */
+/* ---------------- */
+
+.achievement-popup{
+
+position:fixed;
+top:-100px;
+left:50%;
+transform:translateX(-50%);
+
+background:#141414;
+border:1px solid rgba(255,255,255,0.1);
+
+border-radius:16px;
+padding:14px 18px;
+
+display:flex;
+align-items:center;
+gap:12px;
+
+transition:all .45s cubic-bezier(.2,1.2,.3,1);
+
+z-index:9999;
+
+}
+
+.achievement-popup.show{
+top:20px;
+}
+
+.achievement-popup-icon{
+font-size:24px;
+}
+
+.achievement-popup-title{
+font-size:12px;
+opacity:.7;
+}
+
+.achievement-popup-name{
+font-weight:800;
+}
