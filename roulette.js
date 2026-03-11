@@ -225,6 +225,9 @@ ${item.name}
 
 saveToInventory(item)
 
+if(window.updateBestDrop){
+updateBestDrop(item)
+}
 popup.classList.add("show")
 
 }
