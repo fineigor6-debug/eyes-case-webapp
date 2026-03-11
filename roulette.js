@@ -182,6 +182,17 @@ function showWinPopup(item){
 const popup=document.getElementById("winPopup")
 const winItem=document.getElementById("winItem")
 
+winItem.innerText=item
+
+saveToInventory(item)
+
+popup.classList.add("show")
+
+}
+
+const popup=document.getElementById("winPopup")
+const winItem=document.getElementById("winItem")
+
 winItem.innerHTML=`
 <img src="${item.img}" style="width:90px;margin-bottom:10px"><br>
 ${item.name}
@@ -231,3 +242,15 @@ prizeList.appendChild(row)
 // ----------------------
 
 renderPrizeList()
+
+function saveToInventory(item){
+
+let inventory = JSON.parse(localStorage.getItem("inventory")) || []
+
+inventory.push(item)
+
+localStorage.setItem("inventory", JSON.stringify(inventory))
+
+console.log("Добавлено в инвентарь:", item)
+
+}
