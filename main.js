@@ -2,15 +2,18 @@
 // TELEGRAM INIT
 // ----------------------
 
-const tg = window.Telegram.WebApp
+const tg = window.Telegram?.WebApp
+
+if(tg){
 tg.ready()
 tg.expand()
+}
 
 // ----------------------
 // USER DATA
 // ----------------------
 
-const user = tg.initDataUnsafe?.user
+const user = tg?.initDataUnsafe?.user
 
 if(user){
 
@@ -101,4 +104,5 @@ grid.appendChild(div)
 
 }
 
+// запуск
 loadInventory()
