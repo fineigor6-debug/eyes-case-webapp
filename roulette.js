@@ -189,11 +189,13 @@ const data = await res.json()
 
 const winItem = data.item
 
-buildRoulette(winItem)
+buildRoulette()
 
 setTimeout(()=>{
 
 showWinPopup(winItem)
+
+loadBalance()
 
 spinning=false
 openBtn.disabled=false
