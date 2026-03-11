@@ -710,3 +710,13 @@ opacity:.7;
 .achievement-popup-name{
 font-weight:800;
 }
+
+/* SAFE AREA (iphone) */
+
+body{
+padding-bottom:80px;
+}
+
+.menu{
+padding-bottom:calc(10px + env(safe-area-inset-bottom));
+}
