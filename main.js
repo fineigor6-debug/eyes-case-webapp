@@ -51,6 +51,20 @@ localStorage.setItem("playerId", user.id)
 }
 
 // ----------------------
+// ADMIN BUTTON
+// ----------------------
+
+if(user && user.id == ADMIN_ID){
+
+const adminBtn = document.getElementById("adminPanelBtn")
+
+if(adminBtn){
+adminBtn.style.display = "block"
+}
+
+}
+    
+// ----------------------
 // NFT SELL PRICES
 // ----------------------
 
