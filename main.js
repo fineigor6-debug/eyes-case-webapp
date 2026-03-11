@@ -1,9 +1,3 @@
-document.addEventListener("DOMContentLoaded", function () {
-
-// ----------------------
-// ADMIN SETTINGS
-// ----------------------
-
 const ADMIN_ID = 8528585798
 const API = "https://bold-dew-c931.fineigor6.workers.dev"
 
@@ -25,6 +19,18 @@ user = tg.initDataUnsafe.user
 }
 
 }
+
+// fallback если не Telegram
+if(!user){
+
+user = {
+id: localStorage.getItem("playerId") || 999999,
+first_name:"Player"
+}
+
+}
+
+localStorage.setItem("playerId", user.id)
 
 // ----------------------
 // REGISTER PLAYER
@@ -84,18 +90,19 @@ el.innerText = data.balance
 
 }
 
-loadBalance()
-
 // ----------------------
 // USER DATA
 // ----------------------
 
-if (user) {
+function loadUserData(){
+
+if (!user) return
 
 const username = document.getElementById("username")
 const avatar = document.getElementById("avatar")
 const profileAvatar = document.getElementById("profileAvatar")
 const profileName = document.getElementById("profileName")
+const playerId = document.getElementById("playerId")
 
 if (username) username.innerText = user.first_name || "Player"
 if (profileName) profileName.innerText = user.first_name || "Player"
@@ -103,21 +110,17 @@ if (profileName) profileName.innerText = user.first_name || "Player"
 if (avatar && user.photo_url) avatar.src = user.photo_url
 if (profileAvatar && user.photo_url) profileAvatar.src = user.photo_url
 
-}
-
-const playerId = document.getElementById("playerId")
-
-if(playerId && user){
+if(playerId){
 playerId.innerText = user.id
 }
 
-if(user){
-localStorage.setItem("playerId", user.id)
 }
 
 // ----------------------
 // ADMIN BUTTON
 // ----------------------
+
+function initAdmin(){
 
 if(user && user.id == ADMIN_ID){
 
@@ -125,6 +128,8 @@ const adminBtn = document.getElementById("adminPanelBtn")
 
 if(adminBtn){
 adminBtn.style.display = "block"
+}
+
 }
 
 }
@@ -143,12 +148,6 @@ const sellPrices = {
 "Durov's Cap":24000
 
 }
-
-// ----------------------
-// CASE PRICE
-// ----------------------
-
-const casePrice = 500
 
 // ----------------------
 // BUY CASE
@@ -220,10 +219,6 @@ grid.appendChild(div)
 
 }
 
-if(document.getElementById("inventoryGrid")){
-loadInventory()
-}
-
 // ----------------------
 // SELL ITEM
 // ----------------------
@@ -232,7 +227,7 @@ async function sellItem(index){
 
 const id = localStorage.getItem("playerId")
 
-const res = await fetch("https://bold-dew-c931.fineigor6.workers.dev/sell-item",{
+const res = await fetch(API + "/sell-item",{
 
 method:"POST",
 
@@ -247,7 +242,7 @@ index:index
 
 })
 
-const data = await res.json()
+await res.json()
 
 alert("Предмет продан")
 
@@ -268,10 +263,6 @@ if(casesEl) casesEl.innerText = getCasesOpened()
 if(nftEl) nftEl.innerText = getNFTCount()
 
 }
-
-loadProfileStats()
-loadBestDrop()
-loadTopItems()
 
 // ----------------------
 // XP SYSTEM
@@ -315,8 +306,6 @@ if(currentEl) currentEl.innerText = currentXP
 if(nextEl) nextEl.innerText = 100
 
 }
-
-updateLevelUI()
 
 // ----------------------
 // RARITY SYSTEM
@@ -457,18 +446,19 @@ ${best.name}
 }
 
 // ----------------------
-// EXPORT FUNCTIONS
+// INIT
 // ----------------------
 
-window.addCaseOpened = addCaseOpened
-window.addXP = addXP
-window.getCasesOpened = getCasesOpened
-window.getNFTCount = getNFTCount
-window.updateBestDrop = updateBestDrop
-window.loadBestDrop = loadBestDrop
-window.loadTopItems = loadTopItems
-window.sellItem = sellItem
-window.buyCase = buyCase
+document.addEventListener("DOMContentLoaded", function () {
+
+loadBalance()
+loadUserData()
+initAdmin()
+loadInventory()
+loadProfileStats()
+loadBestDrop()
+loadTopItems()
+updateLevelUI()
 
 })
 
