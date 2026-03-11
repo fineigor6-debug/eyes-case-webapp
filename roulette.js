@@ -28,6 +28,7 @@ let dropTable = [
 {name:"Durov's Cap", img:"IMG_0672.webp", chance:0.05}
 
 ]
+
 // ----------------------
 // SECURE RANDOM
 // ----------------------
@@ -75,9 +76,37 @@ if(!track) return
 track.innerHTML=""
 currentStrip=[]
 
+// заранее определяем выигрыш
+const winItem = rollDrop()
+
+// индекс выигрыша
+const winIndex = 80
+
 for(let i=0;i<120;i++){
 
-let item = rollDrop()
+let item
+
+// выигрыш
+if(i === winIndex){
+
+item = winItem
+
+}
+
+// NEAR MISS — редкие предметы рядом
+else if(i === winIndex-1 || i === winIndex+1){
+
+const rareItems = dropTable.slice(-4)
+item = rareItems[Math.floor(Math.random()*rareItems.length)]
+
+}
+
+// обычные предметы
+else{
+
+item = rollDrop()
+
+}
 
 currentStrip.push(item)
 
@@ -85,6 +114,11 @@ let div=document.createElement("div")
 div.className="item"
 
 div.innerHTML=`<img src="${item.img}">`
+
+// подсветка редких предметов
+if(item.chance < 1){
+div.style.border="2px solid gold"
+}
 
 track.appendChild(div)
 
