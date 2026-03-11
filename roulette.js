@@ -115,9 +115,7 @@ currentStrip.push(item)
 let div=document.createElement("div")
 div.className="item"
 
-div.innerHTML=`
-<img src="${item.img}">
-`
+div.innerHTML=`<img src="${item.img}">`
 
 track.appendChild(div)
 
@@ -134,14 +132,24 @@ function spinCase(){
 if(!track || !openBtn) return
 if(spinning) return
 
-spinning=true
-openBtn.disabled=true
+spinning = true
+openBtn.disabled = true
+
+// СБРОС РУЛЕТКИ
+track.style.transition = "none"
+track.style.transform = "translateX(0px)"
 
 buildRoulette()
 
 setTimeout(()=>{
 
 const item = track.querySelector(".item")
+
+if(!item){
+spinning=false
+openBtn.disabled=false
+return
+}
 
 const itemWidth = item.offsetWidth
 const gap = parseInt(getComputedStyle(track).gap) || 0
@@ -156,8 +164,8 @@ const distance = targetIndex * step - center
 
 const spinTime = 6000 + random()*2000
 
-track.style.transition=`transform ${spinTime}ms cubic-bezier(.12,.7,.2,1)`
-track.style.transform=`translateX(-${distance}px)`
+track.style.transition = `transform ${spinTime}ms cubic-bezier(.12,.7,.2,1)`
+track.style.transform = `translateX(-${distance}px)`
 
 setTimeout(()=>{
 
@@ -170,7 +178,7 @@ openBtn.disabled=false
 
 },spinTime)
 
-},50)
+},100)
 
 }
 
@@ -226,7 +234,6 @@ row.innerHTML=`
 <img src="${item.img}" style="width:28px">
 ${item.name}
 </div>
-
 <div>${item.chance}%</div>
 `
 
