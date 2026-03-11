@@ -37,12 +37,9 @@ let dropTable = [
 // ----------------------
 
 function random(){
-
 const arr = new Uint32Array(1)
 crypto.getRandomValues(arr)
-
 return arr[0] / 4294967296
-
 }
 
 // ----------------------
@@ -53,14 +50,12 @@ function rollDrop(){
 
 let r = random()*100
 let sum = 0
-
 let pityBoost = pityCounter * 0.4
 
 for(let item of dropTable){
 
 let chance = item.chance
 
-// усиливаем редкие предметы
 if(item.chance < 1){
 chance += pityBoost
 }
@@ -76,7 +71,6 @@ pityCounter++
 }
 
 localStorage.setItem("pityCounter", pityCounter)
-
 return item
 
 }
@@ -101,7 +95,6 @@ if(!track) return
 track.innerHTML=""
 currentStrip=[]
 
-// заранее выбираем выигрыш
 const winItem = rollDrop()
 const winIndex = 80
 
@@ -109,14 +102,12 @@ for(let i=0;i<120;i++){
 
 let item
 
-// ВЫИГРЫШ
 if(i === winIndex){
 
 item = winItem
 
 }
 
-// NEAR MISS
 else if(i === winIndex-1 || i === winIndex+1){
 
 const rareItems = dropTable.slice(-4)
@@ -124,7 +115,6 @@ item = rareItems[Math.floor(random()*rareItems.length)]
 
 }
 
-// обычный дроп
 else{
 
 item = rollDrop()
@@ -138,7 +128,6 @@ div.className="item"
 
 div.innerHTML=`<img src="${item.img}">`
 
-// подсветка редких
 if(item.chance < 1){
 div.style.border="2px solid gold"
 div.style.boxShadow="0 0 12px gold"
@@ -162,7 +151,6 @@ if(spinning) return
 spinning = true
 openBtn.disabled = true
 
-// reset
 track.style.transition = "none"
 track.style.transform = "translateX(0px)"
 
@@ -183,6 +171,13 @@ const gap = parseInt(getComputedStyle(track).gap) || 0
 const step = itemWidth + gap
 
 const roulette = document.querySelector(".roulette")
+
+if(!roulette){
+spinning=false
+openBtn.disabled=false
+return
+}
+
 const center = roulette.offsetWidth/2 - itemWidth/2
 
 const targetIndex = 80
@@ -200,7 +195,6 @@ const win = currentStrip[targetIndex]
 showWinPopup(win)
 
 addXP(10)
-
 addCaseOpened()
 
 spinning=false
@@ -241,6 +235,8 @@ const popup=document.getElementById("winPopup")
 if(popup){
 popup.classList.remove("show")
 }
+
+spinning=false
 
 }
 
