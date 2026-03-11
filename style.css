@@ -629,3 +629,40 @@ width:60px;
 height:60px;
 object-fit:contain;
 }
+
+/* ---------------- */
+/* ACHIEVEMENTS */
+/* ---------------- */
+
+.achievements-page{
+padding:20px;
+}
+
+.achievement{
+background:#141414;
+border-radius:14px;
+padding:15px;
+margin-bottom:10px;
+border:1px solid rgba(255,255,255,0.08);
+display:flex;
+justify-content:space-between;
+align-items:center;
+}
+
+.achievement.locked{
+opacity:.4;
+filter:grayscale(1);
+}
+
+.achievement-title{
+font-weight:800;
+}
+
+.achievement-desc{
+font-size:12px;
+opacity:.7;
+}
+
+.achievement-icon{
+font-size:22px;
+}
