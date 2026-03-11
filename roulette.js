@@ -15,10 +15,10 @@ let currentStrip = []
 
 let dropTable = [
 
-{name:"20 Stars", img:"star20.png", chance:36},
-{name:"60 Stars", img:"star60.png", chance:27},
-{name:"120 Stars", img:"star120.png", chance:18},
-{name:"250 Stars", img:"star250.png", chance:10},
+{name:"20 Stars", img:"FB980B4D-F31F-41D8-8C91-2F387F84916A.png", chance:36},
+{name:"60 Stars", img:"8F520D99-B3FB-43F8-B182-9C877B7B08C9.png ", chance:27},
+{name:"120 Stars", img:"D8191BBE-8762-41A4-A2C2-17EC9F8F63DE.png", chance:18},
+{name:"250 Stars", img:"3CFA93BA-A42F-40B7-9B1E-34B8566D62CE.png", chance:10},
 
 {name:"Magic Potion", img:"IMG_0667.jpeg", chance:5},
 {name:"Ion Gem", img:"IMG_0668.webp", chance:2.5},
