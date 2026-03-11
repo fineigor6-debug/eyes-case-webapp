@@ -1,50 +1,91 @@
 const API = "https://bold-dew-c931.fineigor6.workers.dev"
+const ADMIN_KEY = "8528585798"
+
 
 // регистрация игрока
-function registerPlayer(user){
+async function apiRegister(id,name){
 
-fetch(API + "/register",{
+return fetch(API + "/register",{
+
 method:"POST",
+
 headers:{
 "Content-Type":"application/json"
 },
+
 body:JSON.stringify({
-id:user.id,
-name:user.first_name
+id:id,
+name:name
 })
+
 })
 
 }
 
-// получить баланс
-function getServerBalance(userId){
 
-return fetch(API + "/balance",{
+// получить игрока
+async function apiGetPlayer(id){
+
+const res = await fetch(API + "/player",{
+
 method:"POST",
+
 headers:{
 "Content-Type":"application/json"
 },
+
 body:JSON.stringify({
-id:userId
+id:id
 })
+
 })
-.then(res=>res.json())
+
+return res.json()
 
 }
 
-// админ добавить баланс
-function addServerBalance(userId, amount){
 
-return fetch(API + "/add-balance",{
+// открыть кейс
+async function apiOpenCase(id){
+
+const res = await fetch(API + "/open-case",{
+
 method:"POST",
+
 headers:{
 "Content-Type":"application/json"
 },
+
 body:JSON.stringify({
-id:userId,
-amount:amount
+id:id
 })
+
 })
-.then(res=>res.json())
+
+return res.json()
+
+}
+
+
+// админ выдать баланс
+async function apiAddBalance(id,amount){
+
+const res = await fetch(API + "/add-balance",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+id:id,
+amount:amount,
+key:ADMIN_KEY
+})
+
+})
+
+return res.json()
 
 }
