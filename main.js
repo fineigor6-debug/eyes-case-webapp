@@ -24,6 +24,35 @@ if (window.Telegram && window.Telegram.WebApp) {
     }
 }
 
+fetch("http://localhost:3000/register",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+id:user.id,
+name:user.first_name
+})
+})
+
+function loadBalance(){
+
+fetch("http://localhost:3000/player/"+user.id)
+.then(res=>res.json())
+.then(data=>{
+
+const el = document.getElementById("balance")
+
+if(el){
+el.innerText = data.balance
+}
+
+})
+
+}
+
+loadBalance()
+
 // ----------------------
 // USER DATA
 // ----------------------
