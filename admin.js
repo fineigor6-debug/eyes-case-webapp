@@ -1,9 +1,12 @@
+const API = "https://bold-dew-c931.fineigor6.workers.dev"
+const ADMIN_KEY = "SUPER_ADMIN_123"
+
 function adminGiveStars(){
 
 let id = document.getElementById("adminUserId").value
 let stars = parseInt(document.getElementById("adminStars").value)
 
-fetch("http://localhost:3000/addBalance",{
+fetch(API + "/add-balance",{
 
 method:"POST",
 
@@ -13,7 +16,8 @@ headers:{
 
 body:JSON.stringify({
 id:id,
-amount:stars
+amount:stars,
+key:ADMIN_KEY
 })
 
 })
@@ -29,7 +33,7 @@ function adminRemoveStars(){
 let id = document.getElementById("adminUserId").value
 let stars = parseInt(document.getElementById("adminStars").value)
 
-fetch("http://localhost:3000/removeBalance",{
+fetch(API + "/add-balance",{
 
 method:"POST",
 
@@ -39,7 +43,8 @@ headers:{
 
 body:JSON.stringify({
 id:id,
-amount:stars
+amount:-stars,
+key:ADMIN_KEY
 })
 
 })
