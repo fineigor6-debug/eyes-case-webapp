@@ -107,6 +107,25 @@ el.innerText = getBalance()
 updateBalanceUI()
 
 // ----------------------
+// BUY CASE
+// ----------------------
+
+function buyCase(){
+
+if(!spendBalance(casePrice)){
+
+alert("Недостаточно ⭐ Stars")
+
+return
+
+}
+
+// открываем страницу кейса
+window.location.href = "case.html"
+
+}
+    
+// ----------------------
 // INVENTORY
 // ----------------------
 
