@@ -172,3 +172,106 @@ if(nextEl) nextEl.innerText = 100
 // RUN ON PAGE LOAD
 
 updateLevelUI()
+
+// ----------------------
+// ACHIEVEMENTS SYSTEM
+// ----------------------
+
+const achievements = [
+
+{
+id:"first_case",
+name:"First Case",
+desc:"Открой первый кейс",
+condition:()=>getCasesOpened()>=1
+},
+
+{
+id:"ten_cases",
+name:"Case Hunter",
+desc:"Открой 10 кейсов",
+condition:()=>getCasesOpened()>=10
+},
+
+{
+id:"fifty_cases",
+name:"Case Master",
+desc:"Открой 50 кейсов",
+condition:()=>getCasesOpened()>=50
+},
+
+{
+id:"first_nft",
+name:"NFT Winner",
+desc:"Выиграй NFT",
+condition:()=>getNFTCount()>=1
+}
+
+]
+
+function getCasesOpened(){
+return parseInt(localStorage.getItem("casesOpened")) || 0
+}
+
+function addCaseOpened(){
+
+let cases = getCasesOpened()
+cases++
+
+localStorage.setItem("casesOpened",cases)
+
+checkAchievements()
+
+}
+
+function getNFTCount(){
+
+let inventory = JSON.parse(localStorage.getItem("inventory")) || []
+
+let nftCount = inventory.filter(item=>!item.name.includes("Stars")).length
+
+return nftCount
+
+}
+
+function getUnlockedAchievements(){
+
+return JSON.parse(localStorage.getItem("achievements")) || []
+
+}
+
+function unlockAchievement(id){
+
+let unlocked = getUnlockedAchievements()
+
+if(unlocked.includes(id)) return
+
+unlocked.push(id)
+
+localStorage.setItem("achievements",JSON.stringify(unlocked))
+
+showAchievementPopup(id)
+
+}
+
+function checkAchievements(){
+
+achievements.forEach(a=>{
+
+if(a.condition()){
+unlockAchievement(a.id)
+}
+
+})
+
+}
+
+function showAchievementPopup(id){
+
+const ach = achievements.find(a=>a.id===id)
+
+if(!ach) return
+
+alert("🏆 Achievement Unlocked!\n\n"+ach.name+"\n"+ach.desc)
+
+}
