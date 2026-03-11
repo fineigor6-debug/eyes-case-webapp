@@ -1,5 +1,5 @@
 const API = "https://bold-dew-c931.fineigor6.workers.dev"
-const ADMIN_KEY = "SUPER_ADMIN_123"
+const ADMIN_KEY = "pulvglazanavasnassal"
 
 function adminGiveStars(){
 
