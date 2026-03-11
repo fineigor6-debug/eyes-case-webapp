@@ -146,7 +146,11 @@ track.appendChild(div)
 function spinCase(){
 
 if(!track || !openBtn) return
-if(spinning) return
+
+// защита если предыдущий спин завис
+if(spinning){
+return
+}
 
 spinning = true
 openBtn.disabled = true
@@ -159,7 +163,6 @@ buildRoulette()
 setTimeout(()=>{
 
 const item = track.querySelector(".item")
-
 if(!item){
 spinning=false
 openBtn.disabled=false
@@ -171,7 +174,6 @@ const gap = parseInt(getComputedStyle(track).gap) || 0
 const step = itemWidth + gap
 
 const roulette = document.querySelector(".roulette")
-
 if(!roulette){
 spinning=false
 openBtn.disabled=false
@@ -194,8 +196,8 @@ const win = currentStrip[targetIndex]
 
 showWinPopup(win)
 
-addXP(10)
-addCaseOpened()
+if(typeof addXP === "function") addXP(10)
+if(typeof addCaseOpened === "function") addCaseOpened()
 
 spinning=false
 openBtn.disabled=false
@@ -237,6 +239,7 @@ popup.classList.remove("show")
 }
 
 spinning=false
+if(openBtn) openBtn.disabled=false
 
 }
 
