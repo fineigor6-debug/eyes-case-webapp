@@ -96,24 +96,45 @@ track.innerHTML=""
 currentStrip=[]
 
 const winItem = rollDrop()
+
 const winIndex = 80
+const nearMiss1 = 78
+const nearMiss2 = 79
+
+const expensiveDrops = dropTable.slice(-4)
 
 for(let i=0;i<120;i++){
 
 let item
 
-if(i === winIndex){
+// ----------------------
+// NEAR MISS BEFORE WIN
+// ----------------------
+
+if(i === nearMiss1 || i === nearMiss2){
+
+// 10% шанс показать самый дорогой дроп
+if(random() < 0.1){
+item = dropTable[dropTable.length-1]
+}else{
+item = expensiveDrops[Math.floor(random()*expensiveDrops.length)]
+}
+
+}
+
+// ----------------------
+// WIN SLOT
+// ----------------------
+
+else if(i === winIndex){
 
 item = winItem
 
 }
 
-else if(i === winIndex-1 || i === winIndex+1){
-
-const rareItems = dropTable.slice(-4)
-item = rareItems[Math.floor(random()*rareItems.length)]
-
-}
+// ----------------------
+// OTHER SLOTS
+// ----------------------
 
 else{
 
@@ -147,10 +168,7 @@ function spinCase(){
 
 if(!track || !openBtn) return
 
-// защита если предыдущий спин завис
-if(spinning){
-return
-}
+if(spinning) return
 
 spinning = true
 openBtn.disabled = true
@@ -163,6 +181,7 @@ buildRoulette()
 setTimeout(()=>{
 
 const item = track.querySelector(".item")
+
 if(!item){
 spinning=false
 openBtn.disabled=false
@@ -174,6 +193,7 @@ const gap = parseInt(getComputedStyle(track).gap) || 0
 const step = itemWidth + gap
 
 const roulette = document.querySelector(".roulette")
+
 if(!roulette){
 spinning=false
 openBtn.disabled=false
@@ -196,7 +216,9 @@ const win = currentStrip[targetIndex]
 
 showWinPopup(win)
 
-addCaseOpened()
+if(window.addCaseOpened){
+window.addCaseOpened()
+}
 
 spinning=false
 openBtn.disabled=false
@@ -226,8 +248,9 @@ ${item.name}
 saveToInventory(item)
 
 if(window.updateBestDrop){
-updateBestDrop(item)
+window.updateBestDrop(item)
 }
+
 popup.classList.add("show")
 
 }
@@ -241,7 +264,10 @@ popup.classList.remove("show")
 }
 
 spinning=false
-if(openBtn) openBtn.disabled=false
+
+if(openBtn){
+openBtn.disabled=false
+}
 
 }
 
