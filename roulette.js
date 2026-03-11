@@ -225,6 +225,7 @@ window.updateBestDrop(item)
 
 popup.classList.add("show")
 
+loadBalance()
 }
 
 function closeWinPopup(){
