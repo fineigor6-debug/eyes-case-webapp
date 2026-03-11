@@ -293,7 +293,20 @@ const ach = achievements.find(a=>a.id===id)
 
 if(!ach) return
 
-alert("🏆 Achievement Unlocked!\n\n"+ach.name+"\n"+ach.desc)
+const popup = document.getElementById("achievementPopup")
+const name = document.getElementById("achievementPopupName")
+
+if(!popup || !name) return
+
+name.innerText = ach.name
+
+popup.classList.add("show")
+
+setTimeout(()=>{
+
+popup.classList.remove("show")
+
+},3000)
 
 }
 
