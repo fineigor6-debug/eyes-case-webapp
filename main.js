@@ -1,5 +1,4 @@
 const ADMIN_ID = 8528585798
-const API = "https://bold-dew-c931.fineigor6.workers.dev"
 
 // ----------------------
 // TELEGRAM INIT
