@@ -492,3 +492,23 @@ border-radius:14px;
 display:inline-block;
 
 }
+
+.page{
+display:none;
+padding-bottom:90px;
+}
+
+.page.active{
+display:block;
+}
+
+.inventory-grid{
+padding:20px;
+display:grid;
+grid-template-columns:1fr 1fr;
+gap:12px;
+}
+
+.profile-page{
+padding:20px;
+}
