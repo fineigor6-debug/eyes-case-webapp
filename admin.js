@@ -55,6 +55,6 @@ alert("Баланс снят")
 
 }
 
-if(user.id !== 123456789){
+if(user.id !== 8528585798){
 document.body.innerHTML="Access denied"
 }
