@@ -35,7 +35,12 @@ if (user) {
     if (avatar && user.photo_url) avatar.src = user.photo_url
     if (profileAvatar && user.photo_url) profileAvatar.src = user.photo_url
 
+const playerId = document.getElementById("playerId")
+
+if(playerId && user){
+playerId.innerText = user.id
 }
+
 
 // ----------------------
 // NFT SELL PRICES
