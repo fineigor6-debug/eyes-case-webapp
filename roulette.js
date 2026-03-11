@@ -164,71 +164,43 @@ track.appendChild(div)
 // SPIN
 // ----------------------
 
-function spinCase(){
-
-if(!track || !openBtn) return
+async function spinCase(){
 
 if(spinning) return
 
 spinning = true
 openBtn.disabled = true
 
-track.style.transition = "none"
-track.style.transform = "translateX(0px)"
+const res = await fetch("https://bold-dew-c931.fineigor6.workers.dev/open-case",{
 
-buildRoulette()
+method:"POST",
 
-setTimeout(()=>{
+headers:{
+"Content-Type":"application/json"
+},
 
-const item = track.querySelector(".item")
+body:JSON.stringify({
+id:localStorage.getItem("playerId")
+})
 
-if(!item){
-spinning=false
-openBtn.disabled=false
-return
-}
+})
 
-const itemWidth = item.offsetWidth
-const gap = parseInt(getComputedStyle(track).gap) || 0
-const step = itemWidth + gap
+const data = await res.json()
 
-const roulette = document.querySelector(".roulette")
+const winItem = data.item
 
-if(!roulette){
-spinning=false
-openBtn.disabled=false
-return
-}
-
-const center = roulette.offsetWidth/2 - itemWidth/2
-
-const targetIndex = 80
-const distance = targetIndex * step - center
-
-const spinTime = 6000 + random()*2000
-
-track.style.transition = `transform ${spinTime}ms cubic-bezier(.12,.7,.2,1)`
-track.style.transform = `translateX(-${distance}px)`
+buildRoulette(winItem)
 
 setTimeout(()=>{
 
-const win = currentStrip[targetIndex]
-
-showWinPopup(win)
-
-if(window.addCaseOpened){
-window.addCaseOpened()
-}
+showWinPopup(winItem)
 
 spinning=false
 openBtn.disabled=false
 
-},spinTime)
-
-},100)
+},6000)
 
 }
-
 // ----------------------
 // POPUP
 // ----------------------
