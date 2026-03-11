@@ -38,6 +38,21 @@ if (user) {
 }
 
 // ----------------------
+// NFT SELL PRICES
+// ----------------------
+
+const sellPrices = {
+
+"Magic Potion":1000,
+"Ion Gem":5000,
+"Mini Oscar":6000,
+"Heroic Helmet":12000,
+"Precious Peach":14000,
+"Durov's Cap":24000
+
+}
+
+// ----------------------
 // INVENTORY
 // ----------------------
 
