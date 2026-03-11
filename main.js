@@ -462,6 +462,19 @@ updateLevelUI()
 })
 
 // ----------------------
+// EXPORT TO WINDOW (FIX TELEGRAM BUTTONS)
+// ----------------------
+
+window.goHome = goHome
+window.openCases = openCases
+window.openCasePage = openCasePage
+window.openInventory = openInventory
+window.openProfile = openProfile
+window.openAchievements = openAchievements
+window.goBack = goBack
+window.openAdmin = openAdmin
+
+// ----------------------
 // NAVIGATION
 // ----------------------
 
