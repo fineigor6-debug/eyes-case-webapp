@@ -9,6 +9,9 @@ const openBtn = document.getElementById("openCaseBtn")
 let spinning = false
 let currentStrip = []
 
+// PITY SYSTEM
+let pityCounter = parseInt(localStorage.getItem("pityCounter")) || 0
+
 // ----------------------
 // DROP TABLE
 // ----------------------
@@ -16,7 +19,7 @@ let currentStrip = []
 let dropTable = [
 
 {name:"20 Stars", img:"FB980B4D-F31F-41D8-8C91-2F387F84916A.png", chance:36},
-{name:"60 Stars", img:"8F520D99-B3FB-43F8-B182-9C877B7B08C9.png ", chance:27},
+{name:"60 Stars", img:"8F520D99-B3FB-43F8-B182-9C877B7B08C9.png", chance:27},
 {name:"120 Stars", img:"D8191BBE-8762-41A4-A2C2-17EC9F8F63DE.png", chance:18},
 {name:"250 Stars", img:"3CFA93BA-A42F-40B7-9B1E-34B8566D62CE.png", chance:10},
 
@@ -43,7 +46,7 @@ return arr[0] / 4294967296
 }
 
 // ----------------------
-// WEIGHTED RANDOM
+// WEIGHTED RANDOM + PITY
 // ----------------------
 
 function rollDrop(){
@@ -51,15 +54,37 @@ function rollDrop(){
 let r = random()*100
 let sum = 0
 
+let pityBoost = pityCounter * 0.4
+
 for(let item of dropTable){
 
-sum += item.chance
+let chance = item.chance
+
+// усиливаем редкие предметы
+if(item.chance < 1){
+chance += pityBoost
+}
+
+sum += chance
 
 if(r <= sum){
+
+if(item.chance < 1){
+pityCounter = 0
+}else{
+pityCounter++
+}
+
+localStorage.setItem("pityCounter", pityCounter)
+
 return item
+
 }
 
 }
+
+pityCounter++
+localStorage.setItem("pityCounter", pityCounter)
 
 return dropTable[0]
 
@@ -76,32 +101,30 @@ if(!track) return
 track.innerHTML=""
 currentStrip=[]
 
-// заранее определяем выигрыш
+// заранее выбираем выигрыш
 const winItem = rollDrop()
-
-// индекс выигрыша
 const winIndex = 80
 
 for(let i=0;i<120;i++){
 
 let item
 
-// выигрыш
+// ВЫИГРЫШ
 if(i === winIndex){
 
 item = winItem
 
 }
 
-// NEAR MISS — редкие предметы рядом
+// NEAR MISS
 else if(i === winIndex-1 || i === winIndex+1){
 
 const rareItems = dropTable.slice(-4)
-item = rareItems[Math.floor(Math.random()*rareItems.length)]
+item = rareItems[Math.floor(random()*rareItems.length)]
 
 }
 
-// обычные предметы
+// обычный дроп
 else{
 
 item = rollDrop()
@@ -115,9 +138,10 @@ div.className="item"
 
 div.innerHTML=`<img src="${item.img}">`
 
-// подсветка редких предметов
+// подсветка редких
 if(item.chance < 1){
 div.style.border="2px solid gold"
+div.style.boxShadow="0 0 12px gold"
 }
 
 track.appendChild(div)
@@ -138,7 +162,7 @@ if(spinning) return
 spinning = true
 openBtn.disabled = true
 
-// СБРОС РУЛЕТКИ
+// reset
 track.style.transition = "none"
 track.style.transform = "translateX(0px)"
 
@@ -162,7 +186,6 @@ const roulette = document.querySelector(".roulette")
 const center = roulette.offsetWidth/2 - itemWidth/2
 
 const targetIndex = 80
-
 const distance = targetIndex * step - center
 
 const spinTime = 6000 + random()*2000
