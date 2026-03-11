@@ -51,3 +51,36 @@ function openCasePage(){
 window.location.href="case.html"
 
 }
+
+function loadInventory(){
+
+const grid = document.getElementById("inventoryGrid")
+
+if(!grid) return
+
+let inventory = JSON.parse(localStorage.getItem("inventory")) || []
+
+grid.innerHTML=""
+
+if(inventory.length === 0){
+
+grid.innerHTML="<p style='opacity:.6'>Инвентарь пуст</p>"
+return
+
+}
+
+inventory.forEach(item=>{
+
+let div=document.createElement("div")
+
+div.className="item"
+
+div.innerText=item
+
+grid.appendChild(div)
+
+})
+
+}
+
+loadInventory()
