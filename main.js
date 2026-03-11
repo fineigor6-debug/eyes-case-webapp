@@ -228,6 +228,68 @@ return inventory.filter(item=>!item.name.includes("Stars")).length
 }
 
 // ----------------------
+// BEST DROP SYSTEM
+// ----------------------
+
+function getBestDrop(){
+return JSON.parse(localStorage.getItem("bestDrop")) || null
+}
+
+function updateBestDrop(item){
+
+// звезды не считаем
+if(item.name.includes("Stars")) return
+
+let best = getBestDrop()
+
+if(!best){
+localStorage.setItem("bestDrop", JSON.stringify(item))
+return
+}
+
+// сравнение по редкости
+const rarity = getRarityValue(item.name)
+const bestRarity = getRarityValue(best.name)
+
+if(rarity > bestRarity){
+localStorage.setItem("bestDrop", JSON.stringify(item))
+}
+
+}
+
+function getRarityValue(name){
+
+if(name === "Durov's Cap") return 6
+if(name === "Precious Peach") return 5
+if(name === "Heroic Helmet") return 4
+if(name === "Mini Oscar") return 3
+if(name === "Ion Gem") return 2
+if(name === "Magic Potion") return 1
+
+return 0
+
+}
+
+function loadBestDrop(){
+
+const el = document.getElementById("bestDrop")
+if(!el) return
+
+let best = getBestDrop()
+
+if(!best){
+el.innerText = "Нет"
+return
+}
+
+el.innerHTML = `
+<img src="${best.img}" style="width:32px;margin-right:8px">
+${best.name}
+`
+
+}
+
+// ----------------------
 // ACHIEVEMENTS STORAGE
 // ----------------------
 
