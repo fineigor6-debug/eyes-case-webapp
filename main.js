@@ -1,24 +1,26 @@
+document.addEventListener("DOMContentLoaded", function () {
+
 // ----------------------
 // TELEGRAM INIT
 // ----------------------
 
 let tg = null
+let user = null
 
 if (window.Telegram && window.Telegram.WebApp) {
+
     tg = window.Telegram.WebApp
     tg.ready()
     tg.expand()
+
+    if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+        user = tg.initDataUnsafe.user
+    }
 }
 
 // ----------------------
 // USER DATA
 // ----------------------
-
-let user = null
-
-if (tg && tg.initDataUnsafe) {
-    user = tg.initDataUnsafe.user
-}
 
 if (user) {
 
@@ -43,38 +45,6 @@ if (user) {
         profileAvatar.src = user.photo_url
     }
 
-}
-
-// ----------------------
-// NAVIGATION
-// ----------------------
-
-function goHome() {
-    window.location.href = "index.html"
-}
-
-function openCases() {
-    window.location.href = "cases.html"
-}
-
-function openCasePage() {
-    window.location.href = "case.html"
-}
-
-function openInventory() {
-    window.location.href = "inventory.html"
-}
-
-function openProfile() {
-    window.location.href = "profile.html"
-}
-
-function openAchievements() {
-    window.location.href = "achievements.html"
-}
-
-function goBack() {
-    window.history.back()
 }
 
 // ----------------------
@@ -161,13 +131,9 @@ function addXP(amount) {
 
 }
 
-// LEVEL
-
 function getLevel(xp) {
     return Math.floor(xp / 100) + 1
 }
-
-// UPDATE UI
 
 function updateLevelUI() {
 
@@ -197,33 +163,33 @@ updateLevelUI()
 
 const achievements = [
 
-    {
-        id: "first_case",
-        name: "First Case",
-        desc: "Открой первый кейс",
-        condition: () => getCasesOpened() >= 1
-    },
+{
+id:"first_case",
+name:"First Case",
+desc:"Открой первый кейс",
+condition:()=>getCasesOpened()>=1
+},
 
-    {
-        id: "ten_cases",
-        name: "Case Hunter",
-        desc: "Открой 10 кейсов",
-        condition: () => getCasesOpened() >= 10
-    },
+{
+id:"ten_cases",
+name:"Case Hunter",
+desc:"Открой 10 кейсов",
+condition:()=>getCasesOpened()>=10
+},
 
-    {
-        id: "fifty_cases",
-        name: "Case Master",
-        desc: "Открой 50 кейсов",
-        condition: () => getCasesOpened() >= 50
-    },
+{
+id:"fifty_cases",
+name:"Case Master",
+desc:"Открой 50 кейсов",
+condition:()=>getCasesOpened()>=50
+},
 
-    {
-        id: "first_nft",
-        name: "NFT Winner",
-        desc: "Выиграй NFT",
-        condition: () => getNFTCount() >= 1
-    }
+{
+id:"first_nft",
+name:"NFT Winner",
+desc:"Выиграй NFT",
+condition:()=>getNFTCount()>=1
+}
 
 ]
 
@@ -232,20 +198,20 @@ const achievements = [
 // ----------------------
 
 function getCasesOpened() {
-    return parseInt(localStorage.getItem("casesOpened")) || 0
+return parseInt(localStorage.getItem("casesOpened"))||0
 }
 
-function addCaseOpened() {
+function addCaseOpened(){
 
-    let cases = getCasesOpened()
-    cases++
+let cases=getCasesOpened()
+cases++
 
-    localStorage.setItem("casesOpened", cases)
+localStorage.setItem("casesOpened",cases)
 
-    addXP(10)
+addXP(10)
 
-    checkAchievements()
-    loadProfileStats()
+checkAchievements()
+loadProfileStats()
 
 }
 
@@ -253,11 +219,11 @@ function addCaseOpened() {
 // NFT COUNT
 // ----------------------
 
-function getNFTCount() {
+function getNFTCount(){
 
-    let inventory = JSON.parse(localStorage.getItem("inventory")) || []
+let inventory=JSON.parse(localStorage.getItem("inventory"))||[]
 
-    return inventory.filter(item => !item.name.includes("Stars")).length
+return inventory.filter(item=>!item.name.includes("Stars")).length
 
 }
 
@@ -265,21 +231,21 @@ function getNFTCount() {
 // ACHIEVEMENTS STORAGE
 // ----------------------
 
-function getUnlockedAchievements() {
-    return JSON.parse(localStorage.getItem("achievements")) || []
+function getUnlockedAchievements(){
+return JSON.parse(localStorage.getItem("achievements"))||[]
 }
 
-function unlockAchievement(id) {
+function unlockAchievement(id){
 
-    let unlocked = getUnlockedAchievements()
+let unlocked=getUnlockedAchievements()
 
-    if (unlocked.includes(id)) return
+if(unlocked.includes(id)) return
 
-    unlocked.push(id)
+unlocked.push(id)
 
-    localStorage.setItem("achievements", JSON.stringify(unlocked))
+localStorage.setItem("achievements",JSON.stringify(unlocked))
 
-    showAchievementPopup(id)
+showAchievementPopup(id)
 
 }
 
@@ -287,15 +253,15 @@ function unlockAchievement(id) {
 // CHECK ACHIEVEMENTS
 // ----------------------
 
-function checkAchievements() {
+function checkAchievements(){
 
-    achievements.forEach(a => {
+achievements.forEach(a=>{
 
-        if (a.condition()) {
-            unlockAchievement(a.id)
-        }
+if(a.condition()){
+unlockAchievement(a.id)
+}
 
-    })
+})
 
 }
 
@@ -303,23 +269,23 @@ function checkAchievements() {
 // ACHIEVEMENT POPUP
 // ----------------------
 
-function showAchievementPopup(id) {
+function showAchievementPopup(id){
 
-    const ach = achievements.find(a => a.id === id)
-    if (!ach) return
+const ach=achievements.find(a=>a.id===id)
+if(!ach) return
 
-    const popup = document.getElementById("achievementPopup")
-    const name = document.getElementById("achievementPopupName")
+const popup=document.getElementById("achievementPopup")
+const name=document.getElementById("achievementPopupName")
 
-    if (!popup || !name) return
+if(!popup||!name) return
 
-    name.innerText = ach.name
+name.innerText=ach.name
 
-    popup.classList.add("show")
+popup.classList.add("show")
 
-    setTimeout(() => {
-        popup.classList.remove("show")
-    }, 3000)
+setTimeout(()=>{
+popup.classList.remove("show")
+},3000)
 
 }
 
@@ -327,43 +293,57 @@ function showAchievementPopup(id) {
 // RENDER ACHIEVEMENTS
 // ----------------------
 
-function renderAchievements() {
+function renderAchievements(){
 
-    const list = document.getElementById("achievementsList")
-    if (!list) return
+const list=document.getElementById("achievementsList")
+if(!list) return
 
-    const unlocked = getUnlockedAchievements()
+const unlocked=getUnlockedAchievements()
 
-    list.innerHTML = ""
+list.innerHTML=""
 
-    achievements.forEach(a => {
+achievements.forEach(a=>{
 
-        const isUnlocked = unlocked.includes(a.id)
+const isUnlocked=unlocked.includes(a.id)
 
-        const div = document.createElement("div")
-        div.className = "achievement"
+const div=document.createElement("div")
+div.className="achievement"
 
-        if (!isUnlocked) {
-            div.classList.add("locked")
-        }
+if(!isUnlocked){
+div.classList.add("locked")
+}
 
-        div.innerHTML = `
-        <div>
-        <div class="achievement-title">${a.name}</div>
-        <div class="achievement-desc">${a.desc}</div>
-        </div>
+div.innerHTML=`
+<div>
+<div class="achievement-title">${a.name}</div>
+<div class="achievement-desc">${a.desc}</div>
+</div>
 
-        <div class="achievement-icon">
-        ${isUnlocked ? "🏆" : "🔒"}
-        </div>
-        `
+<div class="achievement-icon">
+${isUnlocked?"🏆":"🔒"}
+</div>
+`
 
-        list.appendChild(div)
+list.appendChild(div)
 
-    })
+})
 
 }
 
-if (document.getElementById("achievementsList")) {
-    renderAchievements()
+if(document.getElementById("achievementsList")){
+renderAchievements()
 }
+
+})
+
+// ----------------------
+// NAVIGATION
+// ----------------------
+
+function goHome(){window.location.href="index.html"}
+function openCases(){window.location.href="cases.html"}
+function openCasePage(){window.location.href="case.html"}
+function openInventory(){window.location.href="inventory.html"}
+function openProfile(){window.location.href="profile.html"}
+function openAchievements(){window.location.href="achievements.html"}
+function goBack(){window.history.back()}
