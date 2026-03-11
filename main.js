@@ -1,10 +1,11 @@
-// ----------------------
+ // ----------------------
 // TELEGRAM INIT
 // ----------------------
 
-const tg = window.Telegram?.WebApp
+let tg = null
 
-if (tg) {
+if (window.Telegram && window.Telegram.WebApp) {
+    tg = window.Telegram.WebApp
     tg.ready()
     tg.expand()
 }
@@ -13,7 +14,11 @@ if (tg) {
 // USER DATA
 // ----------------------
 
-const user = tg?.initDataUnsafe?.user
+let user = null
+
+if (tg && tg.initDataUnsafe) {
+    user = tg.initDataUnsafe.user
+}
 
 if (user) {
 
@@ -21,6 +26,13 @@ if (user) {
     const avatar = document.getElementById("avatar")
     const profileAvatar = document.getElementById("profileAvatar")
     const profileName = document.getElementById("profileName")
+
+    if (username) username.innerText = user.first_name || "Player"
+    if (profileName) profileName.innerText = user.first_name || "Player"
+
+    if (avatar && user.photo_url) avatar.src = user.photo_url
+    if (profileAvatar && user.photo_url) profileAvatar.src = user.photo_url
+}
 
     if (username) {
         username.innerText = user.first_name || "Player"
