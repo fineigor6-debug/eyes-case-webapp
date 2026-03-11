@@ -182,21 +182,12 @@ function showWinPopup(item){
 const popup=document.getElementById("winPopup")
 const winItem=document.getElementById("winItem")
 
-winItem.innerText=item
-
-saveToInventory(item)
-
-popup.classList.add("show")
-
-}
-
-const popup=document.getElementById("winPopup")
-const winItem=document.getElementById("winItem")
-
 winItem.innerHTML=`
 <img src="${item.img}" style="width:90px;margin-bottom:10px"><br>
 ${item.name}
 `
+
+saveToInventory(item)
 
 popup.classList.add("show")
 
@@ -221,7 +212,6 @@ prizeList.innerHTML=""
 dropTable.forEach(item=>{
 
 let row=document.createElement("div")
-
 row.className="prize-row"
 
 row.innerHTML=`
@@ -240,8 +230,8 @@ prizeList.appendChild(row)
 }
 
 // ----------------------
-
-renderPrizeList()
+// SAVE INVENTORY
+// ----------------------
 
 function saveToInventory(item){
 
@@ -254,3 +244,7 @@ localStorage.setItem("inventory", JSON.stringify(inventory))
 console.log("Добавлено в инвентарь:", item)
 
 }
+
+// ----------------------
+
+renderPrizeList()
