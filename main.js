@@ -53,45 +53,140 @@ const sellPrices = {
 }
 
 // ----------------------
+// BALANCE SYSTEM
+// ----------------------
+
+function getBalance(){
+return parseInt(localStorage.getItem("balance")) || 0
+}
+
+function addBalance(amount){
+
+let balance = getBalance()
+balance += amount
+
+localStorage.setItem("balance", balance)
+
+updateBalanceUI()
+
+}
+
+function spendBalance(amount){
+
+let balance = getBalance()
+
+if(balance < amount){
+return false
+}
+
+balance -= amount
+localStorage.setItem("balance", balance)
+
+updateBalanceUI()
+
+return true
+
+}
+
+function updateBalanceUI(){
+
+const el = document.getElementById("starsBalance") || document.getElementById("balance")
+
+if(!el) return
+
+el.innerText = getBalance()
+
+}
+
+updateBalanceUI()
+
+// ----------------------
 // INVENTORY
 // ----------------------
 
 function loadInventory() {
 
-    const grid = document.getElementById("inventoryGrid")
-    if (!grid) return
+const grid = document.getElementById("inventoryGrid")
+if (!grid) return
 
-    let inventory = JSON.parse(localStorage.getItem("inventory")) || []
+let inventory = JSON.parse(localStorage.getItem("inventory")) || []
 
-    grid.innerHTML = ""
+grid.innerHTML = ""
 
-    if (inventory.length === 0) {
+if (inventory.length === 0) {
 
-        grid.innerHTML = `
-        <p style="opacity:.6;text-align:center">
-        Инвентарь пуст
-        </p>
-        `
-        return
-    }
+grid.innerHTML = `
+<p style="opacity:.6;text-align:center">
+Инвентарь пуст
+</p>
+`
+return
+}
 
-    inventory.forEach(item => {
+inventory.forEach((item,index) => {
 
-        let div = document.createElement("div")
-        div.className = "item"
+let div = document.createElement("div")
+div.className = "item"
 
-        div.innerHTML = `
-        <img src="${item.img}" style="width:70px;height:70px;object-fit:contain">
-        <div style="font-size:12px;margin-top:6px">${item.name}</div>
-        `
+let sellButton = ""
 
-        grid.appendChild(div)
+if(!item.name.includes("Stars")){
 
-    })
+const price = sellPrices[item.name] || 0
+
+sellButton = `
+<button class="sell-btn" onclick="sellItem(${index})">
+Продать ⭐${price}
+</button>
+`
+
+}
+
+div.innerHTML = `
+<img src="${item.img}" style="width:70px;height:70px;object-fit:contain">
+
+<div style="font-size:12px;margin-top:6px">
+${item.name}
+</div>
+
+${sellButton}
+`
+
+grid.appendChild(div)
+
+})
 
 }
 
 if (document.getElementById("inventoryGrid")) loadInventory()
+
+// ----------------------
+// SELL ITEM
+// ----------------------
+
+function sellItem(index){
+
+let inventory = JSON.parse(localStorage.getItem("inventory")) || []
+
+const item = inventory[index]
+
+if(!item) return
+
+if(item.name.includes("Stars")) return
+
+const price = sellPrices[item.name] || 0
+
+inventory.splice(index,1)
+
+localStorage.setItem("inventory", JSON.stringify(inventory))
+
+addBalance(price)
+
+loadInventory()
+loadTopItems()
+loadProfileStats()
+
+}
 
 // ----------------------
 // PROFILE STATS
@@ -99,11 +194,11 @@ if (document.getElementById("inventoryGrid")) loadInventory()
 
 function loadProfileStats() {
 
-    const casesEl = document.getElementById("casesOpened")
-    const nftEl = document.getElementById("nftWon")
+const casesEl = document.getElementById("casesOpened")
+const nftEl = document.getElementById("nftWon")
 
-    if (casesEl) casesEl.innerText = getCasesOpened()
-    if (nftEl) nftEl.innerText = getNFTCount()
+if (casesEl) casesEl.innerText = getCasesOpened()
+if (nftEl) nftEl.innerText = getNFTCount()
 
 }
 
@@ -112,145 +207,49 @@ loadBestDrop()
 loadTopItems()
 
 // ----------------------
-// BALANCE SYSTEM
-// ----------------------
-
-function getBalance(){
-return parseInt(localStorage.getItem("balance")) || 0
-}
-
-function addBalance(amount){
-
-let balance = getBalance()
-balance += amount
-
-localStorage.setItem("balance", balance)
-
-updateBalanceUI()
-
-}
-
-function spendBalance(amount){
-
-let balance = getBalance()
-
-if(balance < amount){
-return false
-}
-
-balance -= amount
-localStorage.setItem("balance", balance)
-
-updateBalanceUI()
-
-return true
-
-}
-
-function updateBalanceUI(){
-
-const el = document.getElementById("balance")
-
-if(!el) return
-
-el.innerText = getBalance()
-
-}
-
-updateBalanceUI()
-
-// ----------------------
 // XP SYSTEM
 // ----------------------
 
 function getXP() {
-    return parseInt(localStorage.getItem("xp")) || 0
+return parseInt(localStorage.getItem("xp")) || 0
 }
 
 function addXP(amount) {
 
-    let xp = getXP()
-    xp += amount
+let xp = getXP()
+xp += amount
 
-    localStorage.setItem("xp", xp)
+localStorage.setItem("xp", xp)
 
-    updateLevelUI()
+updateLevelUI()
 
 }
 
 function getLevel(xp) {
-    return Math.floor(xp / 100) + 1
+return Math.floor(xp / 100) + 1
 }
 
 function updateLevelUI() {
 
-    const xp = getXP()
-    const level = getLevel(xp)
+const xp = getXP()
+const level = getLevel(xp)
 
-    const currentXP = xp - ((level - 1) * 100)
-    const fillPercent = Math.min((currentXP / 100) * 100, 100)
+const currentXP = xp - ((level - 1) * 100)
+const fillPercent = Math.min((currentXP / 100) * 100, 100)
 
-    const levelEl = document.getElementById("playerLevel")
-    const fillEl = document.getElementById("xpFill")
-    const currentEl = document.getElementById("currentXP")
-    const nextEl = document.getElementById("nextXP")
+const levelEl = document.getElementById("playerLevel")
+const fillEl = document.getElementById("xpFill")
+const currentEl = document.getElementById("currentXP")
+const nextEl = document.getElementById("nextXP")
 
-    if (levelEl) levelEl.innerText = level
-    if (fillEl) fillEl.style.width = fillPercent + "%"
-    if (currentEl) currentEl.innerText = currentXP
-    if (nextEl) nextEl.innerText = 100
+if (levelEl) levelEl.innerText = level
+if (fillEl) fillEl.style.width = fillPercent + "%"
+if (currentEl) currentEl.innerText = currentXP
+if (nextEl) nextEl.innerText = 100
 
 }
 
 updateLevelUI()
-
-// ----------------------
-// BALANCE SYSTEM
-// ----------------------
-
-function getBalance(){
-return parseInt(localStorage.getItem("balance")) || 0
-}
-
-function addBalance(amount){
-
-let balance = getBalance()
-balance += amount
-
-localStorage.setItem("balance", balance)
-
-updateBalanceUI()
-
-}
-
-function spendBalance(amount){
-
-let balance = getBalance()
-
-if(balance < amount){
-return false
-}
-
-balance -= amount
-localStorage.setItem("balance", balance)
-
-updateBalanceUI()
-
-return true
-
-}
-
-function updateBalanceUI(){
-
-const el = document.getElementById("balance")
-
-if(!el) return
-
-el.innerText = getBalance()
-
-}
-
-updateBalanceUI()
 
 // ----------------------
 // RARITY SYSTEM
@@ -566,6 +565,7 @@ window.getNFTCount = getNFTCount
 window.updateBestDrop = updateBestDrop
 window.loadBestDrop = loadBestDrop
 window.loadTopItems = loadTopItems
+window.sellItem = sellItem
 
 })
 
