@@ -37,7 +37,7 @@ name:user.first_name
 
 function loadBalance(){
 
-fetch("http://localhost:3000/player/"+user.id)
+fetch("https://eyes-case-webapp.fineigor6.workers.dev/register"+user.id)
 .then(res=>res.json())
 .then(data=>{
 
