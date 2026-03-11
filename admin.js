@@ -54,3 +54,7 @@ alert("Баланс снят")
 })
 
 }
+
+if(user.id !== 123456789){
+document.body.innerHTML="Access denied"
+}
