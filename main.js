@@ -404,7 +404,8 @@ window.addCaseOpened = addCaseOpened
 window.addXP = addXP
 window.getCasesOpened = getCasesOpened
 window.getNFTCount = getNFTCount
-
+window.updateBestDrop = updateBestDrop
+window.loadBestDrop = loadBestDrop
 })
 
 // ----------------------
