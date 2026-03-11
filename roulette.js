@@ -101,6 +101,8 @@ return dropTable[0]
 
 function buildRoulette(){
 
+if(!track) return
+
 track.innerHTML=""
 currentStrip=[]
 
@@ -114,9 +116,7 @@ let div=document.createElement("div")
 div.className="item"
 
 div.innerHTML=`
-<a href="${item.link}" target="_blank">
 <img src="${item.img}">
-</a>
 `
 
 track.appendChild(div)
@@ -131,9 +131,10 @@ track.appendChild(div)
 
 function spinCase(){
 
+if(!track || !openBtn) return
 if(spinning) return
-spinning=true
 
+spinning=true
 openBtn.disabled=true
 
 buildRoulette()
@@ -182,6 +183,8 @@ function showWinPopup(item){
 const popup=document.getElementById("winPopup")
 const winItem=document.getElementById("winItem")
 
+if(!popup || !winItem) return
+
 winItem.innerHTML=`
 <img src="${item.img}" style="width:90px;margin-bottom:10px"><br>
 ${item.name}
@@ -195,7 +198,11 @@ popup.classList.add("show")
 
 function closeWinPopup(){
 
-document.getElementById("winPopup").classList.remove("show")
+const popup=document.getElementById("winPopup")
+
+if(popup){
+popup.classList.remove("show")
+}
 
 }
 
