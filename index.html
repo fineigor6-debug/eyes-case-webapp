@@ -1,9 +1,10 @@
 <!DOCTYPE html>
 <html lang="ru">
+
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
 <title>Eyes Case</title>
 
@@ -11,102 +12,11 @@
 
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
-<style>
-
-:root{
---accent:#00f2ff;
---gold:#ffcc00;
-}
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
--webkit-tap-highlight-color:transparent;
-}
-
-html{
-width:100%;
-max-width:100%;
-overflow-x:hidden;
-}
-
-body{
-width:100%;
-max-width:100%;
-overflow-x:hidden;
-touch-action:pan-y;
-}
-
-.app{
-max-width:420px;
-width:100%;
-margin:auto;
-min-height:100vh;
-overflow:hidden;
-padding-bottom:90px;
-}
-
-.page{
-display:none;
-}
-
-.page.active{
-display:block;
-}
-
-.menu{
-position:fixed;
-bottom:0;
-left:50%;
-transform:translateX(-50%);
-width:100%;
-max-width:420px;
-display:flex;
-justify-content:space-around;
-background:rgba(0,0,0,0.8);
-backdrop-filter:blur(20px);
-padding:10px 0;
-}
-
-.menu-item{
-display:flex;
-flex-direction:column;
-align-items:center;
-font-size:20px;
-opacity:.6;
-cursor:pointer;
-}
-
-.menu-item span{
-font-size:10px;
-margin-top:3px;
-}
-
-.menu-item.active{
-opacity:1;
-}
-
-.inventory-grid{
-padding:20px;
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:12px;
-}
-
-.profile-page{
-padding:20px;
-}
-
-</style>
-
 </head>
 
 <body>
 
 <div class="app">
-
-<!-- HEADER -->
 
 <div class="header">
 
@@ -127,16 +37,12 @@ padding:20px;
 
 </div>
 
-<!-- ГЛАВНАЯ -->
 
-<div id="page-home" class="page active">
-
-<div class="banner case-banner">
-
-<div class="banner-text">
+<div class="banner">
 
 <h2>Кейсы</h2>
-<p>Открывай кейс и получай NFT подарки</p>
+
+<p>Открывай кейсы и получай NFT</p>
 
 <button onclick="openCases()">
 Крутить кейсы
@@ -146,45 +52,10 @@ padding:20px;
 
 </div>
 
-</div>
-
-<!-- ИНВЕНТАРЬ -->
-
-<div id="page-inventory" class="page">
-
-<div class="inventory-grid" id="inventoryGrid">
-
-<p style="opacity:.6;text-align:center">
-Инвентарь пуст
-</p>
-
-</div>
-
-</div>
-
-<!-- ПРОФИЛЬ -->
-
-<div id="page-profile" class="page">
-
-<div class="profile-page">
-
-<h2>Профиль</h2>
-
-<p>Имя: <span id="profileName">Player</span></p>
-<p>Баланс: ⭐ <span id="profileBalance">2</span></p>
-<p>Открыто кейсов: 0</p>
-
-</div>
-
-</div>
-
-</div>
-
-<!-- НИЖНЕЕ МЕНЮ -->
 
 <div class="menu">
 
-<div class="menu-item active" onclick="showPage('home',this)">
+<div class="menu-item active" onclick="goHome()">
 🏠
 <span>Главная</span>
 </div>
@@ -194,98 +65,20 @@ padding:20px;
 <span>Кейсы</span>
 </div>
 
-<div class="menu-item" onclick="showPage('inventory',this)">
+<div class="menu-item" onclick="openInventory()">
 🎒
 <span>Инвентарь</span>
 </div>
 
-<div class="menu-item" onclick="showPage('profile',this)">
+<div class="menu-item" onclick="openProfile()">
 👤
 <span>Профиль</span>
 </div>
 
 </div>
 
-</div>
 
 <script src="main.js"></script>
-
-<script>
-
-const tg = window.Telegram.WebApp
-tg.ready()
-
-setTimeout(()=>{
-tg.expand()
-},200)
-
-/* TELEGRAM USER */
-
-const user = tg.initDataUnsafe?.user
-
-if(user){
-
-const username=document.getElementById("username")
-const avatar=document.getElementById("avatar")
-const profileName=document.getElementById("profileName")
-
-if(username){
-username.innerText=user.first_name || "Player"
-}
-
-if(profileName){
-profileName.innerText=user.first_name || "Player"
-}
-
-if(avatar && user.photo_url){
-avatar.src=user.photo_url
-}
-
-}
-
-/* NAVIGATION */
-
-function showPage(page,el){
-
-document.querySelectorAll(".page").forEach(p=>{
-p.classList.remove("active")
-})
-
-document.getElementById("page-"+page).classList.add("active")
-
-document.querySelectorAll(".menu-item").forEach(i=>{
-i.classList.remove("active")
-})
-
-if(el){
-el.classList.add("active")
-}
-
-}
-
-/* OPEN CASES SCREEN */
-
-function openCases(){
-window.location.href="cases.html"
-}
-
-/* TOUCH FIX */
-
-document.addEventListener("touchmove",function(e){
-
-if(e.touches.length==1){
-
-let touch=e.touches[0]
-
-if(touch.clientX<0 || touch.clientX>window.innerWidth){
-e.preventDefault()
-}
-
-}
-
-},{passive:false})
-
-</script>
 
 </body>
 </html>
