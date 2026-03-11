@@ -10,6 +10,8 @@
 
 <link rel="stylesheet" href="style.css">
 
+<script src="https://telegram.org/js/telegram-web-app.js"></script>
+
 </head>
 
 <body>
@@ -68,24 +70,18 @@ LEVEL <span id="playerLevel">1</span>
 <div class="profile-stats">
 
 <div class="stat">
-
 <span>Кейсов открыто</span>
 <b id="casesOpened">0</b>
-
 </div>
 
 <div class="stat">
-
 <span>NFT выбито</span>
 <b id="nftWon">0</b>
-
 </div>
 
 <div class="stat">
-
 <span>Лучший дроп</span>
 <b id="bestDrop">—</b>
-
 </div>
 
 </div>
@@ -105,6 +101,14 @@ LEVEL <span id="playerLevel">1</span>
 </div>
 
 </div>
+
+
+<!-- ACHIEVEMENTS BUTTON -->
+
+<button onclick="openAchievements()">
+🏆 Достижения
+</button>
+
 
 </div>
 
@@ -138,6 +142,28 @@ LEVEL <span id="playerLevel">1</span>
 </div>
 
 <script src="main.js"></script>
+
+<script>
+
+const tg = window.Telegram.WebApp
+
+if(tg && tg.initDataUnsafe && tg.initDataUnsafe.user){
+
+const user = tg.initDataUnsafe.user
+
+// имя
+if(user.first_name){
+document.getElementById("profileName").innerText = user.first_name
+}
+
+// аватар
+if(user.photo_url){
+document.getElementById("avatar").src = user.photo_url
+}
+
+}
+
+</script>
 
 </body>
 </html>
