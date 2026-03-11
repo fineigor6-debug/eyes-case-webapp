@@ -15,50 +15,19 @@ let currentStrip = []
 
 let dropTable = [
 
-{
-name:"Magic Potion",
-img:"IMG_0667.jpeg",
-link:"https://t.me/nft/MagicPotion-4099",
-chance:30
-},
+{name:"20 Stars", img:"star20.png", chance:36},
+{name:"60 Stars", img:"star60.png", chance:27},
+{name:"120 Stars", img:"star120.png", chance:18},
+{name:"250 Stars", img:"star250.png", chance:10},
 
-{
-name:"Ion Gem",
-img:"IMG_0668.webp",
-link:"https://t.me/nft/IonGem-2149",
-chance:22
-},
-
-{
-name:"Mini Oscar",
-img:"IMG_0669.webp",
-link:"https://t.me/nft/MiniOscar-3627",
-chance:18
-},
-
-{
-name:"Heroic Helmet",
-img:"IMG_0670.jpeg",
-link:"https://t.me/nft/HeroicHelmet-1880",
-chance:14
-},
-
-{
-name:"Precious Peach",
-img:"IMG_0671.webp",
-link:"https://t.me/nft/PreciousPeach-527",
-chance:10
-},
-
-{
-name:"Durov's Cap",
-img:"IMG_0672.webp",
-link:"https://t.me/nft/DurovsCap-4110",
-chance:6
-}
+{name:"Magic Potion", img:"IMG_0667.jpeg", chance:5},
+{name:"Ion Gem", img:"IMG_0668.webp", chance:2.5},
+{name:"Mini Oscar", img:"IMG_0669.webp", chance:0.9},
+{name:"Heroic Helmet", img:"IMG_0670.jpeg", chance:0.4},
+{name:"Precious Peach", img:"IMG_0671.webp", chance:0.15},
+{name:"Durov's Cap", img:"IMG_0672.webp", chance:0.05}
 
 ]
-
 // ----------------------
 // SECURE RANDOM
 // ----------------------
