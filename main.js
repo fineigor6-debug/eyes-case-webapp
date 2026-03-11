@@ -106,3 +106,69 @@ grid.appendChild(div)
 
 // запуск
 loadInventory()
+
+// ----------------------
+// XP SYSTEM
+// ----------------------
+
+function getXP(){
+
+return parseInt(localStorage.getItem("xp")) || 0
+
+}
+
+function addXP(amount){
+
+let xp = getXP()
+
+xp += amount
+
+localStorage.setItem("xp", xp)
+
+updateLevelUI()
+
+}
+
+// LEVEL FORMULA
+
+function getLevel(xp){
+
+return Math.floor(xp / 100) + 1
+
+}
+
+// XP TO NEXT LEVEL
+
+function getXPForNextLevel(level){
+
+return level * 100
+
+}
+
+// UPDATE PROFILE UI
+
+function updateLevelUI(){
+
+const xp = getXP()
+const level = getLevel(xp)
+const nextXP = getXPForNextLevel(level)
+
+const currentXP = xp - ((level-1)*100)
+
+const fillPercent = (currentXP / 100) * 100
+
+const levelEl = document.getElementById("playerLevel")
+const fillEl = document.getElementById("xpFill")
+const currentEl = document.getElementById("currentXP")
+const nextEl = document.getElementById("nextXP")
+
+if(levelEl) levelEl.innerText = level
+if(fillEl) fillEl.style.width = fillPercent + "%"
+if(currentEl) currentEl.innerText = currentXP
+if(nextEl) nextEl.innerText = 100
+
+}
+
+// RUN ON PAGE LOAD
+
+updateLevelUI()
