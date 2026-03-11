@@ -23,9 +23,9 @@ let dropTable = [
 {name:"120 Stars", img:"D8191BBE-8762-41A4-A2C2-17EC9F8F63DE.png", chance:18},
 {name:"250 Stars", img:"3CFA93BA-A42F-40B7-9B1E-34B8566D62CE.png", chance:10},
 
-{name:"Magic Potion", img:"IMG_0667.jpeg", chance:5},
+{name:"Mini Oscar", img:"IMG_0669.webp", chance:5},
 {name:"Ion Gem", img:"IMG_0668.webp", chance:2.5},
-{name:"Mini Oscar", img:"IMG_0669.webp", chance:0.9},
+{name:"Magic Potion", img:"IMG_0667.jpeg", chance:0.9},
 {name:"Heroic Helmet", img:"IMG_0670.jpeg", chance:0.4},
 {name:"Precious Peach", img:"IMG_0671.webp", chance:0.15},
 {name:"Durov's Cap", img:"IMG_0672.webp", chance:0.05}
