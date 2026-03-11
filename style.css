@@ -98,6 +98,46 @@ font-weight:700;
 backdrop-filter:blur(10px);
 }
 
+.balance-box{
+
+margin-top:18px;
+background:#1c1c1c;
+border-radius:14px;
+padding:16px;
+text-align:center;
+
+}
+
+.balance-title{
+
+font-size:14px;
+opacity:.7;
+margin-bottom:6px;
+
+}
+
+.balance-content{
+
+display:flex;
+align-items:center;
+justify-content:center;
+gap:8px;
+
+}
+
+.balance-icon{
+
+font-size:20px;
+
+}
+
+.stars-count{
+
+font-size:22px;
+font-weight:700;
+
+}
+
 /* БАННЕР */
 
 .banner{
