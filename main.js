@@ -591,6 +591,7 @@ window.updateBestDrop = updateBestDrop
 window.loadBestDrop = loadBestDrop
 window.loadTopItems = loadTopItems
 window.sellItem = sellItem
+window.buyCase = buyCase
 
 })
 
