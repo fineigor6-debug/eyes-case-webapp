@@ -228,27 +228,30 @@ loadInventory()
 // SELL ITEM
 // ----------------------
 
-function sellItem(index){
+async function sellItem(index){
 
-let inventory = JSON.parse(localStorage.getItem("inventory")) || []
+const id = localStorage.getItem("playerId")
 
-const item = inventory[index]
+const res = await fetch("https://bold-dew-c931.fineigor6.workers.dev/sell-item",{
 
-if(!item) return
+method:"POST",
 
-if(item.name.includes("Stars")) return
+headers:{
+"Content-Type":"application/json"
+},
 
-const price = sellPrices[item.name] || 0
+body:JSON.stringify({
+id:id,
+index:index
+})
 
-inventory.splice(index,1)
+})
 
-localStorage.setItem("inventory", JSON.stringify(inventory))
+const data = await res.json()
 
-alert("Продано за ⭐"+price)
+alert("Предмет продан")
 
-loadInventory()
-loadTopItems()
-loadProfileStats()
+loadBalance()
 
 }
 
