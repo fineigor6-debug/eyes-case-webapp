@@ -275,3 +275,57 @@ if(!ach) return
 alert("🏆 Achievement Unlocked!\n\n"+ach.name+"\n"+ach.desc)
 
 }
+
+// ----------------------
+// RENDER ACHIEVEMENTS
+// ----------------------
+
+function renderAchievements(){
+
+const list = document.getElementById("achievementsList")
+
+if(!list) return
+
+const unlocked = getUnlockedAchievements()
+
+list.innerHTML=""
+
+achievements.forEach(a=>{
+
+const isUnlocked = unlocked.includes(a.id)
+
+const div = document.createElement("div")
+
+div.className = "achievement"
+
+if(!isUnlocked){
+div.classList.add("locked")
+}
+
+div.innerHTML = `
+
+<div>
+
+<div class="achievement-title">
+${a.name}
+</div>
+
+<div class="achievement-desc">
+${a.desc}
+</div>
+
+</div>
+
+<div class="achievement-icon">
+${isUnlocked ? "🏆" : "🔒"}
+</div>
+
+`
+
+list.appendChild(div)
+
+})
+
+}
+
+renderAchievements()
