@@ -1,119 +1,50 @@
-const express = require("express")
-const fs = require("fs")
-const cors = require("cors")
+const API = "https://bold-dew-c931.fineigor6.workers.dev"
 
-const app = express()
+// регистрация игрока
+function registerPlayer(user){
 
-app.use(cors())
-app.use(express.json())
-
-const DB = "players.json"
-
-// ----------------------
-// LOAD PLAYERS
-// ----------------------
-
-function loadPlayers(){
-return JSON.parse(fs.readFileSync(DB))
-}
-
-function savePlayers(players){
-fs.writeFileSync(DB, JSON.stringify(players,null,2))
-}
-
-// ----------------------
-// REGISTER PLAYER
-// ----------------------
-
-app.post("/register",(req,res)=>{
-
-const {id,name} = req.body
-
-let players = loadPlayers()
-
-let player = players.find(p=>p.id==id)
-
-if(!player){
-
-players.push({
-id,
-name,
-balance:0,
-inventory:[]
+fetch(API + "/register",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+id:user.id,
+name:user.first_name
 })
-
-savePlayers(players)
+})
 
 }
 
-res.json({status:"ok"})
+// получить баланс
+function getServerBalance(userId){
 
+return fetch(API + "/balance",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+id:userId
 })
-
-// ----------------------
-// GET PLAYER
-// ----------------------
-
-app.get("/player/:id",(req,res)=>{
-
-let players = loadPlayers()
-
-let player = players.find(p=>p.id == req.params.id)
-
-res.json(player)
-
 })
-
-// ----------------------
-// ADD BALANCE
-// ----------------------
-
-app.post("/addBalance",(req,res)=>{
-
-const {id,amount} = req.body
-
-let players = loadPlayers()
-
-let player = players.find(p=>p.id == id)
-
-if(player){
-
-player.balance += amount
-
-savePlayers(players)
+.then(res=>res.json())
 
 }
 
-res.json(player)
+// админ добавить баланс
+function addServerBalance(userId, amount){
 
+return fetch(API + "/add-balance",{
+method:"POST",
+headers:{
+"Content-Type":"application/json"
+},
+body:JSON.stringify({
+id:userId,
+amount:amount
 })
-
-// ----------------------
-// REMOVE BALANCE
-// ----------------------
-
-app.post("/removeBalance",(req,res)=>{
-
-const {id,amount} = req.body
-
-let players = loadPlayers()
-
-let player = players.find(p=>p.id == id)
-
-if(player){
-
-player.balance -= amount
-
-if(player.balance < 0) player.balance = 0
-
-savePlayers(players)
+})
+.then(res=>res.json())
 
 }
-
-res.json(player)
-
-})
-
-app.listen(3000,()=>{
-console.log("Server running")
-})
