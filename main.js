@@ -1,6 +1,12 @@
 document.addEventListener("DOMContentLoaded", function () {
 
 // ----------------------
+// ADMIN SETTINGS
+// ----------------------
+
+const ADMIN_ID = 8528585798
+    
+// ----------------------
 // TELEGRAM INIT
 // ----------------------
 
