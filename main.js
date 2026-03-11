@@ -112,6 +112,8 @@ function loadProfileStats() {
 
 loadProfileStats()
 
+loadBestDrop()
+    
 // ----------------------
 // XP SYSTEM
 // ----------------------
