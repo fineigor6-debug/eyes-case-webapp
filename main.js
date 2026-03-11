@@ -56,7 +56,9 @@ function loadInventory(){
 
 const grid = document.getElementById("inventoryGrid")
 
-if(!grid) return
+if(!grid){
+return
+}
 
 let inventory = JSON.parse(localStorage.getItem("inventory")) || []
 
@@ -72,7 +74,6 @@ return
 inventory.forEach(item=>{
 
 let div=document.createElement("div")
-
 div.className="item"
 
 div.innerText=item
