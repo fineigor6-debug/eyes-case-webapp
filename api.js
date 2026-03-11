@@ -1,4 +1,4 @@
-const API = "https://bold-dew-c931.fineigor6.workers.dev"
+const API = "export const API = "https://late-term-2712.fineigor6.workers.dev""
 const ADMIN_KEY = "superSecretAdminKey"
 
 // регистрация игрока
