@@ -197,7 +197,7 @@ condition:()=>getNFTCount()>=1
 // CASE COUNT
 // ----------------------
 
-function getCasesOpened() {
+function getCasesOpened(){
 return parseInt(localStorage.getItem("casesOpened"))||0
 }
 
@@ -333,6 +333,15 @@ list.appendChild(div)
 if(document.getElementById("achievementsList")){
 renderAchievements()
 }
+
+// ----------------------
+// EXPORT FUNCTIONS (ВАЖНО)
+// ----------------------
+
+window.addCaseOpened = addCaseOpened
+window.addXP = addXP
+window.getCasesOpened = getCasesOpened
+window.getNFTCount = getNFTCount
 
 })
 
