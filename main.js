@@ -29,21 +29,11 @@ if (user) {
     const profileAvatar = document.getElementById("profileAvatar")
     const profileName = document.getElementById("profileName")
 
-    if (username) {
-        username.innerText = user.first_name || "Player"
-    }
+    if (username) username.innerText = user.first_name || "Player"
+    if (profileName) profileName.innerText = user.first_name || "Player"
 
-    if (profileName) {
-        profileName.innerText = user.first_name || "Player"
-    }
-
-    if (avatar && user.photo_url) {
-        avatar.src = user.photo_url
-    }
-
-    if (profileAvatar && user.photo_url) {
-        profileAvatar.src = user.photo_url
-    }
+    if (avatar && user.photo_url) avatar.src = user.photo_url
+    if (profileAvatar && user.photo_url) profileAvatar.src = user.photo_url
 
 }
 
@@ -67,7 +57,6 @@ function loadInventory() {
         Инвентарь пуст
         </p>
         `
-
         return
     }
 
@@ -87,9 +76,7 @@ function loadInventory() {
 
 }
 
-if (document.getElementById("inventoryGrid")) {
-    loadInventory()
-}
+if (document.getElementById("inventoryGrid")) loadInventory()
 
 // ----------------------
 // PROFILE STATS
@@ -100,20 +87,15 @@ function loadProfileStats() {
     const casesEl = document.getElementById("casesOpened")
     const nftEl = document.getElementById("nftWon")
 
-    if (casesEl) {
-        casesEl.innerText = getCasesOpened()
-    }
-
-    if (nftEl) {
-        nftEl.innerText = getNFTCount()
-    }
+    if (casesEl) casesEl.innerText = getCasesOpened()
+    if (nftEl) nftEl.innerText = getNFTCount()
 
 }
 
 loadProfileStats()
-
 loadBestDrop()
-    
+loadTopItems()
+
 // ----------------------
 // XP SYSTEM
 // ----------------------
@@ -160,7 +142,169 @@ function updateLevelUI() {
 updateLevelUI()
 
 // ----------------------
-// ACHIEVEMENTS SYSTEM
+// RARITY SYSTEM
+// ----------------------
+
+function getRarityValue(name){
+
+if(name === "Durov's Cap") return 6
+if(name === "Precious Peach") return 5
+if(name === "Heroic Helmet") return 4
+if(name === "Mini Oscar") return 3
+if(name === "Ion Gem") return 2
+if(name === "Magic Potion") return 1
+
+return 0
+
+}
+
+// ----------------------
+// TOP ITEMS SYSTEM
+// ----------------------
+
+function loadTopItems(){
+
+const slots = document.querySelectorAll(".top-item")
+if(!slots.length) return
+
+let inventory = JSON.parse(localStorage.getItem("inventory")) || []
+
+inventory = inventory.filter(i => !i.name.includes("Stars"))
+
+inventory.sort((a,b)=>getRarityValue(b.name)-getRarityValue(a.name))
+
+const top = inventory.slice(0,3)
+
+slots.forEach((slot,i)=>{
+
+slot.innerHTML = ""
+
+if(!top[i]){
+slot.innerHTML = `<div style="opacity:.3">—</div>`
+return
+}
+
+const item = top[i]
+const rarity = getRarityValue(item.name)
+
+let border = "#333"
+
+if(rarity >= 6) border = "#FFD700"
+else if(rarity >= 5) border = "#FF7A00"
+else if(rarity >= 4) border = "#A335EE"
+else if(rarity >= 3) border = "#3FA7FF"
+
+slot.innerHTML = `
+<div style="
+display:flex;
+flex-direction:column;
+align-items:center;
+gap:6px;
+border:2px solid ${border};
+border-radius:12px;
+padding:6px;
+">
+
+<img src="${item.img}" style="width:50px;height:50px;object-fit:contain">
+
+<div style="font-size:11px;text-align:center">
+${item.name}
+</div>
+
+</div>
+`
+
+})
+
+}
+
+// ----------------------
+// CASE COUNT
+// ----------------------
+
+function getCasesOpened(){
+return parseInt(localStorage.getItem("casesOpened"))||0
+}
+
+function addCaseOpened(){
+
+let cases=getCasesOpened()
+cases++
+
+localStorage.setItem("casesOpened",cases)
+
+addXP(10)
+
+checkAchievements()
+loadProfileStats()
+loadTopItems()
+
+}
+
+// ----------------------
+// NFT COUNT
+// ----------------------
+
+function getNFTCount(){
+
+let inventory=JSON.parse(localStorage.getItem("inventory"))||[]
+
+return inventory.filter(item=>!item.name.includes("Stars")).length
+
+}
+
+// ----------------------
+// BEST DROP SYSTEM
+// ----------------------
+
+function getBestDrop(){
+return JSON.parse(localStorage.getItem("bestDrop")) || null
+}
+
+function updateBestDrop(item){
+
+if(item.name.includes("Stars")) return
+
+let best = getBestDrop()
+
+if(!best){
+localStorage.setItem("bestDrop", JSON.stringify(item))
+return
+}
+
+const rarity = getRarityValue(item.name)
+const bestRarity = getRarityValue(best.name)
+
+if(rarity > bestRarity){
+localStorage.setItem("bestDrop", JSON.stringify(item))
+}
+
+loadBestDrop()
+loadTopItems()
+
+}
+
+function loadBestDrop(){
+
+const el = document.getElementById("bestDrop")
+if(!el) return
+
+let best = getBestDrop()
+
+if(!best){
+el.innerText = "Нет"
+return
+}
+
+el.innerHTML = `
+<img src="${best.img}" style="width:32px;margin-right:8px">
+${best.name}
+`
+
+}
+
+// ----------------------
+// ACHIEVEMENTS
 // ----------------------
 
 const achievements = [
@@ -196,103 +340,7 @@ condition:()=>getNFTCount()>=1
 ]
 
 // ----------------------
-// CASE COUNT
-// ----------------------
-
-function getCasesOpened(){
-return parseInt(localStorage.getItem("casesOpened"))||0
-}
-
-function addCaseOpened(){
-
-let cases=getCasesOpened()
-cases++
-
-localStorage.setItem("casesOpened",cases)
-
-addXP(10)
-
-checkAchievements()
-loadProfileStats()
-
-}
-
-// ----------------------
-// NFT COUNT
-// ----------------------
-
-function getNFTCount(){
-
-let inventory=JSON.parse(localStorage.getItem("inventory"))||[]
-
-return inventory.filter(item=>!item.name.includes("Stars")).length
-
-}
-
-// ----------------------
-// BEST DROP SYSTEM
-// ----------------------
-
-function getBestDrop(){
-return JSON.parse(localStorage.getItem("bestDrop")) || null
-}
-
-function updateBestDrop(item){
-
-// звезды не считаем
-if(item.name.includes("Stars")) return
-
-let best = getBestDrop()
-
-if(!best){
-localStorage.setItem("bestDrop", JSON.stringify(item))
-return
-}
-
-// сравнение по редкости
-const rarity = getRarityValue(item.name)
-const bestRarity = getRarityValue(best.name)
-
-if(rarity > bestRarity){
-localStorage.setItem("bestDrop", JSON.stringify(item))
-}
-
-}
-
-function getRarityValue(name){
-
-if(name === "Durov's Cap") return 6
-if(name === "Precious Peach") return 5
-if(name === "Heroic Helmet") return 4
-if(name === "Mini Oscar") return 3
-if(name === "Ion Gem") return 2
-if(name === "Magic Potion") return 1
-
-return 0
-
-}
-
-function loadBestDrop(){
-
-const el = document.getElementById("bestDrop")
-if(!el) return
-
-let best = getBestDrop()
-
-if(!best){
-el.innerText = "Нет"
-return
-}
-
-el.innerHTML = `
-<img src="${best.img}" style="width:32px;margin-right:8px">
-${best.name}
-`
-
-}
-
-// ----------------------
-// ACHIEVEMENTS STORAGE
+// ACHIEVEMENT STORAGE
 // ----------------------
 
 function getUnlockedAchievements(){
@@ -320,11 +368,9 @@ showAchievementPopup(id)
 function checkAchievements(){
 
 achievements.forEach(a=>{
-
 if(a.condition()){
 unlockAchievement(a.id)
 }
-
 })
 
 }
@@ -399,7 +445,7 @@ renderAchievements()
 }
 
 // ----------------------
-// EXPORT FUNCTIONS (ВАЖНО)
+// EXPORT FUNCTIONS
 // ----------------------
 
 window.addCaseOpened = addCaseOpened
@@ -408,6 +454,8 @@ window.getCasesOpened = getCasesOpened
 window.getNFTCount = getNFTCount
 window.updateBestDrop = updateBestDrop
 window.loadBestDrop = loadBestDrop
+window.loadTopItems = loadTopItems
+
 })
 
 // ----------------------
