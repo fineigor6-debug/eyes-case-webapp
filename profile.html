@@ -9,7 +9,6 @@
 <title>Профиль</title>
 
 <link rel="stylesheet" href="style.css">
-
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 
 </head>
@@ -22,19 +21,14 @@
 <h2>Профиль</h2>
 </div>
 
-
 <div class="profile-page">
 
-<!-- АВАТАР -->
 <div class="profile-avatar">
-<img id="avatar" src="" alt="avatar">
+<img id="profileAvatar" src="" alt="avatar">
 </div>
 
-<!-- ИМЯ -->
 <h3 id="profileName">Player</h3>
 
-
-<!-- LEVEL -->
 <div class="profile-level">
 
 <div class="level-title">
@@ -51,8 +45,6 @@ LEVEL <span id="playerLevel">1</span>
 
 </div>
 
-
-<!-- BALANCE -->
 <div class="balance-box">
 
 <div class="balance-title">
@@ -65,8 +57,6 @@ LEVEL <span id="playerLevel">1</span>
 
 </div>
 
-
-<!-- STATS -->
 <div class="profile-stats">
 
 <div class="stat">
@@ -86,8 +76,6 @@ LEVEL <span id="playerLevel">1</span>
 
 </div>
 
-
-<!-- TOP ITEMS -->
 <div class="top-drops">
 
 <h3>Лучшие предметы</h3>
@@ -102,20 +90,13 @@ LEVEL <span id="playerLevel">1</span>
 
 </div>
 
-
-<!-- ACHIEVEMENTS BUTTON -->
-
 <button onclick="openAchievements()">
 🏆 Достижения
 </button>
 
-
 </div>
 
 </div>
-
-
-<!-- MENU -->
 
 <div class="menu">
 
@@ -142,28 +123,6 @@ LEVEL <span id="playerLevel">1</span>
 </div>
 
 <script src="main.js"></script>
-
-<script>
-
-const tg = window.Telegram.WebApp
-
-if(tg && tg.initDataUnsafe && tg.initDataUnsafe.user){
-
-const user = tg.initDataUnsafe.user
-
-// имя
-if(user.first_name){
-document.getElementById("profileName").innerText = user.first_name
-}
-
-// аватар
-if(user.photo_url){
-document.getElementById("avatar").src = user.photo_url
-}
-
-}
-
-</script>
 
 </body>
 </html>
