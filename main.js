@@ -5,7 +5,8 @@ document.addEventListener("DOMContentLoaded", function () {
 // ----------------------
 
 const ADMIN_ID = 8528585798
-    
+const API = "https://bold-dew-c931.fineigor6.workers.dev"
+
 // ----------------------
 // TELEGRAM INIT
 // ----------------------
@@ -15,29 +16,61 @@ let user = null
 
 if (window.Telegram && window.Telegram.WebApp) {
 
-    tg = window.Telegram.WebApp
-    tg.ready()
-    tg.expand()
+tg = window.Telegram.WebApp
+tg.ready()
+tg.expand()
 
-    if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
-        user = tg.initDataUnsafe.user
-    }
+if (tg.initDataUnsafe && tg.initDataUnsafe.user) {
+user = tg.initDataUnsafe.user
 }
 
-fetch("http://localhost:3000/register",{
+}
+
+// ----------------------
+// REGISTER PLAYER
+// ----------------------
+
+if(user){
+
+fetch(API + "/register",{
+
 method:"POST",
+
 headers:{
 "Content-Type":"application/json"
 },
+
 body:JSON.stringify({
 id:user.id,
 name:user.first_name
 })
+
 })
+
+}
+
+// ----------------------
+// LOAD BALANCE
+// ----------------------
 
 function loadBalance(){
 
-fetch("https://eyes-case-webapp.fineigor6.workers.dev/register"+user.id)
+if(!user) return
+
+fetch(API + "/player",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+id:user.id
+})
+
+})
+
 .then(res=>res.json())
 .then(data=>{
 
@@ -59,22 +92,25 @@ loadBalance()
 
 if (user) {
 
-    const username = document.getElementById("username")
-    const avatar = document.getElementById("avatar")
-    const profileAvatar = document.getElementById("profileAvatar")
-    const profileName = document.getElementById("profileName")
+const username = document.getElementById("username")
+const avatar = document.getElementById("avatar")
+const profileAvatar = document.getElementById("profileAvatar")
+const profileName = document.getElementById("profileName")
 
-    if (username) username.innerText = user.first_name || "Player"
-    if (profileName) profileName.innerText = user.first_name || "Player"
+if (username) username.innerText = user.first_name || "Player"
+if (profileName) profileName.innerText = user.first_name || "Player"
 
-    if (avatar && user.photo_url) avatar.src = user.photo_url
-    if (profileAvatar && user.photo_url) profileAvatar.src = user.photo_url
+if (avatar && user.photo_url) avatar.src = user.photo_url
+if (profileAvatar && user.photo_url) profileAvatar.src = user.photo_url
+
 }
+
 const playerId = document.getElementById("playerId")
 
 if(playerId && user){
 playerId.innerText = user.id
 }
+
 if(user){
 localStorage.setItem("playerId", user.id)
 }
@@ -92,7 +128,7 @@ adminBtn.style.display = "block"
 }
 
 }
-    
+
 // ----------------------
 // NFT SELL PRICES
 // ----------------------
@@ -115,96 +151,41 @@ const sellPrices = {
 const casePrice = 500
 
 // ----------------------
-// BALANCE SYSTEM
-// ----------------------
-
-function getBalance(){
-return parseInt(localStorage.getItem("balance")) || 0
-}
-
-function addBalance(amount){
-
-let balance = getBalance()
-balance += amount
-
-localStorage.setItem("balance", balance)
-
-updateBalanceUI()
-
-}
-
-function spendBalance(amount){
-
-let balance = getBalance()
-
-if(balance < amount){
-return false
-}
-
-balance -= amount
-localStorage.setItem("balance", balance)
-
-updateBalanceUI()
-
-return true
-
-}
-
-function updateBalanceUI(){
-
-const el = document.getElementById("starsBalance") || document.getElementById("balance")
-
-if(!el) return
-
-el.innerText = getBalance()
-
-}
-
-updateBalanceUI()
-
-// ----------------------
 // BUY CASE
 // ----------------------
 
 function buyCase(){
 
-if(!spendBalance(casePrice)){
-
-alert("Недостаточно ⭐ Stars")
-
-return
-
-}
-
-// открываем страницу кейса
 window.location.href = "case.html"
 
 }
-    
+
 // ----------------------
 // INVENTORY
 // ----------------------
 
-function loadInventory() {
+function loadInventory(){
 
 const grid = document.getElementById("inventoryGrid")
-if (!grid) return
+if(!grid) return
 
 let inventory = JSON.parse(localStorage.getItem("inventory")) || []
 
 grid.innerHTML = ""
 
-if (inventory.length === 0) {
+if(inventory.length === 0){
 
 grid.innerHTML = `
 <p style="opacity:.6;text-align:center">
 Инвентарь пуст
 </p>
 `
+
 return
+
 }
 
-inventory.forEach((item,index) => {
+inventory.forEach((item,index)=>{
 
 let div = document.createElement("div")
 div.className = "item"
@@ -239,7 +220,9 @@ grid.appendChild(div)
 
 }
 
-if (document.getElementById("inventoryGrid")) loadInventory()
+if(document.getElementById("inventoryGrid")){
+loadInventory()
+}
 
 // ----------------------
 // SELL ITEM
@@ -261,7 +244,7 @@ inventory.splice(index,1)
 
 localStorage.setItem("inventory", JSON.stringify(inventory))
 
-addBalance(price)
+alert("Продано за ⭐"+price)
 
 loadInventory()
 loadTopItems()
@@ -273,13 +256,13 @@ loadProfileStats()
 // PROFILE STATS
 // ----------------------
 
-function loadProfileStats() {
+function loadProfileStats(){
 
 const casesEl = document.getElementById("casesOpened")
 const nftEl = document.getElementById("nftWon")
 
-if (casesEl) casesEl.innerText = getCasesOpened()
-if (nftEl) nftEl.innerText = getNFTCount()
+if(casesEl) casesEl.innerText = getCasesOpened()
+if(nftEl) nftEl.innerText = getNFTCount()
 
 }
 
@@ -291,11 +274,11 @@ loadTopItems()
 // XP SYSTEM
 // ----------------------
 
-function getXP() {
+function getXP(){
 return parseInt(localStorage.getItem("xp")) || 0
 }
 
-function addXP(amount) {
+function addXP(amount){
 
 let xp = getXP()
 xp += amount
@@ -306,11 +289,11 @@ updateLevelUI()
 
 }
 
-function getLevel(xp) {
+function getLevel(xp){
 return Math.floor(xp / 100) + 1
 }
 
-function updateLevelUI() {
+function updateLevelUI(){
 
 const xp = getXP()
 const level = getLevel(xp)
@@ -323,10 +306,10 @@ const fillEl = document.getElementById("xpFill")
 const currentEl = document.getElementById("currentXP")
 const nextEl = document.getElementById("nextXP")
 
-if (levelEl) levelEl.innerText = level
-if (fillEl) fillEl.style.width = fillPercent + "%"
-if (currentEl) currentEl.innerText = currentXP
-if (nextEl) nextEl.innerText = 100
+if(levelEl) levelEl.innerText = level
+if(fillEl) fillEl.style.width = fillPercent + "%"
+if(currentEl) currentEl.innerText = currentXP
+if(nextEl) nextEl.innerText = 100
 
 }
 
@@ -350,7 +333,7 @@ return 0
 }
 
 // ----------------------
-// TOP ITEMS SYSTEM
+// TOP ITEMS
 // ----------------------
 
 function loadTopItems(){
@@ -376,33 +359,10 @@ return
 }
 
 const item = top[i]
-const rarity = getRarityValue(item.name)
-
-let border = "#333"
-
-if(rarity >= 6) border = "#FFD700"
-else if(rarity >= 5) border = "#FF7A00"
-else if(rarity >= 4) border = "#A335EE"
-else if(rarity >= 3) border = "#3FA7FF"
 
 slot.innerHTML = `
-<div style="
-display:flex;
-flex-direction:column;
-align-items:center;
-gap:6px;
-border:2px solid ${border};
-border-radius:12px;
-padding:6px;
-">
-
-<img src="${item.img}" style="width:50px;height:50px;object-fit:contain">
-
-<div style="font-size:11px;text-align:center">
-${item.name}
-</div>
-
-</div>
+<img src="${item.img}" style="width:50px">
+<div style="font-size:11px">${item.name}</div>
 `
 
 })
@@ -426,7 +386,6 @@ localStorage.setItem("casesOpened",cases)
 
 addXP(10)
 
-checkAchievements()
 loadProfileStats()
 loadTopItems()
 
@@ -445,7 +404,7 @@ return inventory.filter(item=>!item.name.includes("Stars")).length
 }
 
 // ----------------------
-// BEST DROP SYSTEM
+// BEST DROP
 // ----------------------
 
 function getBestDrop(){
@@ -495,147 +454,6 @@ ${best.name}
 }
 
 // ----------------------
-// ACHIEVEMENTS
-// ----------------------
-
-const achievements = [
-
-{
-id:"first_case",
-name:"First Case",
-desc:"Открой первый кейс",
-condition:()=>getCasesOpened()>=1
-},
-
-{
-id:"ten_cases",
-name:"Case Hunter",
-desc:"Открой 10 кейсов",
-condition:()=>getCasesOpened()>=10
-},
-
-{
-id:"fifty_cases",
-name:"Case Master",
-desc:"Открой 50 кейсов",
-condition:()=>getCasesOpened()>=50
-},
-
-{
-id:"first_nft",
-name:"NFT Winner",
-desc:"Выиграй NFT",
-condition:()=>getNFTCount()>=1
-}
-
-]
-
-// ----------------------
-// ACHIEVEMENT STORAGE
-// ----------------------
-
-function getUnlockedAchievements(){
-return JSON.parse(localStorage.getItem("achievements"))||[]
-}
-
-function unlockAchievement(id){
-
-let unlocked=getUnlockedAchievements()
-
-if(unlocked.includes(id)) return
-
-unlocked.push(id)
-
-localStorage.setItem("achievements",JSON.stringify(unlocked))
-
-showAchievementPopup(id)
-
-}
-
-// ----------------------
-// CHECK ACHIEVEMENTS
-// ----------------------
-
-function checkAchievements(){
-
-achievements.forEach(a=>{
-if(a.condition()){
-unlockAchievement(a.id)
-}
-})
-
-}
-
-// ----------------------
-// ACHIEVEMENT POPUP
-// ----------------------
-
-function showAchievementPopup(id){
-
-const ach=achievements.find(a=>a.id===id)
-if(!ach) return
-
-const popup=document.getElementById("achievementPopup")
-const name=document.getElementById("achievementPopupName")
-
-if(!popup||!name) return
-
-name.innerText=ach.name
-
-popup.classList.add("show")
-
-setTimeout(()=>{
-popup.classList.remove("show")
-},3000)
-
-}
-
-// ----------------------
-// RENDER ACHIEVEMENTS
-// ----------------------
-
-function renderAchievements(){
-
-const list=document.getElementById("achievementsList")
-if(!list) return
-
-const unlocked=getUnlockedAchievements()
-
-list.innerHTML=""
-
-achievements.forEach(a=>{
-
-const isUnlocked=unlocked.includes(a.id)
-
-const div=document.createElement("div")
-div.className="achievement"
-
-if(!isUnlocked){
-div.classList.add("locked")
-}
-
-div.innerHTML=`
-<div>
-<div class="achievement-title">${a.name}</div>
-<div class="achievement-desc">${a.desc}</div>
-</div>
-
-<div class="achievement-icon">
-${isUnlocked?"🏆":"🔒"}
-</div>
-`
-
-list.appendChild(div)
-
-})
-
-}
-
-if(document.getElementById("achievementsList")){
-renderAchievements()
-}
-
-// ----------------------
 // EXPORT FUNCTIONS
 // ----------------------
 
@@ -662,5 +480,4 @@ function openInventory(){window.location.href="inventory.html"}
 function openProfile(){window.location.href="profile.html"}
 function openAchievements(){window.location.href="achievements.html"}
 function goBack(){window.history.back()}
-function openAdmin(){window.location.href = "admin.html"
-}
+function openAdmin(){window.location.href="admin.html"}
