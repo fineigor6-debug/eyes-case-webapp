@@ -198,7 +198,10 @@ setTimeout(()=>{
 const win = currentStrip[targetIndex]
 
 showWinPopup(win)
+
 addXP(10)
+
+addCaseOpened()
 
 spinning=false
 openBtn.disabled=false
