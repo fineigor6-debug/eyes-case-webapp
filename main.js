@@ -633,3 +633,5 @@ function openInventory(){window.location.href="inventory.html"}
 function openProfile(){window.location.href="profile.html"}
 function openAchievements(){window.location.href="achievements.html"}
 function goBack(){window.history.back()}
+function openAdmin(){window.location.href = "admin.html"
+}
