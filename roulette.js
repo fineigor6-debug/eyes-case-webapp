@@ -1,4 +1,16 @@
 // ----------------------
+// TELEGRAM HAPTIC
+// ----------------------
+
+const tg = window.Telegram?.WebApp
+
+function vibrate(){
+if(tg){
+tg.HapticFeedback.impactOccurred("medium")
+}
+}
+
+// ----------------------
 // ELEMENTS
 // ----------------------
 
@@ -60,7 +72,7 @@ chance:6
 ]
 
 // ----------------------
-// SECURE RANDOM
+// RANDOM
 // ----------------------
 
 function random(){
@@ -73,7 +85,7 @@ return arr[0] / 4294967296
 }
 
 // ----------------------
-// WEIGHTED RANDOM
+// WEIGHTED DROP
 // ----------------------
 
 function rollDrop(){
@@ -132,24 +144,20 @@ function spinCase(){
 if(!track || !openBtn) return
 if(spinning) return
 
-spinning = true
-openBtn.disabled = true
+spinning=true
+openBtn.disabled=true
 
-// СБРОС РУЛЕТКИ
-track.style.transition = "none"
-track.style.transform = "translateX(0px)"
+vibrate()
+
+// reset рулетки
+track.style.transition="none"
+track.style.transform="translateX(0px)"
 
 buildRoulette()
 
 setTimeout(()=>{
 
 const item = track.querySelector(".item")
-
-if(!item){
-spinning=false
-openBtn.disabled=false
-return
-}
 
 const itemWidth = item.offsetWidth
 const gap = parseInt(getComputedStyle(track).gap) || 0
@@ -162,23 +170,42 @@ const targetIndex = 80
 
 const distance = targetIndex * step - center
 
-const spinTime = 6000 + random()*2000
+const spinTime = 6500 + random()*1500
 
-track.style.transition = `transform ${spinTime}ms cubic-bezier(.12,.7,.2,1)`
-track.style.transform = `translateX(-${distance}px)`
+track.style.transition=`transform ${spinTime}ms cubic-bezier(.08,.8,.2,1)`
+track.style.transform=`translateX(-${distance}px)`
 
 setTimeout(()=>{
 
 const win = currentStrip[targetIndex]
 
+highlightWin(targetIndex)
+
 showWinPopup(win)
+
+vibrate()
 
 spinning=false
 openBtn.disabled=false
 
 },spinTime)
 
-},100)
+},120)
+
+}
+
+// ----------------------
+// HIGHLIGHT WIN
+// ----------------------
+
+function highlightWin(index){
+
+const items = track.querySelectorAll(".item")
+
+if(items[index]){
+items[index].style.boxShadow="0 0 20px #00ffd0"
+items[index].style.transform="scale(1.1)"
+}
 
 }
 
