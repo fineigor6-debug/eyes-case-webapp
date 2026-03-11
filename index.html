@@ -62,13 +62,10 @@ left:50%;
 transform:translateX(-50%);
 width:100%;
 max-width:420px;
-
 display:flex;
 justify-content:space-around;
-
 background:rgba(0,0,0,0.8);
 backdrop-filter:blur(20px);
-
 padding:10px 0;
 }
 
@@ -78,6 +75,7 @@ flex-direction:column;
 align-items:center;
 font-size:20px;
 opacity:.6;
+cursor:pointer;
 }
 
 .menu-item span{
@@ -87,27 +85,6 @@ margin-top:3px;
 
 .menu-item.active{
 opacity:1;
-}
-
-.cases-grid{
-padding:20px;
-display:grid;
-grid-template-columns:1fr 1fr;
-gap:14px;
-}
-
-.case{
-background:#141414;
-border-radius:16px;
-padding:14px;
-text-align:center;
-border:1px solid rgba(255,255,255,.08);
-}
-
-.case img{
-width:100%;
-border-radius:12px;
-margin-bottom:10px;
 }
 
 .inventory-grid{
@@ -161,7 +138,7 @@ padding:20px;
 <h2>Кейсы</h2>
 <p>Открывай кейс и получай NFT подарки</p>
 
-<button onclick="showPage('cases')">
+<button onclick="openCases()">
 Крутить кейсы
 </button>
 
@@ -170,30 +147,6 @@ padding:20px;
 </div>
 
 </div>
-
-
-<!-- КЕЙСЫ -->
-
-<div id="page-cases" class="page">
-
-<div class="cases-grid">
-
-<div class="case" onclick="window.location='case.html'">
-
-<img src="case.png">
-
-<h3>Daily Case</h3>
-
-<div class="price">
-Бесплатно
-</div>
-
-</div>
-
-</div>
-
-</div>
-
 
 <!-- ИНВЕНТАРЬ -->
 
@@ -209,7 +162,6 @@ padding:20px;
 
 </div>
 
-
 <!-- ПРОФИЛЬ -->
 
 <div id="page-profile" class="page">
@@ -218,8 +170,8 @@ padding:20px;
 
 <h2>Профиль</h2>
 
-<p>Имя: Player</p>
-<p>Баланс: ⭐ 2</p>
+<p>Имя: <span id="profileName">Player</span></p>
+<p>Баланс: ⭐ <span id="profileBalance">2</span></p>
 <p>Открыто кейсов: 0</p>
 
 </div>
@@ -227,7 +179,6 @@ padding:20px;
 </div>
 
 </div>
-
 
 <!-- НИЖНЕЕ МЕНЮ -->
 
@@ -238,7 +189,7 @@ padding:20px;
 <span>Главная</span>
 </div>
 
-<div class="menu-item" onclick="showPage('cases',this)">
+<div class="menu-item" onclick="openCases()">
 🎁
 <span>Кейсы</span>
 </div>
@@ -255,6 +206,7 @@ padding:20px;
 
 </div>
 
+</div>
 
 <script src="main.js"></script>
 
@@ -266,6 +218,32 @@ tg.ready()
 setTimeout(()=>{
 tg.expand()
 },200)
+
+/* TELEGRAM USER */
+
+const user = tg.initDataUnsafe?.user
+
+if(user){
+
+const username=document.getElementById("username")
+const avatar=document.getElementById("avatar")
+const profileName=document.getElementById("profileName")
+
+if(username){
+username.innerText=user.first_name || "Player"
+}
+
+if(profileName){
+profileName.innerText=user.first_name || "Player"
+}
+
+if(avatar && user.photo_url){
+avatar.src=user.photo_url
+}
+
+}
+
+/* NAVIGATION */
 
 function showPage(page,el){
 
@@ -279,9 +257,19 @@ document.querySelectorAll(".menu-item").forEach(i=>{
 i.classList.remove("active")
 })
 
-if(el) el.classList.add("active")
+if(el){
+el.classList.add("active")
+}
 
 }
+
+/* OPEN CASES SCREEN */
+
+function openCases(){
+window.location.href="cases.html"
+}
+
+/* TOUCH FIX */
 
 document.addEventListener("touchmove",function(e){
 
