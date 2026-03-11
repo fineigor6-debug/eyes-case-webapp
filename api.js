@@ -1,10 +1,7 @@
 const API = "https://bold-dew-c931.fineigor6.workers.dev"
-const ADMIN_KEY = "8528585798"
+const ADMIN_KEY = "superSecretAdminKey"
 
-// ----------------------
-// REGISTER PLAYER
-// ----------------------
-
+// регистрация игрока
 async function apiRegister(id,name){
 
 return fetch(API + "/register",{
@@ -24,10 +21,7 @@ name:name
 
 }
 
-// ----------------------
-// GET PLAYER
-// ----------------------
-
+// получить игрока
 async function apiGetPlayer(id){
 
 const res = await fetch(API + "/player",{
@@ -48,10 +42,7 @@ return res.json()
 
 }
 
-// ----------------------
-// OPEN CASE
-// ----------------------
-
+// открыть кейс
 async function apiOpenCase(id){
 
 const res = await fetch(API + "/open-case",{
@@ -72,10 +63,29 @@ return res.json()
 
 }
 
-// ----------------------
-// ADMIN ADD BALANCE
-// ----------------------
+// продать предмет
+async function apiSellItem(id,index){
 
+const res = await fetch(API + "/sell-item",{
+
+method:"POST",
+
+headers:{
+"Content-Type":"application/json"
+},
+
+body:JSON.stringify({
+id:id,
+index:index
+})
+
+})
+
+return res.json()
+
+}
+
+// админ баланс
 async function apiAddBalance(id,amount){
 
 const res = await fetch(API + "/add-balance",{
