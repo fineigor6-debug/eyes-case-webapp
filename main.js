@@ -1,4 +1,4 @@
- // ----------------------
+// ----------------------
 // TELEGRAM INIT
 // ----------------------
 
@@ -26,13 +26,6 @@ if (user) {
     const avatar = document.getElementById("avatar")
     const profileAvatar = document.getElementById("profileAvatar")
     const profileName = document.getElementById("profileName")
-
-    if (username) username.innerText = user.first_name || "Player"
-    if (profileName) profileName.innerText = user.first_name || "Player"
-
-    if (avatar && user.photo_url) avatar.src = user.photo_url
-    if (profileAvatar && user.photo_url) profileAvatar.src = user.photo_url
-}
 
     if (username) {
         username.innerText = user.first_name || "Player"
@@ -174,10 +167,6 @@ function getLevel(xp) {
     return Math.floor(xp / 100) + 1
 }
 
-function getXPForNextLevel(level) {
-    return level * 100
-}
-
 // UPDATE UI
 
 function updateLevelUI() {
@@ -186,7 +175,6 @@ function updateLevelUI() {
     const level = getLevel(xp)
 
     const currentXP = xp - ((level - 1) * 100)
-
     const fillPercent = Math.min((currentXP / 100) * 100, 100)
 
     const levelEl = document.getElementById("playerLevel")
