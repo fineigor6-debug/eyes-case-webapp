@@ -59,6 +59,10 @@ function openProfile(){
 window.location.href = "profile.html"
 }
 
+function openAchievements(){
+window.location.href = "achievements.html"
+}
+
 function goBack(){
 window.history.back()
 }
@@ -104,17 +108,35 @@ grid.appendChild(div)
 
 }
 
-// запуск
 loadInventory()
+
+// ----------------------
+// PROFILE STATS
+// ----------------------
+
+function loadProfileStats(){
+
+const casesEl = document.getElementById("casesOpened")
+const nftEl = document.getElementById("nftWon")
+
+if(casesEl){
+casesEl.innerText = getCasesOpened()
+}
+
+if(nftEl){
+nftEl.innerText = getNFTCount()
+}
+
+}
+
+loadProfileStats()
 
 // ----------------------
 // XP SYSTEM
 // ----------------------
 
 function getXP(){
-
 return parseInt(localStorage.getItem("xp")) || 0
-
 }
 
 function addXP(amount){
@@ -129,29 +151,22 @@ updateLevelUI()
 
 }
 
-// LEVEL FORMULA
+// LEVEL
 
 function getLevel(xp){
-
 return Math.floor(xp / 100) + 1
-
 }
-
-// XP TO NEXT LEVEL
 
 function getXPForNextLevel(level){
-
 return level * 100
-
 }
 
-// UPDATE PROFILE UI
+// UPDATE UI
 
 function updateLevelUI(){
 
 const xp = getXP()
 const level = getLevel(xp)
-const nextXP = getXPForNextLevel(level)
 
 const currentXP = xp - ((level-1)*100)
 
@@ -168,8 +183,6 @@ if(currentEl) currentEl.innerText = currentXP
 if(nextEl) nextEl.innerText = 100
 
 }
-
-// RUN ON PAGE LOAD
 
 updateLevelUI()
 
@@ -209,6 +222,8 @@ condition:()=>getNFTCount()>=1
 
 ]
 
+// CASE COUNT
+
 function getCasesOpened(){
 return parseInt(localStorage.getItem("casesOpened")) || 0
 }
@@ -216,28 +231,30 @@ return parseInt(localStorage.getItem("casesOpened")) || 0
 function addCaseOpened(){
 
 let cases = getCasesOpened()
+
 cases++
 
 localStorage.setItem("casesOpened",cases)
 
 checkAchievements()
+loadProfileStats()
 
 }
+
+// NFT COUNT
 
 function getNFTCount(){
 
 let inventory = JSON.parse(localStorage.getItem("inventory")) || []
 
-let nftCount = inventory.filter(item=>!item.name.includes("Stars")).length
-
-return nftCount
+return inventory.filter(item=>!item.name.includes("Stars")).length
 
 }
 
+// UNLOCKED
+
 function getUnlockedAchievements(){
-
 return JSON.parse(localStorage.getItem("achievements")) || []
-
 }
 
 function unlockAchievement(id){
@@ -254,6 +271,8 @@ showAchievementPopup(id)
 
 }
 
+// CHECK
+
 function checkAchievements(){
 
 achievements.forEach(a=>{
@@ -265,6 +284,8 @@ unlockAchievement(a.id)
 })
 
 }
+
+// POPUP
 
 function showAchievementPopup(id){
 
@@ -303,23 +324,14 @@ div.classList.add("locked")
 }
 
 div.innerHTML = `
-
 <div>
-
-<div class="achievement-title">
-${a.name}
-</div>
-
-<div class="achievement-desc">
-${a.desc}
-</div>
-
+<div class="achievement-title">${a.name}</div>
+<div class="achievement-desc">${a.desc}</div>
 </div>
 
 <div class="achievement-icon">
 ${isUnlocked ? "🏆" : "🔒"}
 </div>
-
 `
 
 list.appendChild(div)
