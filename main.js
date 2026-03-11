@@ -112,6 +112,54 @@ loadBestDrop()
 loadTopItems()
 
 // ----------------------
+// BALANCE SYSTEM
+// ----------------------
+
+function getBalance(){
+return parseInt(localStorage.getItem("balance")) || 0
+}
+
+function addBalance(amount){
+
+let balance = getBalance()
+balance += amount
+
+localStorage.setItem("balance", balance)
+
+updateBalanceUI()
+
+}
+
+function spendBalance(amount){
+
+let balance = getBalance()
+
+if(balance < amount){
+return false
+}
+
+balance -= amount
+localStorage.setItem("balance", balance)
+
+updateBalanceUI()
+
+return true
+
+}
+
+function updateBalanceUI(){
+
+const el = document.getElementById("balance")
+
+if(!el) return
+
+el.innerText = getBalance()
+
+}
+
+updateBalanceUI()
+
+// ----------------------
 // XP SYSTEM
 // ----------------------
 
